@@ -1,0 +1,132 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+header {
+  padding: 1.5rem 5rem !important;
+  background: #e3e6f3;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+
+  .container {
+    padding: 0 !important;
+    .navbar-brand {
+      font-size: 2rem;
+      font-weight: bold;
+      font-style: italic;
+      color: black;
+    }
+
+    & button {
+      outline: none;
+      border: none;
+    }
+
+    & nav {
+      .nav-item {
+        position: relative;
+      }
+
+      .nav-link {
+        color: black;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 0.5rem 1rem !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: green;
+        font-weight: 600;
+      }
+
+      .nav-link::after {
+        content: "";
+        width: 0;
+        height: 0.1rem;
+        background-color: green;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+    }
+
+    .navbar-toggler-icon {
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      vertical-align: middle;
+      background-image: var(--bs-navbar-toggler-icon-bg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 0.75rem 2.5rem !important;
+
+    .container {
+      .navbar-brand {
+        font-size: 1rem;
+      }
+
+      & nav {
+        .nav-link {
+          padding: 0.25rem 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  header {
+    padding: 1.125rem 3.75rem !important;
+
+    .container {
+      .navbar-brand {
+        font-size: 1.5rem;
+      }
+
+      & nav {
+        .nav-link {
+          padding: 0.375rem 0.75rem;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1025px) {
+  header {
+    padding: 1.5rem 5rem !important;
+
+    .container {
+      .navbar-brand {
+        font-size: 2rem;
+      }
+
+      & nav {
+        .nav-link {
+          padding: 0.5rem 1rem;
+        }
+      }
+    }
+  }
+}
