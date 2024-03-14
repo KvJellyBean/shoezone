@@ -1,0 +1,16 @@
+/* Feedback */
+.feedback {
+  .feedback-card {
+    border-radius: 1.5rem;
+  }
+
+  & hr {
+    width: 10%;
+    height: 5px;
+    border: none;
+    margin: auto;
+    margin-top: -2.25rem;
+    margin-bottom: 2.5rem;
+    background: green;
+  }
+}
