@@ -1,0 +1,27 @@
+/* Hot product */
+.hot-product {
+  .img-container {
+    border-bottom: 0.1px solid grey;
+
+    & img {
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+    }
+  }
+
+  .card:hover {
+    & img.card-img-top {
+      transform: scale(1) rotate(15deg);
+    }
+  }
+
+  & hr {
+    width: 10%;
+    height: 5px !important;
+    border: none;
+    margin: auto;
+    margin-top: -2.25rem;
+    margin-bottom: 2.5rem;
+    background: red;
+  }
+}
