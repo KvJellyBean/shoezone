@@ -18,17 +18,17 @@ app.get("/", (req, res) => {
 
 //shop
 app.get("/shop", (req, res) => {
-  res.render("shop", { title: "Shop", layout: "about" });
+  res.render("shop", { title: "Shop", layout: "shop" });
 });
 
 //cart
 app.get("/cart", (req, res) => {
-  res.render("cart");
+  res.render("cart", { title: "Cart", layout: "cart" });
 });
 
 //login
 app.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { title: "Account", layout: "login" });
 });
 
 app.listen(port, () => {
