@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Shop</title>
+    <%- include('layouts/head.ejs'); -%>
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" type="text/css" href="/css/shop.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <%- include('layouts/header.ejs'); -%>
+
+    <!-- Main -->
+    <main>
+      <div class="shop container-fluid py-5 px-5">
+        <h3 class="text-center text-uppercase fw-bold mb-5">
+          <span class="text-success">All</span> Products
+        </h3>
+        <hr />
+
+        <div class="mb-5">
+          <div class="col-md-10 col-lg-8 sidebar container-fluid">
+            <div class="sidebar-box search-form-wrap">
+              <form class="search-form">
+                <div class="form-group">
+                  <i class="fa fa-search icon" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="s"
+                    placeholder="Search products..."
+                    oninput="searchProducts(event)"
+                    onsubmit="searchProducts(event)"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Cards -->
+        <div
+          class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-5 row-cols-xl-5 gap-4 gap-md-4 d-flex justify-content-center"
+          id="shop-cards"
+        ></div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <%- include('layouts/footer.ejs'); -%>
+
+    <!-- Script -->
+    <script src="/js/shop.js"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/542fabac84.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
