@@ -90,7 +90,7 @@ function renderProducts(products) {
   });
 }
 
-function addToCart(product, event) {
+function addProductToCart(product, event) {
   event.preventDefault();
   console.log("Adding product to cart:", product); // Add to cart logic
 }

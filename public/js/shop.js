@@ -1,46 +1,9 @@
-const products = [
-  {
-    name: "Product 1",
-    price: "18.55",
-    description: "This is product 1",
-    image: "./assets/slides/slide1.png",
-  },
-  {
-    name: "Product 2",
-    price: "18.55",
-    description: "This is product 2",
-    image: "./assets/slides/slide2.png",
-  },
-  {
-    name: "Product 4",
-    price: "18.55",
-    description: "This is product 3",
-    image: "./assets/slides/slide3.png",
-  },
-  {
-    name: "Product 5",
-    price: "18.55",
-    description: "This is product 1",
-    image: "./assets/slides/slide1.png",
-  },
-  {
-    name: "Product 6",
-    price: "18.55",
-    description: "This is product 2",
-    image: "./assets/slides/slide2.png",
-  },
-  {
-    name: "Product 7",
-    price: "18.55",
-    description: "This is product 3",
-    image: "./assets/slides/slide3.png",
-  },
-];
 let searchResults = [];
 
-function addProductToCart(product, event) {
-  event.preventDefault();
-  console.log("Adding product to cart:", product); // Add to cart logic
+function addProductToCart(index, event) {
+  // event.preventDefault();
+  const product = products[index];
+  console.log("Adding product to cart:", product);
 }
 
 function searchProducts(event) {
@@ -65,7 +28,7 @@ const shopContainer = document.querySelector("#shop-cards");
 function renderProducts(products) {
   shopContainer.innerHTML = "";
 
-  products.forEach((product) => {
+  products.forEach((product, index) => {
     shopContainer.innerHTML += `
             <!-- Product card -->
             <div class="col">
@@ -110,7 +73,7 @@ function renderProducts(products) {
                         href="/cart"
                         class="btn btn-outline-dark mt-auto px-4 py-2"
                         role="button"
-                        onclick="addProductToCart(${product}, event)"
+                        onclick="addProductToCart(${index}, event)"
                         ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
                     >
                     </div>
