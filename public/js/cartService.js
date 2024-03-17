@@ -1,15 +1,15 @@
 class CartService {
   constructor() {
-    // Load cart data from local storage
     const loadedCart = localStorage.getItem("cart");
+
     if (loadedCart) {
       this.cart = JSON.parse(loadedCart);
     } else {
       this.cart = [];
     }
 
-    // Initialize purchase history
     const loadedPurchaseHistory = localStorage.getItem("purchaseHistory");
+    
     if (loadedPurchaseHistory) {
       this.purchaseHistory = JSON.parse(loadedPurchaseHistory);
     } else {
@@ -99,22 +99,17 @@ class CartService {
     }
 
     // Save the updated purchase history to local storage
-    localStorage.setItem(
-      "purchaseHistory",
-      JSON.stringify(this.purchaseHistory)
+    localStorage.setItem("purchaseHistory", JSON.stringify(this.purchaseHistory)
     );
   }
 
   clearPurchaseHistory() {
     this.purchaseHistory = [];
     // Save the updated purchase history to local storage
-    localStorage.setItem(
-      "purchaseHistory",
-      JSON.stringify(this.purchaseHistory)
+    localStorage.setItem("purchaseHistory", JSON.stringify(this.purchaseHistory)
     );
   }
 }
 
 // Exporting the CartService
-
 export default CartService;

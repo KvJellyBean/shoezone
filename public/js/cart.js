@@ -1,9 +1,5 @@
 import CartService from "./cartService.js";
 
-// Define Product class
-
-// Cart class definition
-
 // Create instance of CartService
 const cartService = new CartService();
 
@@ -99,9 +95,6 @@ function renderPurchaseHistory() {
       purchaseHistoryContainer.innerHTML += item;
     });
   }
-
-  // Show or hide the "Clear Purchase History" button
-  clearHistoryBtn.style.display = purchaseHistory.length > 0 ? "block" : "none";
 }
 
 function clearPurchaseHistory() {
@@ -117,8 +110,7 @@ document
 function updateTotals() {
   cartService.updateTotals();
   document.getElementById("totalItems").textContent = cartService.totalItems;
-  document.getElementById("totalPrice").textContent =
-    cartService.totalPrice.toFixed(2);
+  document.getElementById("totalPrice").textContent = cartService.totalPrice.toFixed(2);
 }
 
 // Function to remove item from cart
@@ -136,9 +128,7 @@ function checkout() {
   });
 
   // Save the updated purchase history to local storage
-  localStorage.setItem(
-    "purchaseHistory",
-    JSON.stringify(cartService.purchaseHistory)
+  localStorage.setItem("purchaseHistory",JSON.stringify(cartService.purchaseHistory)
   );
 
   cartService.clearCart();
