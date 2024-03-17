@@ -1,11 +1,25 @@
-let searchResults = [];
+import LocalStorage from "./localStorage.js";
+import products from "./products.js";
 
-function addProductToCart(index, event) {
-  // event.preventDefault();
-  const product = products[index];
-  console.log("Adding product to cart:", product);
+let searchResults = [];
+let product = [];
+
+// Check localStorage
+if (LocalStorage.isStorageAvailable()) {
+  LocalStorage.loadData();
+  product = LocalStorage.getSavedData();
+  console.log("Loaded data: ", product);
 }
 
+// Add to cart function
+function addProductToCart(index, event) {
+  event.preventDefault();
+  console.log("Adding product to cart:", product);
+  product.append(products[index]);
+  LocalStorage.saveData(product);
+}
+
+// Search product function
 function searchProducts(event) {
   event.preventDefault();
   const searchTerm = event.target.value;
@@ -70,10 +84,9 @@ function renderProducts(products) {
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
                     <div class="text-center">
                     <a
-                        href="/cart"
-                        class="btn btn-outline-dark mt-auto px-4 py-2"
+                        href="#"
+                        class="btn btn-outline-dark mt-auto px-4 py-2 addButtonShop"
                         role="button"
-                        onclick="addProductToCart(${index}, event)"
                         ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
                     >
                     </div>
@@ -83,4 +96,21 @@ function renderProducts(products) {
         `;
   });
 }
+
+// Add to cart button functionality
+const addToCartButtons = document.querySelectorAll(".addButtonShop");
+addToCartButtons.forEach((button, index) => {
+  console.log("Adding click event listener for " + button);
+  button.addEventListener("click", (e) => {
+    console.log("Clicked");
+    addProductToCart(index, e);
+  });
+});
+
+// Search bar functionality
+const searchBar = document.querySelector(".form-control");
+searchBar.addEventListener("keyup", searchProducts);
+searchBar.addEventListener("submit", searchProducts);
+
+// render products
 renderProducts(products);

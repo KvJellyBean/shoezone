@@ -21,25 +21,21 @@ class Cart {
 
   addToCart(product) {
     this.cart.push(product);
-
     this.updateTotals();
   }
 
   removeFromCart(index) {
     this.cart.splice(index, 1);
-
     this.updateTotals();
   }
 
   clearCart() {
     this.cart = [];
-
     this.updateTotals();
   }
 
   updateTotals() {
     this.totalItems = this.cart.length;
-
     this.totalPrice = this.cart.reduce(
       (total, product) => total + product.price,
       0
@@ -52,54 +48,38 @@ class Cart {
 }
 
 // // Create instance of CartService
-
 const cartService = new CartService();
-
-// Function to render cart items
 
 function renderCartItems() {
   const cartContainer = document.getElementById("cartItems");
-
   cartContainer.innerHTML = "";
-
   cartService.getCart().forEach((product, index) => {
     const item = `
-
             <div class="row align-items-center justify-content-center">
-
                 <div class="col-md-6">
-
                     <div class="content">
-
                         <h3 class="product-name">${product.name}</h3>
-
                         <br />
-
                         <span class="product-price">$ ${product.price}</span>
-
                         <p class="product-description">${product.description}</p>
-
-                        <button class="removeButton btn remove-btn btn-outline" onclick="removeFromCart(${index})">Remove</button>
-
+                        <button class="removeButton btn remove-btn btn-outline">Remove</button>
                     </div>
-
                 </div>
 
                 <div class="col-md-6">
-
                     <div class="picsum-img-wrapper">
-
                         <img src="${product.image}" alt="${product.name}" />
-
                     </div>
-
                 </div>
-
             </div>
-
         `;
 
     cartContainer.innerHTML += item;
+  });
+
+  // Attach event listeners to the remove buttons
+  document.querySelectorAll(".removeButton").forEach((button, index) => {
+    button.addEventListener("click", () => removeFromCart(index));
   });
 }
 
@@ -107,30 +87,18 @@ function renderCartItems() {
 
 function renderPurchaseHistory() {
   const purchaseHistoryContainer = document.getElementById("purchaseHistory");
-
   purchaseHistoryContainer.innerHTML = "";
-
   cartService.purchaseHistory.forEach((product) => {
     const item = `
-
             <div class="swiper-slide">
-
                 <div class="purchase-item">
-
                     <img src="${product.image}" alt="${product.name}" class="purchase-image" />
-
                     <div class="purchase-details">
-
                         <span class="purchase-name">${product.name}</span><br />
-
                         <span class="purchase-price">${product.price}</span>
-
                     </div>
-
                 </div>
-
             </div>
-
         `;
 
     purchaseHistoryContainer.innerHTML += item;
@@ -141,9 +109,7 @@ function renderPurchaseHistory() {
 
 function updateTotals() {
   cartService.updateTotals();
-
   document.getElementById("totalItems").textContent = cartService.totalItems;
-
   document.getElementById("totalPrice").textContent =
     cartService.totalPrice.toFixed(2);
 }
@@ -152,9 +118,7 @@ function updateTotals() {
 
 function removeFromCart(index) {
   cartService.removeFromCart(index);
-
   renderCartItems();
-
   updateTotals();
 }
 
@@ -162,14 +126,11 @@ function removeFromCart(index) {
 
 function checkout() {
   cartService.clearCart();
-
   renderCartItems();
-
   updateTotals();
 }
 
 // Event listeners
-
 document.getElementById("checkoutBtn").addEventListener("click", checkout);
 
 // Initial setup

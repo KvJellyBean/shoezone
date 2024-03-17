@@ -28,8 +28,7 @@
               <form class="search-form">
                 <div class="form-group">
                   <i class="fa fa-search icon" aria-hidden="true"></i>
-                  <input type="text" class="form-control" id="s" placeholder="Search products..."
-                    oninput="searchProducts(event)" onsubmit="searchProducts(event)" />
+                  <input type="text" class="form-control" id="s" placeholder="Search products..." />
                 </div>
               </form>
             </div>
@@ -47,7 +46,7 @@
     <%- include('layouts/footer.ejs'); -%>
 
       <!-- Script -->
-      <script src="/js/shop.js"></script>
+      <script src="/js/shop.js" type="module"></script>
       <!-- Font Awesome -->
       <script src="https://kit.fontawesome.com/542fabac84.js" crossorigin="anonymous"></script>
 </body>

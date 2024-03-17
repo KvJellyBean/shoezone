@@ -6,7 +6,6 @@
   <%- include('layouts/head.ejs'); -%>
 
     <!-- CSS -->
-
     <link rel="stylesheet" type="text/css" href="/css/cart.css" />
 </head>
 
@@ -16,119 +15,74 @@
 
     <!-- Main -->
     <main>
-
       <div class="container mt-5" id="cartContainer">
-
         <h2 class="cartText text-center text-uppercase fw-bold mb-5">Your
-
           <span style="color: lightcoral;">Cart</span>
-
         </h2>
-
         <hr>
 
         <!-- Go to Shop Button -->
-
         <div class="goToShop" style="display: flex; font-weight: bold;">
-
           <a class="shop-button mt-3 nav-link active" href="/shop" role="button">
-
             &larr; Go to Shop
-
           </a>
-
         </div>
 
         <div class="cart-item mb-4" id="cartItems">
-
           <!-- Cart items will be dynamically generated here -->
-
         </div>
 
         <!-- Price and Checkout Section -->
-
         <div class="totalItems2 text-center">
-
           <span class="totalItems2">Total Items: <span id="totalItems"></span></span>
-
         </div>
 
         <div class="text-center">
-
           <span class="totalPrice">Total Price: $ <span id="totalPrice"></span></span>
-
         </div>
 
         <div class="text-center">
-
           <button class="btn checkout-btn btn-outline" id="checkoutBtn">
-
             Checkout
-
           </button>
-
         </div>
 
         <!-- End of Price and Checkout section -->
-
       </div>
 
       <!-- tumbleween animation -->
-
       <div class="cartIsEmptyText" id="emptyCart">
-
         <h2>Cart is empty</h2>
-
         <div class="empty-icon-container">
-
           <div class="animation-container">
-
-            <img src="../../assets/tumbleweed-icon-22.jpg" alt="Product Name" class="tumbleweed" />
-
+            <img src="/assets/tumbleweed-icon-22.jpg" alt="Product Name" class="tumbleweed" />
             <div class="pebble1"></div>
-
             <div class="pebble2"></div>
-
             <div class="pebble3"></div>
-
           </div>
-
         </div>
-
       </div>
 
       <!-- End of tumbleweed animation -->
 
       <!-- Go to Shop Button -->
-
       <div class="goToShop" style="display: flex; justify-content: center; font-weight: bold;" id="goToShopBtn">
-
         <a class="shop-button2 mt-3 nav-link active" href="/shop" role="button">
-
           &larr; Go to Shop
-
         </a>
-
       </div>
 
       <!-- End of shop button -->
-
       <!-- Purchase History Section -->
 
       <div class="purchase-history-section text-center">
-
         <br />
-
         <h3 class="historyText">Purchase History</h3>
-
         <div class="swiper-container d-flex" id="purchaseHistory">
 
           <!-- Purchase history items will be dynamically generated here -->
-
         </div>
-
       </div>
-
       <!-- End of Purchase History Section -->
 
     </main>

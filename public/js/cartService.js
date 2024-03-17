@@ -1,6 +1,8 @@
+import products from "./products.js";
+
 class CartService {
   constructor() {
-    this.cart = [];
+    this.cart = products;
 
     this.totalItems = 0;
 
