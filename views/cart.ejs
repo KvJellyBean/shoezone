@@ -67,20 +67,33 @@
 
       <!-- Go to Shop Button -->
       <div class="goToShop" style="display: flex; justify-content: center; font-weight: bold;" id="goToShopBtn">
-        <a class="shop-button2 mt-3 nav-link active" href="/shop" role="button">
-          &larr; Go to Shop
-        </a>
+        <div class="shop-button2-button-container">
+          <a class="shop-button2 mt-3 nav-link active d-inline-block" href="/shop" role="button">
+            &larr; Go to Shop
+          </a>
+        </div>
       </div>
 
       <!-- End of shop button -->
       <!-- Purchase History Section -->
 
-      <div class="purchase-history-section text-center">
+      <div class="purchase-history-section text-center" id="purchaseHistorySection">
         <br />
         <h3 class="historyText">Purchase History</h3>
-        <div class="swiper-container d-flex" id="purchaseHistory">
+        <div class="empty-purchase-history" id="emptyTextPurchaseHistory">
+          <p>There is nothing here...</p>
+        </div>
+
+        <div class="purchase-history-container d-flex" id="purchaseHistory">
 
           <!-- Purchase history items will be dynamically generated here -->
+        </div>
+
+        <!-- Clear Purchase History Button -->
+        <div class="text-center">
+          <button class="btn clear-history-btn btn-outline" id="clearHistoryBtn">
+            Clear Purchase History
+          </button>
         </div>
       </div>
       <!-- End of Purchase History Section -->

@@ -1,60 +1,38 @@
 import CartService from "./cartService.js";
 
 // Define Product class
-class Product {
-  constructor(name, price, description, image) {
-    this.name = name;
-    this.price = price;
-    this.description = description;
-    this.image = image;
-  }
-}
 
 // Cart class definition
 
-class Cart {
-  constructor() {
-    this.cart = [];
-    this.totalItems = 0;
-    this.totalPrice = 0;
-  }
-
-  addToCart(product) {
-    this.cart.push(product);
-    this.updateTotals();
-  }
-
-  removeFromCart(index) {
-    this.cart.splice(index, 1);
-    this.updateTotals();
-  }
-
-  clearCart() {
-    this.cart = [];
-    this.updateTotals();
-  }
-
-  updateTotals() {
-    this.totalItems = this.cart.length;
-    this.totalPrice = this.cart.reduce(
-      (total, product) => total + product.price,
-      0
-    );
-  }
-
-  getCart() {
-    return this.cart;
-  }
-}
-
-// // Create instance of CartService
+// Create instance of CartService
 const cartService = new CartService();
 
 function renderCartItems() {
   const cartContainer = document.getElementById("cartItems");
+  const cartSection = document.getElementById("cartContainer");
+  const emptyCart = document.getElementById("emptyCart");
+  const goToShopBtn = document.getElementById("goToShopBtn");
+
+  // Clear the cart container
   cartContainer.innerHTML = "";
-  cartService.getCart().forEach((product, index) => {
-    const item = `
+
+  // Get the cart
+  const cart = cartService.getCart();
+
+  if (cart.length === 0) {
+    // If the cart is empty, hide the cart section and show the "Cart is empty" section
+    cartSection.style.display = "none";
+    emptyCart.style.display = "block";
+    goToShopBtn.style.display = "block";
+  } else {
+    // If the cart is not empty, show the cart section and hide the "Cart is empty" section
+    cartSection.style.display = "block";
+    emptyCart.style.display = "none";
+    goToShopBtn.style.display = "none";
+
+    // Render the cart items
+    cart.forEach((product) => {
+      const item = `
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-6">
                     <div class="content">
@@ -74,39 +52,68 @@ function renderCartItems() {
             </div>
         `;
 
-    cartContainer.innerHTML += item;
-  });
+      cartContainer.innerHTML += item;
+    });
 
-  // Attach event listeners to the remove buttons
-  document.querySelectorAll(".removeButton").forEach((button, index) => {
-    button.addEventListener("click", () => removeFromCart(index));
-  });
+    // Attach event listeners to the remove buttons
+    document.querySelectorAll(".removeButton").forEach((button, index) => {
+      button.addEventListener("click", () => removeFromCart(index));
+    });
+  }
 }
 
 // Function to render purchase history
-
 function renderPurchaseHistory() {
   const purchaseHistoryContainer = document.getElementById("purchaseHistory");
+  const emptyText = document.getElementById("emptyTextPurchaseHistory");
+  const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+  // Clear the purchase history container
   purchaseHistoryContainer.innerHTML = "";
-  cartService.purchaseHistory.forEach((product) => {
-    const item = `
-            <div class="swiper-slide">
+
+  // Get the purchase history
+  const purchaseHistory = cartService.getPurchaseHistory();
+
+  if (purchaseHistory.length === 0) {
+    // If the purchase history is empty, hide the "Clear Purchase History" button and show the "empty" text
+    clearHistoryBtn.style.display = "none";
+    emptyText.style.display = "block";
+  } else {
+    // If the purchase history is not empty, show the "Clear Purchase History" button and hide the "empty" text
+    clearHistoryBtn.style.display = "block";
+    emptyText.style.display = "none";
+
+    // Render the purchase history items
+    purchaseHistory.forEach((product) => {
+      const item = `
                 <div class="purchase-item">
                     <img src="${product.image}" alt="${product.name}" class="purchase-image" />
                     <div class="purchase-details">
                         <span class="purchase-name">${product.name}</span><br />
-                        <span class="purchase-price">${product.price}</span>
+                        <span class="purchase-price">$${product.price}</span>
                     </div>
                 </div>
             </div>
         `;
 
-    purchaseHistoryContainer.innerHTML += item;
-  });
+      purchaseHistoryContainer.innerHTML += item;
+    });
+  }
+
+  // Show or hide the "Clear Purchase History" button
+  clearHistoryBtn.style.display = purchaseHistory.length > 0 ? "block" : "none";
 }
 
-// Function to update totals
+function clearPurchaseHistory() {
+  cartService.clearPurchaseHistory();
+  renderPurchaseHistory();
+}
 
+document
+  .getElementById("clearHistoryBtn")
+  .addEventListener("click", clearPurchaseHistory);
+
+// Function to update totals
 function updateTotals() {
   cartService.updateTotals();
   document.getElementById("totalItems").textContent = cartService.totalItems;
@@ -115,7 +122,6 @@ function updateTotals() {
 }
 
 // Function to remove item from cart
-
 function removeFromCart(index) {
   cartService.removeFromCart(index);
   renderCartItems();
@@ -123,18 +129,41 @@ function removeFromCart(index) {
 }
 
 // Function to handle checkout
-
 function checkout() {
+  // Add the current cart items to the purchase history before clearing the cart
+  cartService.getCart().forEach((product) => {
+    cartService.addToPurchaseHistory(product);
+  });
+
+  // Save the updated purchase history to local storage
+  localStorage.setItem(
+    "purchaseHistory",
+    JSON.stringify(cartService.purchaseHistory)
+  );
+
   cartService.clearCart();
   renderCartItems();
+  renderPurchaseHistory();
   updateTotals();
 }
 
 // Event listeners
 document.getElementById("checkoutBtn").addEventListener("click", checkout);
 
-// Initial setup
+// Load cart data and purchase history from local storage
+const loadedCart = localStorage.getItem("cart");
+if (loadedCart) {
+  cartService.cart = JSON.parse(loadedCart);
+}
 
+const loadedPurchaseHistory = localStorage.getItem("purchaseHistory");
+if (loadedPurchaseHistory) {
+  cartService.purchaseHistory = JSON.parse(loadedPurchaseHistory);
+}
+
+// Render cart items and purchase history
 renderCartItems();
+renderPurchaseHistory();
 
+// Update totals
 updateTotals();

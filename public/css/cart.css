@@ -25,6 +25,12 @@ main {
   .shop-button{
     margin-left: 15rem;
   }
+
+  .shop-button2-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
   .shop-button:hover, .shop-button2:hover {
     color: green;
@@ -45,7 +51,14 @@ main {
   .shop-button:hover::after, .shop-button2:hover::after {
     width: 100%;
   }
-  
+
+  .empty-purchase-history {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 3rem;
+  }
+
   .cartIsEmptyText {
     display: flex;
     flex-direction: column;
@@ -106,6 +119,23 @@ main {
     border-bottom: 1px solid #000;
     width: 90%;
     margin: 0 auto;
+  }
+
+  .clear-history-btn {
+    margin-top: 2rem;
+    background-color: #f8f9fa;
+    color: #343a40;
+    border-color: #343a40;
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .clear-history-btn:hover {
+    background-color: #343a40;
+    color: #f8f9fa;
   }
   
   .purchase-item {
