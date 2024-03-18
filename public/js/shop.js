@@ -2,7 +2,6 @@ import products from "./products.js";
 import CartService from "./cartService.js"; // Import the CartService class
 
 let searchResults = [];
-let product = [];
 
 // Create an instance of the CartService class
 const cartService = new CartService();
@@ -36,7 +35,7 @@ const shopContainer = document.querySelector("#shop-cards");
 function renderProducts(products) {
   shopContainer.innerHTML = "";
 
-  products.forEach((product, index) => {
+  products.forEach((product) => {
     shopContainer.innerHTML += `
             <!-- Product card -->
             <div class="col">

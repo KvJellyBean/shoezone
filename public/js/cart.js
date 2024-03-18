@@ -18,11 +18,11 @@ function renderCartItems() {
   if (cart.length === 0) {
     // If the cart is empty, hide the cart section and show the "Cart is empty" section
     cartSection.style.display = "none";
-    emptyCart.style.display = "block";
+    emptyCart.style.display = "flex";
     goToShopBtn.style.display = "block";
   } else {
     // If the cart is not empty, show the cart section and hide the "Cart is empty" section
-    cartSection.style.display = "block";
+    cartSection.style.display = "flex";
     emptyCart.style.display = "none";
     goToShopBtn.style.display = "none";
 
@@ -110,7 +110,8 @@ document
 function updateTotals() {
   cartService.updateTotals();
   document.getElementById("totalItems").textContent = cartService.totalItems;
-  document.getElementById("totalPrice").textContent = cartService.totalPrice.toFixed(2);
+  document.getElementById("totalPrice").textContent =
+    cartService.totalPrice.toFixed(2);
 }
 
 // Function to remove item from cart
@@ -128,7 +129,9 @@ function checkout() {
   });
 
   // Save the updated purchase history to local storage
-  localStorage.setItem("purchaseHistory",JSON.stringify(cartService.purchaseHistory)
+  localStorage.setItem(
+    "purchaseHistory",
+    JSON.stringify(cartService.purchaseHistory)
   );
 
   cartService.clearCart();

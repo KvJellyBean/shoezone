@@ -13,17 +13,18 @@ main {
     margin-bottom: 2.5rem;
     background: red;
   }
-  
-  .shop-button, .shop-button2 {
-    position: relative;
-    color: black;
-    text-transform: uppercase;
-    text-align: center;
-    transition: all 0.3s ease;
+
+
+  #cartContainer {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
   
-  .shop-button{
-    margin-left: 15rem;
+  .shop-button, .shop-button2 {
+    color: black;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
   }
 
   .shop-button2-button-container {
@@ -59,17 +60,26 @@ main {
     margin-top: 3rem;
   }
 
-  .cartIsEmptyText {
+  #cartItems {
     display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .cartIsEmptyText {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 11rem;
     text-align: center;
+  }
+
+  #emptyCart {
+    min-height: 100dvh;
   }
   
   .product-name {
-    padding-top: 3rem;
+    padding-top: 1rem;
     padding-left: 15rem;
     font-weight: bold;
   }
@@ -113,6 +123,16 @@ main {
     padding-top: 3rem;
   }
   
+  .purchase-history-wrapper {
+    max-width: 70rem;
+    overflow: hidden;
+  }
+
+  .purchase-history-container {
+    overflow-x: scroll;
+    gap: 2rem;
+  }
+
   .historyText {
     padding-top: 10rem;
     padding-bottom: 1rem;
@@ -139,12 +159,9 @@ main {
   }
   
   .purchase-item {
-    padding-top: 2rem;
-    padding-left: 1rem;
-  
     & img {
-      width: 15rem;
-      height: 15rem;
+      width: auto;
+      height: 10rem;
     }
   }
   
@@ -271,10 +288,6 @@ main {
       padding-bottom: 1.5rem;
     }
   
-    .shop-button, .shop-button2 {
-      margin-left: 1rem;
-    }
-  
     .product-name, .product-price, .product-description {
       padding-left: 1rem;
     }
@@ -287,6 +300,14 @@ main {
       padding-top: 2rem;
       width: 70%;
     }
+
+    #emptyCart h2 {
+      font-size: 2rem
+    }
+
+    #cartContainer .cartText {
+      font-size: 2rem;
+    } 
   }
   
   @media (min-width: 601px) and (max-width: 1024px) {
@@ -294,11 +315,7 @@ main {
       padding-top: 4.5rem;
       padding-bottom: 2rem;
     }
-  
-    .shop-button {
-      margin-left: 2rem;
-    }
-  
+
     .product-name, .product-price, .product-description {
       padding-left: 2rem;
     }
@@ -319,10 +336,6 @@ main {
       padding-bottom: 3rem;
     }
   
-    .shop-button {
-      margin-left: 15rem;
-    }
-  
     .product-name, .product-price, .product-description {
       padding-left: 15rem;
     }
@@ -336,4 +349,7 @@ main {
       width: 35%;
     }
   }
-  
+/*   
+  * {
+    border: 1px solid #ff0000;;
+  } */

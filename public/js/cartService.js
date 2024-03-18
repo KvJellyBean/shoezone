@@ -9,7 +9,7 @@ class CartService {
     }
 
     const loadedPurchaseHistory = localStorage.getItem("purchaseHistory");
-    
+
     if (loadedPurchaseHistory) {
       this.purchaseHistory = JSON.parse(loadedPurchaseHistory);
     } else {
@@ -18,20 +18,6 @@ class CartService {
 
     this.totalItems = 0;
     this.totalPrice = 0;
-  }
-
-  addToCart(product) {
-    console.log("Adding product to cart:", product);
-
-    // Push the product to the cart
-    this.cart.push(product);
-    console.log("Cart now contains:", this.cart);
-
-    // Update the total items and price
-    this.updateTotals();
-
-    // Save the updated cart to local storage
-    localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 
   addToCart(product) {
@@ -94,19 +80,23 @@ class CartService {
     this.purchaseHistory.unshift(product);
 
     // If the purchase history exceeds 5 items, remove the oldest item
-    if (this.purchaseHistory.length > 5) {
+    if (this.purchaseHistory.length > 10) {
       this.purchaseHistory.pop();
     }
 
     // Save the updated purchase history to local storage
-    localStorage.setItem("purchaseHistory", JSON.stringify(this.purchaseHistory)
+    localStorage.setItem(
+      "purchaseHistory",
+      JSON.stringify(this.purchaseHistory)
     );
   }
 
   clearPurchaseHistory() {
     this.purchaseHistory = [];
     // Save the updated purchase history to local storage
-    localStorage.setItem("purchaseHistory", JSON.stringify(this.purchaseHistory)
+    localStorage.setItem(
+      "purchaseHistory",
+      JSON.stringify(this.purchaseHistory)
     );
   }
 }

@@ -61,20 +61,21 @@
             <div class="pebble3"></div>
           </div>
         </div>
+
+        <!-- Go to Shop Button -->
+        <div class="goToShop" style="display: flex; justify-content: center; font-weight: bold;" id="goToShopBtn">
+          <div class="shop-button2-button-container">
+            <a class="shop-button2 mt-3 nav-link active d-inline-block" href="/shop" role="button">
+              &larr; Go to Shop
+            </a>
+          </div>
+        </div>
+
+        <!-- End of shop button -->
       </div>
 
       <!-- End of tumbleweed animation -->
 
-      <!-- Go to Shop Button -->
-      <div class="goToShop" style="display: flex; justify-content: center; font-weight: bold;" id="goToShopBtn">
-        <div class="shop-button2-button-container">
-          <a class="shop-button2 mt-3 nav-link active d-inline-block" href="/shop" role="button">
-            &larr; Go to Shop
-          </a>
-        </div>
-      </div>
-
-      <!-- End of shop button -->
       <!-- Purchase History Section -->
 
       <div class="purchase-history-section text-center" id="purchaseHistorySection">
@@ -84,7 +85,9 @@
           <p>There is nothing here...</p>
         </div>
 
-        <div class="purchase-history-container d-flex" id="purchaseHistory">
+        <div class="purchase-history-wrapper" id='purchaseWrapper'>
+          <div class="purchase-history-container d-flex" id="purchaseHistory">
+          </div>
 
           <!-- Purchase history items will be dynamically generated here -->
         </div>
