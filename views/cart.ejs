@@ -1,30 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Cart</title>
-    <%- include('layouts/head.ejs'); -%>
+
+<head>
+  <title>Cart</title>
+  <%- include('layouts/head.ejs'); -%>
 
     <!-- CSS -->
-
     <link rel="stylesheet" type="text/css" href="/css/cart.css" />
-  </head>
-  <body>
-    <!-- Header -->
-    <%- include('layouts/header.ejs'); -%>
+</head>
+
+<body>
+  <!-- Header -->
+  <%- include('layouts/header.ejs'); -%>
 
     <!-- Main -->
-    <main></main>
+    <main>
+      <div class="container mt-5" id="cartContainer">
+        <h2 class="cartText text-center text-uppercase fw-bold mb-5">Your
+          <span style="color: lightcoral;">Cart</span>
+        </h2>
+        <hr>
+
+        <!-- Go to Shop Button -->
+        <div class="goToShop" style="display: flex; font-weight: bold;">
+          <a class="shop-button mt-3 nav-link active" href="/shop" role="button">
+            &larr; Go to Shop
+          </a>
+        </div>
+
+        <div class="cart-item mb-4" id="cartItems">
+          <!-- Cart items will be dynamically generated here -->
+        </div>
+
+        <!-- Price and Checkout Section -->
+        <div class="totalItems2 text-center">
+          <span class="totalItems2">Total Items: <span id="totalItems"></span></span>
+        </div>
+
+        <div class="text-center">
+          <span class="totalPrice">Total Price: $ <span id="totalPrice"></span></span>
+        </div>
+
+        <div class="text-center">
+          <button class="btn checkout-btn btn-outline" id="checkoutBtn">
+            Checkout
+          </button>
+        </div>
+
+        <!-- End of Price and Checkout section -->
+      </div>
+
+      <!-- tumbleween animation -->
+      <div class="cartIsEmptyText" id="emptyCart">
+        <h2>Cart is empty</h2>
+        <div class="empty-icon-container">
+          <div class="animation-container">
+            <img src="/assets/tumbleweed-icon-22.jpg" alt="Product Name" class="tumbleweed" />
+            <div class="pebble1"></div>
+            <div class="pebble2"></div>
+            <div class="pebble3"></div>
+          </div>
+        </div>
+
+        <!-- Go to Shop Button -->
+        <div class="goToShop" style="display: flex; justify-content: center; font-weight: bold;" id="goToShopBtn">
+          <div class="shop-button2-button-container">
+            <a class="shop-button2 mt-3 nav-link active d-inline-block" href="/shop" role="button">
+              &larr; Go to Shop
+            </a>
+          </div>
+        </div>
+
+        <!-- End of shop button -->
+      </div>
+
+      <!-- End of tumbleweed animation -->
+
+      <!-- Purchase History Section -->
+
+      <div class="purchase-history-section text-center" id="purchaseHistorySection">
+        <br />
+        <h3 class="historyText">Purchase History</h3>
+        <div class="empty-purchase-history" id="emptyTextPurchaseHistory">
+          <p>There is nothing here...</p>
+        </div>
+
+        <div class="purchase-history-wrapper" id='purchaseWrapper'>
+          <div class="purchase-history-container d-flex" id="purchaseHistory">
+          </div>
+
+          <!-- Purchase history items will be dynamically generated here -->
+        </div>
+
+        <!-- Clear Purchase History Button -->
+        <div class="text-center">
+          <button class="btn clear-history-btn btn-outline" id="clearHistoryBtn">
+            Clear Purchase History
+          </button>
+        </div>
+      </div>
+      <!-- End of Purchase History Section -->
+
+    </main>
+
 
     <!-- Footer -->
     <%- include('layouts/footer.ejs'); -%>
 
-    <!-- Script -->
-    <script src="/js/cart.js"></script>
-    <script src="/js/cartService.js"></script>
-    <!-- Font Awesome -->
-    <script
-      src="https://kit.fontawesome.com/542fabac84.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+      <!-- Script -->
+      <script src="/js/cart.js" type="module"></script>
+      <!-- <script src="/js/cartService.js"></script> Font Awesome -->
+      <script src="https://kit.fontawesome.com/542fabac84.js" crossorigin="anonymous"></script>
+</body>
+
 </html>

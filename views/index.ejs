@@ -1,36 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>ShoeZone</title>
-    <%- include('layouts/head.ejs'); -%>
+
+<head>
+  <title>ShoeZone</title>
+  <%- include('layouts/head.ejs'); -%>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="/css/carouselMain.css" />
     <link rel="stylesheet" type="text/css" href="/css/hotProduct.css" />
     <link rel="stylesheet" type="text/css" href="/css/feedback.css" />
     <link rel="stylesheet" type="text/css" href="/css/partner.css" />
-  </head>
-  <body>
-    <!-- Header -->
-    <%- include('layouts/header.ejs'); -%>
+</head>
+
+<body>
+  <!-- Header -->
+  <%- include('layouts/header.ejs'); -%>
 
     <!-- Main -->
     <main>
-      <%- include('layouts/MainPage/carouselMain.ejs'); -%> <%-
-      include('layouts/MainPage/hotProduct.ejs'); -%> <%-
-      include('layouts/MainPage/feedback.ejs'); -%> <%-
-      include('layouts/MainPage/partner.ejs'); -%>
+      <%- include('layouts/MainPage/carouselMain.ejs'); -%> <%- include('layouts/MainPage/hotProduct.ejs'); -%> <%-
+            include('layouts/MainPage/feedback.ejs'); -%> <%- include('layouts/MainPage/partner.ejs'); -%>
     </main>
 
     <!-- Footer -->
     <%- include('layouts/footer.ejs'); -%>
 
-    <!-- Script -->
-    <script src="/js/mainPage.js"></script>
-    <!-- Font Awesome -->
-    <script
-      src="https://kit.fontawesome.com/542fabac84.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+      <!-- Script -->
+      <script src="/js/mainPage.js" type="module"></script>
+      <!-- Font Awesome -->
+      <script src="https://kit.fontawesome.com/542fabac84.js" crossorigin="anonymous"></script>
+</body>
+
 </html>

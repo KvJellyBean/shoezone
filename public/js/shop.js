@@ -1,48 +1,18 @@
-const products = [
-  {
-    name: "Product 1",
-    price: "18.55",
-    description: "This is product 1",
-    image: "./assets/slides/slide1.png",
-  },
-  {
-    name: "Product 2",
-    price: "18.55",
-    description: "This is product 2",
-    image: "./assets/slides/slide2.png",
-  },
-  {
-    name: "Product 4",
-    price: "18.55",
-    description: "This is product 3",
-    image: "./assets/slides/slide3.png",
-  },
-  {
-    name: "Product 5",
-    price: "18.55",
-    description: "This is product 1",
-    image: "./assets/slides/slide1.png",
-  },
-  {
-    name: "Product 6",
-    price: "18.55",
-    description: "This is product 2",
-    image: "./assets/slides/slide2.png",
-  },
-  {
-    name: "Product 7",
-    price: "18.55",
-    description: "This is product 3",
-    image: "./assets/slides/slide3.png",
-  },
-];
+import products from "./products.js";
+import CartService from "./cartService.js"; // Import the CartService class
+
 let searchResults = [];
 
-function addProductToCart(product, event) {
-  event.preventDefault();
-  console.log("Adding product to cart:", product); // Add to cart logic
+// Create an instance of the CartService class
+const cartService = new CartService();
+
+function addProductToCart(index, event) {
+  // event.preventDefault();
+  const product = products[index];
+  cartService.addToCart(product); // Add the product to the cart
 }
 
+// Search product function
 function searchProducts(event) {
   event.preventDefault();
   const searchTerm = event.target.value;
@@ -108,9 +78,8 @@ function renderProducts(products) {
                     <div class="text-center">
                     <a
                         href="/cart"
-                        class="btn btn-outline-dark mt-auto px-4 py-2"
+                        class="btn btn-outline-dark mt-auto px-4 py-2 addButtonShop"
                         role="button"
-                        onclick="addProductToCart(${product}, event)"
                         ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
                     >
                     </div>
@@ -119,5 +88,20 @@ function renderProducts(products) {
             </div>
         `;
   });
+
+  // Add to cart button functionality
+  const addToCartButtons = document.querySelectorAll(".addButtonShop");
+  addToCartButtons.forEach((button, index) => {
+    button.addEventListener("click", (e) => {
+      addProductToCart(index, e);
+    });
+  });
 }
+
+// Search bar functionality
+const searchBar = document.querySelector(".form-control");
+searchBar.addEventListener("keyup", searchProducts);
+searchBar.addEventListener("submit", searchProducts);
+
+// render products
 renderProducts(products);

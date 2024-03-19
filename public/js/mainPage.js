@@ -1,3 +1,11 @@
+import myProducts from "./products.js";
+import CartService from "./cartService.js";
+
+const products = [myProducts[0], myProducts[1], myProducts[2]];
+console.log(products);
+
+const cartService = new CartService();
+
 // Carousel
 document.addEventListener("DOMContentLoaded", function () {
   const myCarousel = new bootstrap.Carousel(
@@ -12,27 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   );
 });
-
-const products = [
-  {
-    name: "Product 1",
-    price: 18.55,
-    description: "This is product 1",
-    image: "/assets/slides/slide1.png",
-  },
-  {
-    name: "Product 2",
-    price: 18.55,
-    description: "This is product 2",
-    image: "/assets/slides/slide2.png",
-  },
-  {
-    name: "Product 3",
-    price: 18.55,
-    description: "This is product 3",
-    image: "/assets/slides/slide3.png",
-  },
-];
 
 const hotProductContainer = document.querySelector(".hot-product div.row");
 
@@ -73,26 +60,33 @@ function renderProducts(products) {
   
           <!-- Product Add to cart -->
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
-          <div class="text-center">
+              <div class="text-center">
               <a
-              class="btn btn-outline-dark mt-auto px-4 py-2"
-              href="/cart"
-              role="button"
-              onClick="addProductToCart(${product}, event)"
+                  href="/cart"
+                  class="btn btn-outline-dark mt-auto px-4 py-2 addButtonHotProduct"
+                  role="button"
+                  ><i class="fa-solid fa-cart-shopping"></i> Add to Cart</a
               >
-              <i class="fa-solid fa-cart-shopping"></i> Add to cart
-              </a>
+              </div>
           </div>
           </div>
       </div>
-      </div>
-      `;
+  `;
+  });
+
+  // Add to cart button functionality
+  const addToCartButtons = document.querySelectorAll(".addButtonHotProduct");
+  addToCartButtons.forEach((button, index) => {
+    button.addEventListener("click", (e) => {
+      addProductToCart(index, e);
+    });
   });
 }
 
-function addToCart(product, event) {
-  event.preventDefault();
-  console.log("Adding product to cart:", product); // Add to cart logic
+function addProductToCart(product, event) {
+  // event.preventDefault();
+  cartService.addToCart(products[product]); // Add the product to the cart using CartService
+  console.log("Adding product to cart:", products[product]); // Add to cart logic
 }
 
 renderProducts(products);
