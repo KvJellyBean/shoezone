@@ -13,7 +13,108 @@
     <%- include('layouts/header.ejs'); -%>
 
     <!-- Main -->
-    <main></main>
+    <main>
+      <div class="loginregis">
+        <span class="close"><i class="fa-solid fa-x"></i></span>
+        <div class="form-login">
+          <h2>Login</h2>
+          <form action="#" method="post">
+            <div class="form-input">
+              <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+              <input type="email" name="email" required />
+              <label>Email</label>
+            </div>
+            <div class="form-input">
+              <span class="toggle-password" onclick="togglePassword('loginPassword', 'icon0')">
+                <i id="icon0" class="fa-solid fa-eye-slash"></i>
+              </span>
+              <input type="password" name="password" id="loginPassword" required />
+              <label>Password</label>
+            </div>
+            <div class="remember-forgot">
+              <label><input type="checkbox" name="remember" /> Remember me </label>
+              <a href="#">Forgot Password</a>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            <div class="login-register">
+              <a href="#" class="register-link">Don't have an account?</a>
+            </div>
+          </form>
+        </div>
+      
+        <div class="form-regis">
+          <h2>Registration</h2>
+          <form action="#" method="post" onsubmit="validateForm()">
+            <div class="form-input">
+              <span class="icon"><i class="fa-solid fa-person"></i></span>
+              <input type="text" name="username" required />
+              <label>Username</label>
+            </div>
+            <div class="form-input">
+              <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+              <input type="email" name="email" id="regisEmail" required />
+              <label class="labelEmail">Email</label>
+            </div>
+            <div id="bbs1" class="form-input">
+              <span class="toggle-password" onclick="togglePassword('password', 'icon1')">
+                <i id="icon1" class="fa-solid fa-eye-slash"></i>
+              </span>
+              <input type="password" id="password" name="password" required />
+              <label>Password</label>
+            </div>
+            <div class="form-input">
+              <span class="toggle-password" onclick="togglePassword('cpassword', 'icon2')">
+                <i id="icon2" class="fa-solid fa-eye-slash"></i>
+              </span>
+              <input type="password" id="cpassword" name="cpassword" required />
+              <label>Confirm Password</label>
+            </div>
+            <div class="remember-forgot">
+              <label><input type="checkbox" required /> I agree to the terms & conditions</label>
+            </div>
+            <button type="submit" class="btn">Register</button>
+            <div class="login-register">
+              <a href="#" class="login-link">Already have an account?</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <section class="account d-flex">
+        <div class="left">
+          <div class="row">
+            <h1 class="text-capitalize">
+              Welcome to <span class="text-success">Shoe</span>Zone
+            </h1>
+            <button class="popup-login">ACCOUNT</button>
+          </div>
+        </div>
+      
+        <div class="right">
+          <div id="carouselExampleAutoplaying" class="carousel" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="../assets/slides2/guy1.jpeg" class="d-block w-100" alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="../assets/slides2/guy2.jpeg" class="d-block w-100" alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="../assets/slides2/guy3.jpeg" class="d-block w-100" alt="..." />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </section>
+      
+    </main>
 
     <!-- Footer -->
     <%- include('layouts/footer.ejs'); -%>
