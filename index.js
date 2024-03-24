@@ -1,6 +1,22 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+
+dotenv.config();
+
+const port = process.env.PORT || 3000;
+
+mongoose.connect(process.env.MONGO_URL).then(
+  () => console.log(`Database connected ${process.env.MONGO_URL}`),
+  (err) => console.log(err)
+);
+
+app.use(morgan("dev"));
+app.use(express.json());
+app.use("/api/products", require("./routes/api/products"));
+
 const expressLayouts = require("express-ejs-layouts");
 
 //ejs
