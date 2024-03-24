@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <title>Shop</title>
-  <%- include('layouts/head.ejs'); -%>
+  <head>
+    <title>Shop</title>
+    <%- include('layouts/head.ejs'); -%>
 
     <!-- CSS -->
 
     <link rel="stylesheet" type="text/css" href="/css/shop.css" />
-</head>
+  </head>
 
-<body>
-  <!-- Header -->
-  <%- include('layouts/header.ejs'); -%>
+  <body>
+    <!-- Header -->
+    <%- include('layouts/header.ejs'); -%>
 
     <!-- Main -->
     <main>
@@ -28,9 +27,41 @@
               <form class="search-form">
                 <div class="form-group">
                   <i class="fa fa-search icon" aria-hidden="true"></i>
-                  <input type="text" class="form-control" id="s" placeholder="Search products..." />
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="s"
+                    placeholder="Search products..."
+                  />
                 </div>
               </form>
+            </div>
+
+            <div class="row my-3 mx-1">
+              <div
+                class="col d-flex justify-content-center gap-2"
+                id="filterSortFeature"
+              >
+                <button type="button" class="btn btn-primary text-dark">
+                  Nike
+                </button>
+                <button type="button" class="btn btn-primary text-dark">
+                  Adidas
+                </button>
+                <button type="button" class="btn btn-primary text-dark">
+                  Rebook
+                </button>
+                <button type="button" class="btn btn-primary text-dark">
+                  Vans
+                </button>
+                <select name="sorting" id="sortFeature">
+                  <option value="" disabled selected>Sort by</option>
+                  <option value="alphabet">A-Z</option>
+                  <option value="lowPrice">Low Price</option>
+                  <option value="highPrice">High Price</option>
+                  <option value="rate">Rating</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -38,17 +69,20 @@
         <!-- Product Cards -->
         <div
           class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-5 row-cols-xl-5 gap-4 gap-md-4 d-flex justify-content-center"
-          id="shop-cards"></div>
+          id="shop-cards"
+        ></div>
       </div>
     </main>
 
     <!-- Footer -->
     <%- include('layouts/footer.ejs'); -%>
 
-      <!-- Script -->
-      <script src="/js/shop.js" type="module"></script>
-      <!-- Font Awesome -->
-      <script src="https://kit.fontawesome.com/542fabac84.js" crossorigin="anonymous"></script>
-</body>
-
+    <!-- Script -->
+    <script src="/js/shop.js" type="module"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/542fabac84.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
