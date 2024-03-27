@@ -1,8 +1,16 @@
 import CartService from "./cartService.js";
+import {
+  cart as myCart,
+  purchaseHistory as myPurchaseHistory,
+} from "./cartService.js";
 
-// Create instance of CartService
-const cartService = new CartService();
+// Get the cart
+let cart = myCart;
+// Get the purchase history
+let purchaseHistory = myPurchaseHistory;
 
+console.log(cart);
+console.log(purchaseHistory);
 function renderCartItems() {
   const cartContainer = document.getElementById("cartItems");
   const cartSection = document.getElementById("cartContainer");
@@ -11,9 +19,6 @@ function renderCartItems() {
 
   // Clear the cart container
   cartContainer.innerHTML = "";
-
-  // Get the cart
-  const cart = cartService.getCart();
 
   if (cart.length === 0) {
     // If the cart is empty, hide the cart section and show the "Cart is empty" section
@@ -67,9 +72,6 @@ function renderPurchaseHistory() {
   // Clear the purchase history container
   purchaseHistoryContainer.innerHTML = "";
 
-  // Get the purchase history
-  const purchaseHistory = cartService.getPurchaseHistory();
-
   if (purchaseHistory.length === 0) {
     // If the purchase history is empty, hide the "Clear Purchase History" button and show the "empty" text
     clearHistoryBtn.style.display = "none";
@@ -98,7 +100,7 @@ function renderPurchaseHistory() {
 }
 
 function clearPurchaseHistory() {
-  cartService.clearPurchaseHistory();
+  CartService.clearPurchaseHistory();
   renderPurchaseHistory();
 }
 
@@ -108,15 +110,15 @@ document
 
 // Function to update totals
 function updateTotals() {
-  cartService.updateTotals();
-  document.getElementById("totalItems").textContent = cartService.totalItems;
+  CartService.updateTotals();
+  document.getElementById("totalItems").textContent = CartService.totalItems;
   document.getElementById("totalPrice").textContent =
-    cartService.totalPrice.toFixed(2);
+    CartService.totalPrice.toFixed(2);
 }
 
 // Function to remove item from cart
 function removeFromCart(index) {
-  cartService.removeFromCart(index);
+  CartService.removeFromCart(index);
   renderCartItems();
   updateTotals();
 }
@@ -124,17 +126,17 @@ function removeFromCart(index) {
 // Function to handle checkout
 function checkout() {
   // Add the current cart items to the purchase history before clearing the cart
-  cartService.getCart().forEach((product) => {
-    cartService.addToPurchaseHistory(product);
+  CartService.getCart().forEach((product) => {
+    CartService.addToPurchaseHistory(product);
   });
 
   // Save the updated purchase history to local storage
   localStorage.setItem(
     "purchaseHistory",
-    JSON.stringify(cartService.purchaseHistory)
+    JSON.stringify(CartService.purchaseHistory)
   );
 
-  cartService.clearCart();
+  CartService.clearCart();
   renderCartItems();
   renderPurchaseHistory();
   updateTotals();
@@ -146,12 +148,12 @@ document.getElementById("checkoutBtn").addEventListener("click", checkout);
 // Load cart data and purchase history from local storage
 const loadedCart = localStorage.getItem("cart");
 if (loadedCart) {
-  cartService.cart = JSON.parse(loadedCart);
+  CartService.cart = JSON.parse(loadedCart);
 }
 
 const loadedPurchaseHistory = localStorage.getItem("purchaseHistory");
 if (loadedPurchaseHistory) {
-  cartService.purchaseHistory = JSON.parse(loadedPurchaseHistory);
+  CartService.purchaseHistory = JSON.parse(loadedPurchaseHistory);
 }
 
 // Render cart items and purchase history

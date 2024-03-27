@@ -1,26 +1,35 @@
-class CartService {
-  constructor() {
-    const loadedCart = localStorage.getItem("cart");
+let cart = [];
+let purchaseHistory = [];
 
-    if (loadedCart) {
-      this.cart = JSON.parse(loadedCart);
-    } else {
-      this.cart = [];
+// Fetch products from API
+async function fetchCarts() {
+  try {
+    const response = await fetch("/api/carts");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
-
-    const loadedPurchaseHistory = localStorage.getItem("purchaseHistory");
-
-    if (loadedPurchaseHistory) {
-      this.purchaseHistory = JSON.parse(loadedPurchaseHistory);
-    } else {
-      this.purchaseHistory = [];
-    }
-
-    this.totalItems = 0;
-    this.totalPrice = 0;
+    cart = await response.json();
+    console.log(cart);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
   }
+}
 
-  addToCart(product) {
+async function fetchPurchaseHistory() {
+  try {
+    const response = await fetch("/api/purchaseHistory");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    purchaseHistory = await response.json();
+    console.log(purchaseHistory);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+const CartService = (() => {
+  function addToCart(product) {
     console.log("Adding product to cart:", product);
 
     // Push the product to the cart
@@ -34,7 +43,7 @@ class CartService {
     localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 
-  removeFromCart(index) {
+  function removeFromCart(index) {
     if (index > -1) {
       this.cart.splice(index, 1);
       this.updateTotals();
@@ -44,7 +53,7 @@ class CartService {
     }
   }
 
-  updateTotals() {
+  function updateTotals() {
     let totalItems = 0;
     let totalPrice = 0;
 
@@ -59,23 +68,23 @@ class CartService {
     return { totalItems, totalPrice };
   }
 
-  getCart() {
+  function getCart() {
     console.log(this.cart);
     return this.cart;
   }
 
-  getPurchaseHistory() {
+  function getPurchaseHistory() {
     return this.purchaseHistory;
   }
 
-  clearCart() {
+  function clearCart() {
     this.cart = [];
     this.updateTotals();
     // Save the updated cart to local storage
     localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 
-  addToPurchaseHistory(product) {
+  function addToPurchaseHistory(product) {
     // Add the product to the front of the purchase history
     this.purchaseHistory.unshift(product);
 
@@ -91,7 +100,7 @@ class CartService {
     );
   }
 
-  clearPurchaseHistory() {
+  function clearPurchaseHistory() {
     this.purchaseHistory = [];
     // Save the updated purchase history to local storage
     localStorage.setItem(
@@ -99,7 +108,24 @@ class CartService {
       JSON.stringify(this.purchaseHistory)
     );
   }
-}
 
-// Exporting the CartService
+  return {
+    addToCart,
+    removeFromCart,
+    updateTotals,
+    getCart,
+    getPurchaseHistory,
+    clearCart,
+    addToPurchaseHistory,
+    clearPurchaseHistory,
+  };
+})();
+
+// Render products when the page loaded
+document.addEventListener("DOMContentLoaded", () => {
+  fetchCarts();
+  fetchPurchaseHistory();
+});
+
 export default CartService;
+export { cart, purchaseHistory };
