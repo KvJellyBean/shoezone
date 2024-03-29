@@ -25,6 +25,7 @@ async function fetchProducts() {
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
+  const emptyStars = 5 - fullStars - halfStar;
 
   let starsHTML = "";
   for (let i = 0; i < fullStars; i++) {
@@ -35,6 +36,11 @@ function generateStarRating(rating) {
     starsHTML +=
       '<i class="fa-solid fa-star-half-stroke" style="color: #FFD43B;"></i>';
   }
+
+  for (let i = 0; i < emptyStars; i++) {
+    starsHTML += '<i class="fa-regular fa-star" style="color: #FFD43B;"></i>';
+  }
+
   return starsHTML;
 }
 
