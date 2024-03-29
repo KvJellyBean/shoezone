@@ -1,6 +1,8 @@
 import CartService from "./cartService.js";
 
+// Global Variabel
 let products = [];
+let searchResults = [];
 
 // Create an instance of the CartService class
 const cartService = new CartService();
@@ -8,12 +10,13 @@ const cartService = new CartService();
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
 
-// Search bar
+// DOM Element
 const searchBar = document.querySelector(".form-control");
-
-// Filter buttons & Select sort
 const brandButtons = document.querySelectorAll(".btn.btn-primary.text-dark");
 const sortSelect = document.getElementById("sortFeature");
+const addPoductBtn = document.querySelector(".addProduct");
+const productForm = document.querySelector("#productDialog form");
+const cancelAddProduct = document.querySelector(".cancelAddProduct");
 
 // Fetch products from API
 async function fetchProducts() {
@@ -38,9 +41,24 @@ function addProductToCart(index, event) {
 
 // Search product functionality
 function searchProducts(event = null) {
-  let searchTerm = event ? event.target.value.trim().toLowerCase() : "";
+  brandButtons.forEach((btn) => {
+    btn.classList.remove("activeFilter");
+  });
 
-  const searchResults = searchTerm
+  let searchTerm =
+    event === searchBar
+      ? searchBar.value
+      : event
+      ? event.target.value.trim().toLowerCase()
+      : "";
+
+  // Check if filter or sorting is active
+  const brandFilter = document.querySelector(
+    ".btn.btn-primary.text-dark.activeFilter"
+  );
+  const sortBy = sortSelect.value;
+
+  searchResults = searchTerm
     ? products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm)
       )
@@ -49,6 +67,32 @@ function searchProducts(event = null) {
   if (searchResults.length === 0 && searchTerm) {
     displayNotFound(searchTerm);
   } else {
+    // Apply filter if brand filter is active
+    if (brandFilter) {
+      const brand = brandFilter.textContent.trim();
+      searchResults = searchResults.filter((product) =>
+        product.name.toLowerCase().includes(brand.toLowerCase())
+      );
+    }
+
+    // Apply sorting if sort option is selected
+    switch (sortBy) {
+      case "alphabet":
+        searchResults.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "lowPrice":
+        searchResults.sort((a, b) => a.price - b.price);
+        break;
+      case "highPrice":
+        searchResults.sort((a, b) => b.price - a.price);
+        break;
+      case "rate":
+        searchResults.sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        break;
+    }
+
     renderProducts(searchResults);
   }
 }
@@ -67,6 +111,7 @@ function displayNotFound(searchWord) {
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
+  const emptyStars = 5 - fullStars - halfStar;
 
   let starsHTML = "";
   for (let i = 0; i < fullStars; i++) {
@@ -77,6 +122,11 @@ function generateStarRating(rating) {
     starsHTML +=
       '<i class="fa-solid fa-star-half-stroke" style="color: #FFD43B;"></i>';
   }
+
+  for (let i = 0; i < emptyStars; i++) {
+    starsHTML += '<i class="fa-regular fa-star" style="color: #FFD43B;"></i>';
+  }
+
   return starsHTML;
 }
 
@@ -110,16 +160,19 @@ function renderProducts(products) {
             </h4>
       
             <!-- Product rating -->
-            <div class="d-flex justify-content-center small text-warning my-2">
-              ${starRatingHTML}
+            <div class="d-flex flex-column justify-content-center small  my-2">
+              <div class="stars">
+                ${starRatingHTML}
+              </div>
+
+              <!-- Product price -->
+              <div class="product-price">
+                <span class="price fw-bold ms-2">$ ${product.price.toFixed(
+                  2
+                )}</span>
+              </div>
             </div>
       
-            <!-- Product price -->
-            <div class="product-price">
-              <span class="price fw-bold ms-2">$ ${product.price.toFixed(
-                2
-              )}</span>
-            </div>
           </div>
       
           <!-- Product Add to cart -->
@@ -127,11 +180,16 @@ function renderProducts(products) {
             <div class="text-center">
               <a
                 href="/cart"
-                class="btn btn-outline-dark mt-auto px-4 py-2 addButtonShop"
+                class="btn btn-success mt-auto px-4 py-2 addButtonShop"
                 role="button"
                 ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
               >
             </div>
+          </div>
+
+          <div class="menuButton">
+            <button type="button" class="removeButton"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="editButton"><i class="fa-solid fa-pen-to-square"></i></button>
           </div>
         </div>
       </div>
@@ -149,9 +207,17 @@ function renderProducts(products) {
 
 // Function to filter and sorting
 function filterAndSortByBrand(brand) {
-  let filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(brand.toLowerCase())
-  );
+  let filteredProducts;
+
+  if (searchResults.length === 0) {
+    filteredProducts = products.filter((product) =>
+      product.name.toLowerCase().includes(brand.toLowerCase())
+    );
+  } else {
+    filteredProducts = searchResults.filter((product) =>
+      product.name.toLowerCase().includes(brand.toLowerCase())
+    );
+  }
 
   const sortBy = sortSelect.value;
 
@@ -181,11 +247,79 @@ function filterAndSortByBrand(brand) {
   }
 
   if (filteredProducts.length === 0) {
-    displayNotFound(brand);
+    displayNotFound(brand + " " + searchBar.value);
   } else {
     renderProducts(filteredProducts);
   }
 }
+
+// Show Product dialog
+function showAddProductDialog() {
+  const dialog = document.querySelector("dialog#productDialog");
+  const form = dialog.querySelector("form");
+  form.reset();
+  dialog.showModal();
+}
+
+// Close Product dialog
+function closeAddProductDialog() {
+  const dialog = document.querySelector("dialog#productDialog");
+  dialog.close();
+}
+
+async function addProduct(event) {
+  event.preventDefault();
+  const nameInput = document.querySelector("#nameInput").value;
+  const priceInput = document.querySelector("#priceInput").value;
+  const descriptionInput = document.querySelector("#descriptionInput").value;
+  const imageInput = document.querySelector("#imageInput").value;
+  const ratingInput = document.querySelector("#ratingInput").value;
+
+  try {
+    const response = await fetch("/api/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: nameInput,
+        price: priceInput,
+        description: descriptionInput,
+        image: imageInput,
+        rating: ratingInput,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const newProduct = await response.json();
+
+    console.log("New product added:", newProduct);
+
+    closeAddProductDialog();
+  } catch (error) {
+    console.error("There was a problem with adding the product:", error);
+  }
+}
+
+async function addAndShowProduct(event) {
+  event.preventDefault();
+  addProduct(event);
+  await fetchProducts();
+  renderProducts(products);
+  closeAddProductDialog();
+}
+
+// EVENT LISTENER
+
+// Render products when the page loaded
+document.addEventListener("DOMContentLoaded", fetchProducts);
+
+// Implements search bar functionality
+searchBar.addEventListener("keyup", searchProducts);
+searchBar.addEventListener("submit", (e) => searchProducts(e));
 
 // Event listener for filter button
 brandButtons.forEach((button) => {
@@ -195,7 +329,7 @@ brandButtons.forEach((button) => {
 
     if (isActive) {
       event.target.classList.remove("activeFilter");
-      searchProducts();
+      searchProducts(searchBar);
     } else {
       brandButtons.forEach((btn) => {
         btn.classList.remove("activeFilter");
@@ -222,29 +356,35 @@ sortSelect.addEventListener("change", (event) => {
   const brandFilter = document.querySelector(
     ".btn.btn-primary.text-dark.activeFilter"
   );
+  let sortedProducts = [...searchResults];
 
   if (brandFilter) {
     const brand = brandFilter.textContent.trim();
     filterAndSortByBrand(brand);
   } else {
-    let sortedProducts = [];
     switch (sortBy) {
       case "alphabet":
-        sortedProducts = products
+        sortedProducts = sortedProducts
           .slice()
           .sort((a, b) => a.name.localeCompare(b.name));
         break;
       case "lowPrice":
-        sortedProducts = products.slice().sort((a, b) => a.price - b.price);
+        sortedProducts = sortedProducts
+          .slice()
+          .sort((a, b) => a.price - b.price);
         break;
       case "highPrice":
-        sortedProducts = products.slice().sort((a, b) => b.price - a.price);
+        sortedProducts = sortedProducts
+          .slice()
+          .sort((a, b) => b.price - a.price);
         break;
       case "rate":
-        sortedProducts = products.slice().sort((a, b) => b.rating - a.rating);
+        sortedProducts = sortedProducts
+          .slice()
+          .sort((a, b) => b.rating - a.rating);
         break;
       default:
-        sortedProducts = products;
+        sortedProducts = sortedProducts;
         break;
     }
 
@@ -256,9 +396,14 @@ sortSelect.addEventListener("change", (event) => {
   }
 });
 
-// Implements search bar functionality
-searchBar.addEventListener("keyup", searchProducts);
-searchBar.addEventListener("submit", (e) => searchProducts(e));
+// Show dialog to add new product
+addPoductBtn.addEventListener("click", () => {
+  productForm.removeEventListener("submit", addAndShowProduct);
+  showAddProductDialog();
+  productForm.addEventListener("submit", addAndShowProduct);
+});
 
-// Render products when the page loaded
-document.addEventListener("DOMContentLoaded", fetchProducts);
+// Close dialog of add new product
+cancelAddProduct.addEventListener("click", () => {
+  closeAddProductDialog();
+});
