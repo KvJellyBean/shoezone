@@ -86,7 +86,7 @@ const CartService = (() => {
     // Add the product to the front of the purchase history
     purchaseHistory.unshift(product);
 
-    // If the purchase history exceeds 5 items, remove the oldest item
+    // If the purchase history exceeds 10 items, remove the oldest item
     if (purchaseHistory.length > 10) {
       purchaseHistory.pop();
     }
