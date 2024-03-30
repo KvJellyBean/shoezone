@@ -11,7 +11,7 @@
 
   .card:hover {
     & img.card-img-top {
-      transform: scale(1) rotate(15deg);
+      transform: scale(1);
     }
   }
 
