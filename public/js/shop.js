@@ -1,11 +1,6 @@
-import CartService from "./cartService.js";
-
 // Global Variabel
 let products = [];
 let searchResults = [];
-
-// Create an instance of the CartService class
-const cartService = new CartService();
 
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
@@ -34,11 +29,38 @@ async function fetchProducts() {
   }
 }
 
-// Add product to cart page
+// Add product to cart
 function addProductToCart(index, event) {
-  // event.preventDefault();
   const product = products[index];
-  cartService.addToCart(product);
+  // Make a POST request to the /api/carts route with the product data
+  fetch("/api/carts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Product added to cart:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Fetch cart items from API
+function fetchCartItems() {
+  fetch("/api/carts")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Cart items:", data);
+      // Render the cart items on the page
+      renderCartItems(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 // Search product functionality
