@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const Products = require("../../models/purchaseHistory");
+const Cart = require("../../models/carts");
 
 // Method Get
 router.get("/", async (req, res) => {
@@ -46,10 +47,10 @@ router.put("/:id", async (req, res) => {
 });
 
 // Method Delete
-router.delete("/:id", async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    await Products.findByIdAndDelete(req.params.id);
-    res.status(200).json("Purchase history item deleted successfully");
+    await Products.deleteMany({});
+    res.status(200).json("Purchase history cleared successfully");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
