@@ -82,7 +82,7 @@ const CartService = (() => {
     // localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 
-  function addToPurchaseHistory(product) {
+  async function addToPurchaseHistory(product) {
     // Add the product to the front of the purchase history
     purchaseHistory.unshift(product);
 
@@ -90,30 +90,26 @@ const CartService = (() => {
     if (purchaseHistory.length > 10) {
       purchaseHistory.pop();
     }
-    return new Promise((resolve, reject) => {
+
+    try {
       // Add the product to the purchase history
-      fetch("/api/purchaseHistory", {
+      const response = await fetch("/api/purchaseHistory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(product),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to add product to purchase history");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Product added to history:", data);
-          resolve(); // Resolve the Promise once the product is added to the history
-        })
-        .catch((error) => {
-          console.error("Error adding product to history:", error);
-          reject(error); // Reject the Promise if there's an error
-        });
-    });
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add product to purchase history");
+      }
+
+      const data = await response.json();
+      console.log("Product added to history:", data);
+    } catch (error) {
+      console.error("Error adding product to history:", error);
+    }
   }
 
   async function clearPurchaseHistory() {

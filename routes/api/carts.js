@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const router = Router();
-const Products = require("../../models/carts");
+const Carts = require("../../models/carts");
 
 // Method Get
 router.get("/", async (req, res) => {
   try {
-    const items = await Products.find();
+    const items = await Carts.find();
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 // Method Post
 router.post("/", async (req, res) => {
   try {
-    const newProducts = new Products(req.body);
+    const newProducts = new Carts(req.body);
     const savedProducts = await newProducts.save();
     if (!savedProducts) {
       res.status(500).json({ message: "Internal Server Error" });
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
 // Method Put
 router.put("/:id", async (req, res) => {
   try {
-    const updatedProducts = await Products.findByIdAndUpdate(
+    const updatedProducts = await Carts.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
@@ -48,9 +48,9 @@ router.put("/:id", async (req, res) => {
 // Method Delete
 router.delete("/:id", async (req, res) => {
   try {
-    const product = await Products.findById(req.params.id);
+    const product = await Carts.findById(req.params.id);
     if (product) {
-      await Products.findByIdAndDelete(req.params.id);
+      await Carts.findByIdAndDelete(req.params.id);
       res.status(200).json("Product deleted successfully");
     } else {
       res.status(404).json({ message: "Product not found" });
