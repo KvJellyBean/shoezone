@@ -14,9 +14,11 @@ const shopContainer = document.querySelector("#shop-cards");
 const searchBar = document.querySelector(".form-control");
 const brandButtons = document.querySelectorAll(".btn.btn-primary.text-dark");
 const sortSelect = document.getElementById("sortFeature");
-const addPoductBtn = document.querySelector(".addProduct");
-const productForm = document.querySelector("#productDialog form");
+const addProductBtn = document.querySelector(".addProduct");
+const addProductForm = document.querySelector("#addProductDialog form");
 const cancelAddProduct = document.querySelector(".cancelAddProduct");
+const cancelEditProduct = document.querySelector(".cancelEditProduct");
+const editProductForm = document.querySelector("#editProductDialog form");
 
 // Fetch products from API
 async function fetchProducts() {
@@ -130,6 +132,54 @@ function generateStarRating(rating) {
   return starsHTML;
 }
 
+// Function to filter and sorting
+function filterAndSortByBrand(brand) {
+  let filteredProducts;
+
+  if (searchResults.length === 0) {
+    filteredProducts = products.filter((product) =>
+      product.name.toLowerCase().includes(brand.toLowerCase())
+    );
+  } else {
+    filteredProducts = searchResults.filter((product) =>
+      product.name.toLowerCase().includes(brand.toLowerCase())
+    );
+  }
+
+  const sortBy = sortSelect.value;
+
+  switch (sortBy) {
+    case "alphabet":
+      filteredProducts = filteredProducts
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case "lowPrice":
+      filteredProducts = filteredProducts
+        .slice()
+        .sort((a, b) => a.price - b.price);
+      break;
+    case "highPrice":
+      filteredProducts = filteredProducts
+        .slice()
+        .sort((a, b) => b.price - a.price);
+      break;
+    case "rate":
+      filteredProducts = filteredProducts
+        .slice()
+        .sort((a, b) => b.rating - a.rating);
+      break;
+    default:
+      break;
+  }
+
+  if (filteredProducts.length === 0) {
+    displayNotFound(brand + " " + searchBar.value);
+  } else {
+    renderProducts(filteredProducts);
+  }
+}
+
 // Render product list to page
 function renderProducts(products) {
   shopContainer.innerHTML = "";
@@ -188,8 +238,12 @@ function renderProducts(products) {
           </div>
 
           <div class="menuButton">
-            <button type="button" class="removeButton"><i class="fa-solid fa-trash"></i></button>
-            <button type="button" class="editButton"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button type="button" class="removeButton" data-product-id="${
+              product._id
+            }"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="editButton" data-product-id="${
+              product._id
+            }"><i class="fa-solid fa-pen-to-square"></i></button>
           </div>
         </div>
       </div>
@@ -205,68 +259,47 @@ function renderProducts(products) {
   });
 }
 
-// Function to filter and sorting
-function filterAndSortByBrand(brand) {
-  let filteredProducts;
-
-  if (searchResults.length === 0) {
-    filteredProducts = products.filter((product) =>
-      product.name.toLowerCase().includes(brand.toLowerCase())
-    );
-  } else {
-    filteredProducts = searchResults.filter((product) =>
-      product.name.toLowerCase().includes(brand.toLowerCase())
-    );
-  }
-
-  const sortBy = sortSelect.value;
-
-  switch (sortBy) {
-    case "alphabet":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => a.name.localeCompare(b.name));
-      break;
-    case "lowPrice":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => a.price - b.price);
-      break;
-    case "highPrice":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => b.price - a.price);
-      break;
-    case "rate":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => b.rating - a.rating);
-      break;
-    default:
-      break;
-  }
-
-  if (filteredProducts.length === 0) {
-    displayNotFound(brand + " " + searchBar.value);
-  } else {
-    renderProducts(filteredProducts);
-  }
-}
-
-// Show Product dialog
+// Show Add Product dialog
 function showAddProductDialog() {
-  const dialog = document.querySelector("dialog#productDialog");
+  const dialog = document.querySelector("dialog#addProductDialog");
   const form = dialog.querySelector("form");
   form.reset();
   dialog.showModal();
 }
 
-// Close Product dialog
+// Show Edit Product dialog
+async function showEditProductDialog(productId) {
+  const product = await getProductDetails(productId);
+
+  if (product) {
+    const dialog = document.querySelector("dialog#editProductDialog");
+    const form = dialog.querySelector("form");
+    form.reset();
+
+    // Populate form fields with product details
+    form.querySelector("#nameEditInput").value = product.name;
+    form.querySelector("#priceEditInput").value = product.price;
+    form.querySelector("#descriptionEditInput").value = product.description;
+    form.querySelector("#imageEditInput").value = product.image;
+    form.querySelector("#ratingEditInput").value = product.rating;
+
+    dialog.showModal();
+  }
+}
+
+// Close Add Product dialog
 function closeAddProductDialog() {
-  const dialog = document.querySelector("dialog#productDialog");
+  const dialog = document.querySelector("dialog#addProductDialog");
   dialog.close();
 }
 
+// Close Edit Product dialog
+function closeEditProductDialog() {
+  const dialog = document.querySelector("dialog#editProductDialog");
+  dialog.close();
+}
+
+// Function to add new product
 async function addProduct(event) {
   event.preventDefault();
   const nameInput = document.querySelector("#nameInput").value;
@@ -276,6 +309,15 @@ async function addProduct(event) {
   const ratingInput = document.querySelector("#ratingInput").value;
 
   try {
+    // Check if a product with the same name already exists
+    const existingProduct = products.find(
+      (product) => product.name.toLowerCase() === nameInput.toLowerCase()
+    );
+    if (existingProduct) {
+      alert("A product with the same name already exists.");
+      return;
+    }
+
     const response = await fetch("/api/products", {
       method: "POST",
       headers: {
@@ -293,23 +335,124 @@ async function addProduct(event) {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-
-    const newProduct = await response.json();
-
-    console.log("New product added:", newProduct);
-
-    closeAddProductDialog();
   } catch (error) {
     console.error("There was a problem with adding the product:", error);
   }
 }
 
+// Function to delete product
+async function deleteProduct(event, productId) {
+  event.preventDefault();
+
+  try {
+    const response = await fetch(`/api/products/${productId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("There was a problem with deleting the product:", error);
+  }
+}
+
+// Function to edit product
+async function editProduct(event, productId) {
+  event.preventDefault();
+
+  const nameInput = document.querySelector("#nameEditInput").value;
+  const priceInput = document.querySelector("#priceEditInput").value;
+  const descriptionInput = document.querySelector(
+    "#descriptionEditInput"
+  ).value;
+  const imageInput = document.querySelector("#imageEditInput").value;
+  const ratingInput = document.querySelector("#ratingEditInput").value;
+
+  try {
+    // Check if a product with the same name already exists
+    const existingProduct = products.find(
+      (product) =>
+        product.name.toLowerCase() === nameInput.toLowerCase() &&
+        product._id !== productId
+    );
+    if (existingProduct) {
+      alert("A product with the same name already exists.");
+      return;
+    }
+
+    const response = await fetch(`/api/products/${productId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: nameInput,
+        price: priceInput,
+        description: descriptionInput,
+        image: imageInput,
+        rating: ratingInput,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("There was a problem with updating the product:", error);
+  }
+}
+
 async function addAndShowProduct(event) {
   event.preventDefault();
-  addProduct(event);
+  await addProduct(event);
   await fetchProducts();
   renderProducts(products);
   closeAddProductDialog();
+}
+
+async function deleteAndShowProduct(event, productId) {
+  event.preventDefault();
+
+  const isDelete = window.confirm("Are you sure to delete this product?");
+
+  if (isDelete) {
+    await deleteProduct(event, productId);
+    await fetchProducts();
+    renderProducts(products);
+  } else {
+    return;
+  }
+}
+
+async function editAndShowProduct(event, productId) {
+  event.preventDefault();
+  await editProduct(event, productId);
+  await fetchProducts();
+  renderProducts(products);
+  closeEditProductDialog();
+}
+
+// Function to get product details by ID
+async function getProductDetails(productId) {
+  try {
+    const response = await fetch(`/api/products/${productId}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("There was a problem with fetching product details:", error);
+    return null;
+  }
+}
+
+// Handler function for edit product
+function handleEdit(e) {
+  editAndShowProduct(e, productId);
 }
 
 // EVENT LISTENER
@@ -397,13 +540,33 @@ sortSelect.addEventListener("change", (event) => {
 });
 
 // Show dialog to add new product
-addPoductBtn.addEventListener("click", () => {
-  productForm.removeEventListener("submit", addAndShowProduct);
+addProductBtn.addEventListener("click", () => {
+  addProductForm.removeEventListener("submit", addAndShowProduct);
   showAddProductDialog();
-  productForm.addEventListener("submit", addAndShowProduct);
+  addProductForm.addEventListener("submit", addAndShowProduct);
+});
+
+// Event handler for edit and remove product
+let productId;
+shopContainer.addEventListener("click", (e) => {
+  editProductForm.removeEventListener("submit", handleEdit);
+
+  if (e.target.matches(".editButton")) {
+    productId = e.target.dataset.productId;
+    showEditProductDialog(productId);
+    editProductForm.addEventListener("submit", handleEdit);
+  } else if (e.target.matches(".removeButton")) {
+    productId = e.target.dataset.productId;
+    deleteAndShowProduct(e, productId);
+  }
 });
 
 // Close dialog of add new product
 cancelAddProduct.addEventListener("click", () => {
   closeAddProductDialog();
+});
+
+// Close dialog of edit product
+cancelEditProduct.addEventListener("click", () => {
+  closeEditProductDialog();
 });
