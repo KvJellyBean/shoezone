@@ -15,8 +15,12 @@ router.get("/", async (req, res) => {
 // Method Post
 router.post("/", async (req, res) => {
   try {
-    const newProducts = req.body.map((product) => new Products(product));
-    const savedProducts = await Products.insertMany(newProducts);
+    const newProducts = new Products(req.body);
+    const savedProducts = await newProducts.save();
+    if (!savedProducts) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+
     res.status(200).json(savedProducts);
   } catch (error) {
     res.status(500).json({ message: error.message });

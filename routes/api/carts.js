@@ -15,9 +15,13 @@ router.get("/", async (req, res) => {
 // Method Post
 router.post("/", async (req, res) => {
   try {
-    const newProduct = new Products(req.body);
-    const savedProduct = await newProduct.save();
-    res.status(200).json(savedProduct);
+    const newProducts = new Products(req.body);
+    const savedProducts = await newProducts.save();
+    if (!savedProducts) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+
+    res.status(200).json(savedProducts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -42,10 +46,15 @@ router.put("/:id", async (req, res) => {
 });
 
 // Method Delete
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    await Products.deleteMany({});
-    res.status(200).json("Cart cleared successfully");
+    const product = await Products.findById(req.params.id);
+    if (product) {
+      await Products.findByIdAndDelete(req.params.id);
+      res.status(200).json("Product deleted successfully");
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

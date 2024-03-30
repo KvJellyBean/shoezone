@@ -1,9 +1,9 @@
-import CartService from "./cartService.js";
+// import CartService from "./cartService.js";
 
 let products = [];
 
 // Create an instance of the CartService class
-const cartService = CartService;
+// const cartService = CartService;
 
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
@@ -43,8 +43,6 @@ function addProductToCart(index, event) {
     .then((response) => response.json())
     .then((data) => {
       console.log("Product added to cart:", data);
-      // Re-fetch the cart items and re-render them on the page
-      fetchCartItems();
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -59,73 +57,6 @@ function fetchCartItems() {
       console.log("Cart items:", data);
       // Render the cart items on the page
       renderCartItems(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-// Checkout
-function checkout() {
-  // Make a POST request to the /api/purchaseHistory route with the cart data
-  fetch("/api/purchaseHistory", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(cart),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Checkout successful:", data);
-      // Clear the cart by making a DELETE request to the /api/carts route
-      clearCart();
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-// Clear cart
-function clearCart() {
-  fetch("/api/carts", {
-    method: "DELETE",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Cart cleared:", data);
-      // Re-fetch the cart items and re-render them on the page
-      fetchCartItems();
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-// Fetch purchase history items from API
-function fetchPurchaseHistoryItems() {
-  fetch("/api/purchaseHistory")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Purchase history items:", data);
-      // Render the purchase history items on the page
-      renderPurchaseHistoryItems(data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-// Delete purchase history item
-function deletePurchaseHistoryItem(id) {
-  fetch(`/api/purchaseHistory/${id}`, {
-    method: "DELETE",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Purchase history item deleted:", data);
-      // Re-fetch the purchase history items and re-render them on the page
-      fetchPurchaseHistoryItems();
     })
     .catch((error) => {
       console.error("Error:", error);

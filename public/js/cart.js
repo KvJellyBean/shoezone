@@ -5,7 +5,7 @@ import {
 } from "./cartService.js";
 
 // Get the cart
-let cart = myCart;
+let cart = await myCart;
 // Get the purchase history
 let purchaseHistory = myPurchaseHistory;
 

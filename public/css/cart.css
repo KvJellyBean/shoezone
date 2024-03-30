@@ -31,6 +31,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
   
   .shop-button:hover, .shop-button2:hover {
