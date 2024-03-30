@@ -18,33 +18,36 @@ const CartService = (() => {
   function removeFromCart(index) {
     if (index > -1) {
       let product = cart[index];
-      cart.splice(index, 1);
-      CartService.updateTotals();
+      const confirmation = window.confirm(
+        "Are you sure you want to remove this item from the cart?"
+      );
 
-      fetch(`/api/carts/${product._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
+      if (confirmation) {
+        cart.splice(index, 1);
+        CartService.updateTotals();
+
+        fetch(`/api/carts/${product._id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         })
-        .then((data) => {
-          console.log("Product removed from cart:", data);
-          totalItems -= 1;
-          totalPrice -= product.price;
-          document.getElementById("totalItems").textContent = totalItems;
-          document.getElementById("totalPrice").textContent =
-            totalPrice.toFixed(2);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          // Handle the error or display an error message to the user
-        });
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Product removed from cart:", data);
+            // Reload the page to reflect the changes
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            // Handle the error or display an error message to the user
+          });
+      }
     }
     CartService.renderCartItems();
   }
