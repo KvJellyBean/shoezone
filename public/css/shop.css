@@ -270,7 +270,7 @@ main {
       & legend {
         font-size: 1.5rem;
         font-weight: bold;
-        padding: 1rem 10rem 1rem 2rem;
+        padding: 1rem 5rem 1rem 2rem;
         background-color: #198754;
         color: white;
       }
@@ -305,21 +305,16 @@ main {
           transition: 0.3s ease;
         }
 
-        .submitBtn {
+        .cancelAddProduct:hover,
+        .submitBtn:hover,
+        .cancelDeleteProduct:hover,
+        .deleteButton:hover {
+          filter: brightness(1.35);
+        }
+
+        .cancelDeleteProduct {
           border: 2px solid #198754;
-          background-color: transparent;
           color: #198754;
-        }
-
-        .cancel:hover,
-        .submitBtn:hover {
-          box-shadow: 2px 2px 0 0 var(--text);
-          filter: brightness(1.4);
-        }
-
-        .cancel {
-          background-color: rgb(250, 49, 49);
-          color: white;
         }
       }
     }
@@ -512,6 +507,14 @@ h4.text-primary {
             padding: 1rem !important;
             height: 14rem !important;
           }
+        }
+      }
+    }
+
+    & dialog {
+      & form {
+        .form-wrapper {
+          padding: 1rem;
         }
       }
     }
