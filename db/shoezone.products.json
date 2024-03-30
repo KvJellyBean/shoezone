@@ -1,234 +1,226 @@
-[
-  {
-    "_id": {
-      "$oid": "65ffd8f99ce0cac525b5a4ca"
-    },
-    "name": "Nike Blazer Mid White",
-    "price": 105,
-    "description": "The White Nike Blazer Mid '77 Vintage embodies timeless basketball heritage, originating from the innovative designs of the '70s.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "__v": 0,
-    "rating": {
-      "$numberDecimal": "5"
-    }
+[{
+  "_id": {
+    "$oid": "65ffd8f99ce0cac525b5a4ca"
   },
-  {
-    "_id": {
-      "$oid": "65ffd9159ce0cac525b5a4cc"
-    },
-    "name": "Nike Blazer Mid Black",
-    "price": 105,
-    "description": "The Red Nike Blazer Mid '77 Vintage pays homage to the brand's early days in the '70s, capturing the essence of its pioneering spirit and timeless style.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "__v": 0,
-    "rating": {
-      "$numberDecimal": "4.5"
-    }
-  },
-  {
-    "_id": {
-      "$oid": "65ffd92c9ce0cac525b5a4ce"
-    },
-    "name": "Nike Blazer '77 Mid Red",
-    "price": 105,
-    "description": "Nike Blazer Mid '77 Vintage, a classic basketball shoe with a rich history dating back to the '70s, embodies the brand's pioneering spirit and timeless design.",
-    "image": "./assets/shoes/nikeBlazerRed.png",
-    "__v": 0,
-    "rating": {
-      "$numberDecimal": "5"
-    }
-  },
-  {
-    "_id": {
-      "$oid": "65ffd9379ce0cac525b5a4d0"
-    },
-    "name": "Nike Air Monarch IV",
-    "price": 80,
-    "description": "Nike Air Monarch IV sets you up for working out with durable leather on top for support. Lightweight foam teams up with Nike Air cushioning for comfort in every stride.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "__v": 0,
-    "rating": {
-      "$numberDecimal": "4.8"
-    }
-  },
-  {
-    "_id": {
-      "$oid": "65ffd9709ce0cac525b5a4d2"
-    },
-    "name": "Nike Court Vision",
-    "price": 78.5,
-    "description": "A classic remixed with at least 20% recycled materials by weight.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "__v": 0,
-    "rating": {
-      "$numberDecimal": "4.7"
-    }
-  },
-  {
-    "_id": {
-      "$oid": "65ffd9799ce0cac525b5a4d4"
-    },
-    "name": "Nike Revolution 7",
-    "price": 50,
-    "description": "This product is made with at least 20% recycled content by weight.",
-    "image": "./assets/shoes/nikeBlazerRed.png",
-    "__v": 0,
-    "rating": {
-      "$numberDecimal": "4"
-    }
-  },
-  {
-    "_id": {
-      "$oid": "66001b40e981e081e9e058fa"
-    },
-    "name": "Adidas Samba OG",
-    "price": 120,
-    "description": "Born for the pitch and now designed for the streets, the adidas Samba OG shoes bring iconic football style to your everyday wardrobe.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "rating": 4.7,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001b64e981e081e9e058fc"
-    },
-    "name": "Adidas Grand Court",
-    "price": 70,
-    "description": "Meet your new go-to pair. These adidas Grand Court shoes come to life through a modern refresh of all the iconic design elements.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "rating": 4.8,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001ba9e981e081e9e058fe"
-    },
-    "name": "Adidas Ultraboost 1.0",
-    "price": 190,
-    "description": "An adidas PRIMEKNIT upper gently hugs your feet while BOOST on the midsole cushions from the first step to the last mile.",
-    "image": "./assets/shoes/nikeBlazerRed.png",
-    "rating": 4.7,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001bf5e981e081e9e05900"
-    },
-    "name": "Adidas HYC Forum Mod",
-    "price": 120,
-    "description": "A remix of a vintage adidas basketball silhouette, they're built with a mix of mesh and synthetics that bring court style to the streets.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "rating": 5,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001c9ce981e081e9e05902"
-    },
-    "name": "Adidas Forum Low Shoes",
-    "price": 100,
-    "description": "The unmistakable X-panel and hook-and-loop strap remain iconic to solidify this pair of the shoes as a classic.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "rating": 4.8,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001da6e981e081e9e05904"
-    },
-    "name": "Reebok BB 4000",
-    "price": 85,
-    "description": "Born on the hardwood. Hits of color make them pop. Heritage Reebok details shine, including a TPU eyelet and piping accents.",
-    "image": "./assets/shoes/nikeBlazerRed.png",
-    "rating": 4.8,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001e9be981e081e9e05906"
-    },
-    "name": "Reebok Club C85 Vintage",
-    "price": 110,
-    "description": "A cream leather upper summons minimalist appeal, while a black double eyelet, archival logos and a rubber sole nod to the style's hallmarks.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "rating": 5,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66001f13e981e081e9e05908"
-    },
-    "name": "Reebok Answer Men",
-    "price": 130,
-    "description": "These Reebok shoes make their retro debut as a bringback from 1999, keeping the iconic details that made them hugely popular.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "rating": 4.5,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66002054e981e081e9e0590a"
-    },
-    "name": "Vans Old Skool",
-    "price": 70,
-    "description": "The Old Skool was Vans footwear design to showcase the famous Vans Sidestripe—although back then, it was just a random doodle drawn by founder Paul Van Doren.",
-    "image": "./assets/shoes/nikeBlazerRed.png",
-    "rating": 4.7,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "660021a4e981e081e9e0590c"
-    },
-    "name": "Reebok BB Chalk",
-    "price": 130,
-    "description": "Rock those OG B-ball vibes every time you lace up these shoes. Hits of color make them pop. Heritage Reebok details shine, including a TPU eyelet and piping accents.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "rating": 4.7,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "660021fce981e081e9e0590e"
-    },
-    "name": "Reebok Flexagon Force",
-    "price": 60,
-    "description": "FuelFoam midsole cushions jumps and jumps. The grooved outsole ensures flexibility through all your movements.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "rating": 4.9,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "660022ace981e081e9e05910"
-    },
-    "name": "Vans Sk8-High",
-    "price": 75,
-    "description": "A Legendary high-top shoe blazed trails from the beginning. The sturdy suede and canvas uppers allow for maximum attitude.",
-    "image": "./assets/shoes/nikeBlazerRed.png",
-    "rating": 4.5,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "660022ebe981e081e9e05912"
-    },
-    "name": "Vans Hylane Shoes",
-    "price": 90,
-    "description": "The Hylane is a Y2K skate-inspired shoe that reinterprets our Upland silhouette from 1999.",
-    "image": "./assets/shoes/nikeBlazerWhite.png",
-    "rating": 3.3,
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "66002339e981e081e9e05914"
-    },
-    "name": "Vans Lowland ComfyCush",
-    "price": 85,
-    "description": "The Lowland ComfyCush is an archival 80s Vans silhouette with a slim profile and a ComfyCush outsole for modernized comfort.",
-    "image": "./assets/shoes/nikeBlazerBlack.png",
-    "rating": 4,
-    "__v": 0
+  "name": "Nike Blazer Mid White",
+  "price": 105,
+  "description": "The White Nike Blazer Mid '77 Vintage embodies timeless basketball heritage, originating from the innovative designs of the '70s.",
+  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "__v": 0,
+  "rating": {
+    "$numberDecimal": "5"
   }
-]
+},
+{
+  "_id": {
+    "$oid": "65ffd9159ce0cac525b5a4cc"
+  },
+  "name": "Nike Blazer Mid Black",
+  "price": 105,
+  "description": "The Red Nike Blazer Mid '77 Vintage pays homage to the brand's early days in the '70s, capturing the essence of its pioneering spirit and timeless style.",
+  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "__v": 0,
+  "rating": {
+    "$numberDecimal": "4.5"
+  }
+},
+{
+  "_id": {
+    "$oid": "65ffd92c9ce0cac525b5a4ce"
+  },
+  "name": "Nike Blazer '77 Mid Red",
+  "price": 105,
+  "description": "Nike Blazer Mid '77 Vintage, a classic basketball shoe with a rich history dating back to the '70s, embodies the brand's pioneering spirit and timeless design.",
+  "image": "./assets/shoes/nikeBlazerRed.png",
+  "__v": 0,
+  "rating": {
+    "$numberDecimal": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "65ffd9379ce0cac525b5a4d0"
+  },
+  "name": "Nike Air Monarch IV",
+  "price": 80,
+  "description": "Nike Air Monarch IV sets you up for working out with durable leather on top for support. Lightweight foam teams up with Nike Air cushioning for comfort in every stride.",
+  "image": "./assets/shoes/nikeAirMonarch.png",
+  "__v": 0,
+  "rating": 4.8
+},
+{
+  "_id": {
+    "$oid": "65ffd9709ce0cac525b5a4d2"
+  },
+  "name": "Nike Court Vision",
+  "price": 78.5,
+  "description": "A classic remixed with at least 20% recycled materials by weight.",
+  "image": "./assets/shoes/nikeCourtVision.png",
+  "__v": 0,
+  "rating": 4.7
+},
+{
+  "_id": {
+    "$oid": "65ffd9799ce0cac525b5a4d4"
+  },
+  "name": "Nike Revolution 7",
+  "price": 50,
+  "description": "This product is made with at least 20% recycled content by weight.",
+  "image": "./assets/shoes/nikeRevolution7.png",
+  "__v": 0,
+  "rating": 4
+},
+{
+  "_id": {
+    "$oid": "66001b40e981e081e9e058fa"
+  },
+  "name": "Adidas Samba OG",
+  "price": 120,
+  "description": "Born for the pitch and now designed for the streets, the adidas Samba OG shoes bring iconic football style to your everyday wardrobe.",
+  "image": "./assets/shoes/adidasSambaOG.png",
+  "rating": 4.7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001b64e981e081e9e058fc"
+  },
+  "name": "Adidas Grand Court",
+  "price": 70,
+  "description": "Meet your new go-to pair. These adidas Grand Court shoes come to life through a modern refresh of all the iconic design elements.",
+  "image": "./assets/shoes/adidasGrandCourt.png",
+  "rating": 4.8,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001ba9e981e081e9e058fe"
+  },
+  "name": "Adidas Ultraboost 1.0",
+  "price": 190,
+  "description": "An adidas PRIMEKNIT upper gently hugs your feet while BOOST on the midsole cushions from the first step to the last mile.",
+  "image": "./assets/shoes/adidasUltraboost.png",
+  "rating": 4.7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001bf5e981e081e9e05900"
+  },
+  "name": "Adidas HYC Forum Mod",
+  "price": 120,
+  "description": "A remix of a vintage adidas basketball silhouette, they're built with a mix of mesh and synthetics that bring court style to the streets.",
+  "image": "./assets/shoes/adidasHYCForum.png",
+  "rating": 5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001c9ce981e081e9e05902"
+  },
+  "name": "Adidas Forum Low Shoes",
+  "price": 100,
+  "description": "The unmistakable X-panel and hook-and-loop strap remain iconic to solidify this pair of the shoes as a classic.",
+  "image": "./assets/shoes/adidasForumLow.png",
+  "rating": 4.8,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001da6e981e081e9e05904"
+  },
+  "name": "Reebok BB 4000",
+  "price": 85,
+  "description": "Born on the hardwood. Hits of color make them pop. Heritage Reebok details shine, including a TPU eyelet and piping accents.",
+  "image": "./assets/shoes/reebokBB4000.png",
+  "rating": 4.8,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001e9be981e081e9e05906"
+  },
+  "name": "Reebok Club C85 Vintage",
+  "price": 110,
+  "description": "A cream leather upper summons minimalist appeal, while a black double eyelet, archival logos and a rubber sole nod to the style's hallmarks.",
+  "image": "./assets/shoes/reebokClubC85.png",
+  "rating": 5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66001f13e981e081e9e05908"
+  },
+  "name": "Reebok Answer Men",
+  "price": 130,
+  "description": "These Reebok shoes make their retro debut as a bringback from 1999, keeping the iconic details that made them hugely popular.",
+  "image": "./assets/shoes/reebokAnswerMen.png",
+  "rating": 4.5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66002054e981e081e9e0590a"
+  },
+  "name": "Vans Old Skool",
+  "price": 70,
+  "description": "The Old Skool was Vans footwear design to showcase the famous Vans Sidestripe—although back then, it was just a random doodle drawn by founder Paul Van Doren.",
+  "image": "./assets/shoes/vansOldSkool.png",
+  "rating": 4.7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660021a4e981e081e9e0590c"
+  },
+  "name": "Reebok BB Chalk",
+  "price": 130,
+  "description": "Rock those OG B-ball vibes every time you lace up these shoes. Hits of color make them pop. Heritage Reebok details shine, including a TPU eyelet and piping accents.",
+  "image": "./assets/shoes/reebokBBChalk.png",
+  "rating": 4.7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660021fce981e081e9e0590e"
+  },
+  "name": "Reebok Flexagon Force",
+  "price": 60,
+  "description": "FuelFoam midsole cushions jumps and jumps. The grooved outsole ensures flexibility through all your movements.",
+  "image": "./assets/shoes/reebokFlexagonForce.png",
+  "rating": 4.9,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660022ace981e081e9e05910"
+  },
+  "name": "Vans Sk8-High",
+  "price": 75,
+  "description": "A Legendary high-top shoe blazed trails from the beginning. The sturdy suede and canvas uppers allow for maximum attitude.",
+  "image": "./assets/shoes/vansSk8High.png",
+  "rating": 4.5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660022ebe981e081e9e05912"
+  },
+  "name": "Vans Hylane Shoes",
+  "price": 90,
+  "description": "The Hylane is a Y2K skate-inspired shoe that reinterprets our Upland silhouette from 1999.",
+  "image": "./assets/shoes/vansHylane.png",
+  "rating": 3.3,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66002339e981e081e9e05914"
+  },
+  "name": "Vans Lowland ComfyCush",
+  "price": 85,
+  "description": "The Lowland ComfyCush is an archival 80s Vans silhouette with a slim profile and a ComfyCush outsole for modernized comfort.",
+  "image": "./assets/shoes/vansLowland.png",
+  "rating": 4,
+  "__v": 0
+}]
