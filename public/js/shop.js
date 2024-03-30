@@ -417,7 +417,9 @@ async function addAndShowProduct(event) {
 async function deleteAndShowProduct(event, productId) {
   event.preventDefault();
 
-  const isDelete = window.confirm("Are you sure to delete this product?");
+  const isDelete = window.confirm(
+    "Are you sure you want to delete this product?"
+  );
 
   if (isDelete) {
     await deleteProduct(event, productId);
