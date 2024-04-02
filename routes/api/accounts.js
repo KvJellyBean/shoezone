@@ -29,9 +29,14 @@ router.post("/registers", async (req, res) => {
   if (!username || !email || !password) {
     return res.status(400).json({ error: "All fields are mandatory!" });
   }
-  const userAvailable = await Accounts.findOne({ email });
+  const emailAvailable = await Accounts.findOne({ email });
+  if (emailAvailable) {
+    return res.status(400).json({ error: "Email already registered!" });
+  }
+
+  const userAvailable = await Accounts.findOne({ username });
   if (userAvailable) {
-    return res.status(400).json({ error: "User already registered!" });
+    return res.status(400).json({ error: "Username already registered!" });
   }
 
   try {
