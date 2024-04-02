@@ -18,6 +18,7 @@ app.use(express.json());
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/carts", require("./routes/api/carts"));
 app.use("/api/purchaseHistory", require("./routes/api/purchaseHistory"));
+app.use("/api/accounts", require("./routes/api/accounts"));
 
 const expressLayouts = require("express-ejs-layouts");
 
