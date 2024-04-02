@@ -1,7 +1,3 @@
-import CartService from "./cartService.js";
-
-const cartService = new CartService();
-
 // Fetch products from API
 async function fetchProducts() {
   try {
@@ -25,6 +21,7 @@ async function fetchProducts() {
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
+  const emptyStars = 5 - fullStars - halfStar;
 
   let starsHTML = "";
   for (let i = 0; i < fullStars; i++) {
@@ -35,6 +32,11 @@ function generateStarRating(rating) {
     starsHTML +=
       '<i class="fa-solid fa-star-half-stroke" style="color: #FFD43B;"></i>';
   }
+
+  for (let i = 0; i < emptyStars; i++) {
+    starsHTML += '<i class="fa-regular fa-star" style="color: #FFD43B;"></i>';
+  }
+
   return starsHTML;
 }
 
@@ -96,8 +98,23 @@ function renderProducts(products) {
 
 // Add product to cart page
 function addProductToCart(product) {
-  cartService.addToCart(product);
   console.log("Adding product to cart:", product);
+
+  // Make a POST request to the /api/carts route with the product data
+  fetch("/api/carts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Product added to cart:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 // Fetch and render when page is loaded

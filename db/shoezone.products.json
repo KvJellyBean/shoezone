@@ -44,11 +44,9 @@
   "name": "Nike Air Monarch IV",
   "price": 80,
   "description": "Nike Air Monarch IV sets you up for working out with durable leather on top for support. Lightweight foam teams up with Nike Air cushioning for comfort in every stride.",
-  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "image": "./assets/shoes/nikeAirMonarch.png",
   "__v": 0,
-  "rating": {
-    "$numberDecimal": "4.8"
-  }
+  "rating": 4.8
 },
 {
   "_id": {
@@ -57,11 +55,9 @@
   "name": "Nike Court Vision",
   "price": 78.5,
   "description": "A classic remixed with at least 20% recycled materials by weight.",
-  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "image": "./assets/shoes/nikeCourtVision.png",
   "__v": 0,
-  "rating": {
-    "$numberDecimal": "4.7"
-  }
+  "rating": 4.7
 },
 {
   "_id": {
@@ -70,11 +66,9 @@
   "name": "Nike Revolution 7",
   "price": 50,
   "description": "This product is made with at least 20% recycled content by weight.",
-  "image": "./assets/shoes/nikeBlazerRed.png",
+  "image": "./assets/shoes/nikeRevolution7.png",
   "__v": 0,
-  "rating": {
-    "$numberDecimal": "4"
-  }
+  "rating": 4
 },
 {
   "_id": {
@@ -83,7 +77,7 @@
   "name": "Adidas Samba OG",
   "price": 120,
   "description": "Born for the pitch and now designed for the streets, the adidas Samba OG shoes bring iconic football style to your everyday wardrobe.",
-  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "image": "./assets/shoes/adidasSambaOG.png",
   "rating": 4.7,
   "__v": 0
 },
@@ -94,7 +88,7 @@
   "name": "Adidas Grand Court",
   "price": 70,
   "description": "Meet your new go-to pair. These adidas Grand Court shoes come to life through a modern refresh of all the iconic design elements.",
-  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "image": "./assets/shoes/adidasGrandCourt.png",
   "rating": 4.8,
   "__v": 0
 },
@@ -105,7 +99,7 @@
   "name": "Adidas Ultraboost 1.0",
   "price": 190,
   "description": "An adidas PRIMEKNIT upper gently hugs your feet while BOOST on the midsole cushions from the first step to the last mile.",
-  "image": "./assets/shoes/nikeBlazerRed.png",
+  "image": "./assets/shoes/adidasUltraboost.png",
   "rating": 4.7,
   "__v": 0
 },
@@ -116,7 +110,7 @@
   "name": "Adidas HYC Forum Mod",
   "price": 120,
   "description": "A remix of a vintage adidas basketball silhouette, they're built with a mix of mesh and synthetics that bring court style to the streets.",
-  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "image": "./assets/shoes/adidasHYCForum.png",
   "rating": 5,
   "__v": 0
 },
@@ -127,7 +121,7 @@
   "name": "Adidas Forum Low Shoes",
   "price": 100,
   "description": "The unmistakable X-panel and hook-and-loop strap remain iconic to solidify this pair of the shoes as a classic.",
-  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "image": "./assets/shoes/adidasForumLow.png",
   "rating": 4.8,
   "__v": 0
 },
@@ -138,7 +132,7 @@
   "name": "Reebok BB 4000",
   "price": 85,
   "description": "Born on the hardwood. Hits of color make them pop. Heritage Reebok details shine, including a TPU eyelet and piping accents.",
-  "image": "./assets/shoes/nikeBlazerRed.png",
+  "image": "./assets/shoes/reebokBB4000.png",
   "rating": 4.8,
   "__v": 0
 },
@@ -149,7 +143,7 @@
   "name": "Reebok Club C85 Vintage",
   "price": 110,
   "description": "A cream leather upper summons minimalist appeal, while a black double eyelet, archival logos and a rubber sole nod to the style's hallmarks.",
-  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "image": "./assets/shoes/reebokClubC85.png",
   "rating": 5,
   "__v": 0
 },
@@ -160,7 +154,7 @@
   "name": "Reebok Answer Men",
   "price": 130,
   "description": "These Reebok shoes make their retro debut as a bringback from 1999, keeping the iconic details that made them hugely popular.",
-  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "image": "./assets/shoes/reebokAnswerMen.png",
   "rating": 4.5,
   "__v": 0
 },
@@ -171,7 +165,7 @@
   "name": "Vans Old Skool",
   "price": 70,
   "description": "The Old Skool was Vans footwear design to showcase the famous Vans Sidestripe—although back then, it was just a random doodle drawn by founder Paul Van Doren.",
-  "image": "./assets/shoes/nikeBlazerRed.png",
+  "image": "./assets/shoes/vansOldSkool.png",
   "rating": 4.7,
   "__v": 0
 },
@@ -179,10 +173,10 @@
   "_id": {
     "$oid": "660021a4e981e081e9e0590c"
   },
-  "name": "Rebook BB Chalk",
+  "name": "Reebok BB Chalk",
   "price": 130,
   "description": "Rock those OG B-ball vibes every time you lace up these shoes. Hits of color make them pop. Heritage Reebok details shine, including a TPU eyelet and piping accents.",
-  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "image": "./assets/shoes/reebokBBChalk.png",
   "rating": 4.7,
   "__v": 0
 },
@@ -190,10 +184,10 @@
   "_id": {
     "$oid": "660021fce981e081e9e0590e"
   },
-  "name": "Rebook Flexagon Force",
+  "name": "Reebok Flexagon Force",
   "price": 60,
   "description": "FuelFoam midsole cushions jumps and jumps. The grooved outsole ensures flexibility through all your movements.",
-  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "image": "./assets/shoes/reebokFlexagonForce.png",
   "rating": 4.9,
   "__v": 0
 },
@@ -204,7 +198,7 @@
   "name": "Vans Sk8-High",
   "price": 75,
   "description": "A Legendary high-top shoe blazed trails from the beginning. The sturdy suede and canvas uppers allow for maximum attitude.",
-  "image": "./assets/shoes/nikeBlazerRed.png",
+  "image": "./assets/shoes/vansSk8High.png",
   "rating": 4.5,
   "__v": 0
 },
@@ -215,7 +209,7 @@
   "name": "Vans Hylane Shoes",
   "price": 90,
   "description": "The Hylane is a Y2K skate-inspired shoe that reinterprets our Upland silhouette from 1999.",
-  "image": "./assets/shoes/nikeBlazerWhite.png",
+  "image": "./assets/shoes/vansHylane.png",
   "rating": 3.3,
   "__v": 0
 },
@@ -226,7 +220,7 @@
   "name": "Vans Lowland ComfyCush",
   "price": 85,
   "description": "The Lowland ComfyCush is an archival 80s Vans silhouette with a slim profile and a ComfyCush outsole for modernized comfort.",
-  "image": "./assets/shoes/nikeBlazerBlack.png",
+  "image": "./assets/shoes/vansLowland.png",
   "rating": 4,
   "__v": 0
 }]

@@ -15,13 +15,14 @@
     <!-- Main -->
     <main>
       <div class="loginregis">
-        <span class="close"><i class="fa-solid fa-x"></i></span>
+        <span type="button" onClick="window.location.reload();" class="close"><i class="fa-solid fa-x"></i></span>
         <div class="form-login">
+          <div class="popUpError text-danger" style="text-align: center; " id="loginStatus"></div>
           <h2>Login</h2>
-          <form action="#" method="post">
+          <form action="/api/accounts/registers" method="post">
             <div class="form-input">
               <span class="icon"><i class="fa-solid fa-envelope"></i></span>
-              <input type="email" name="email" required />
+              <input id= "loginEmail" type="email" name="email" required />
               <label>Email</label>
             </div>
             <div class="form-input">
@@ -53,16 +54,17 @@
         </div>
 
         <div class="form-regis">
+          <div class="popUpError text-danger" style="text-align: center; " id="registrationStatus"></div>
           <h2>Registration</h2>
-          <form action="#" method="post" onsubmit="validateForm()">
+          <form action="/api/accounts/registers" method="post" onsubmit="validateForm()">
             <div class="form-input">
               <span class="icon"><i class="fa-solid fa-person"></i></span>
-              <input type="text" name="username" required />
+              <input id = "username" type="text" name="username" required />
               <label>Username</label>
             </div>
             <div class="form-input">
               <span class="icon"><i class="fa-solid fa-envelope"></i></span>
-              <input type="email" name="email" id="regisEmail" required />
+              <input id = "regisEmail" type="email" name="email"  required />
               <label class="labelEmail">Email</label>
             </div>
             <div id="bbs1" class="form-input">

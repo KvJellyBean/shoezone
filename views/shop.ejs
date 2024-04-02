@@ -49,7 +49,7 @@
                   Adidas
                 </button>
                 <button type="button" class="btn btn-primary text-dark">
-                  Rebook
+                  Reebok
                 </button>
                 <button type="button" class="btn btn-primary text-dark">
                   Vans
@@ -72,6 +72,17 @@
           id="shop-cards"
         ></div>
       </div>
+
+      <!-- Add Product Button -->
+      <button type="button" class="addProduct">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+
+      <!-- Add Product Dialog Form -->
+      <%- include('layouts/Shop/dialogAdd.ejs'); -%>
+
+      <!-- Edit Product Dialog Form -->
+      <%- include('layouts/Shop/dialogEdit.ejs'); -%>
     </main>
 
     <!-- Footer -->

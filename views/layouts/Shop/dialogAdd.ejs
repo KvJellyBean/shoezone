@@ -1,0 +1,77 @@
+<dialog id="addProductDialog">
+  <form method="post" action="/api/products">
+    <legend>Add Product</legend>
+    <div class="form-wrapper">
+      <div class="input-group">
+        <label for="nameInput">Product Name: </label>
+        <input
+          name="name"
+          type="text"
+          id="nameInput"
+          value=""
+          autocomplete="true"
+          required
+          placeholder="Enter shoes name..."
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="priceInput">Price: </label>
+        <input
+          name="price"
+          type="number"
+          id="priceInput"
+          min="0"
+          step="0.01"
+          value=""
+          required
+          placeholder="Enter price in dollar (e.g.
+              150.50)"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="descriptionInput">Description: </label>
+        <textarea
+          name="description"
+          id="descriptionInput"
+          value=""
+          required
+          placeholder="Enter the shoes description..."
+        ></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="imageInput">Enter Shoes' Image Link: </label>
+        <input
+          name="image"
+          type="text"
+          id="imageInput"
+          value=""
+          required
+          placeholder="Enter link (e.g. https://nike.com/shoes/nike-white-shoes)"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="ratingInput">Rating: </label>
+        <input
+          name="rating"
+          type="number"
+          id="ratingInput"
+          min="0"
+          max="5"
+          step="0.1"
+          value=""
+          required
+          placeholder="Enter shoes rating..."
+        />
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn-success submitBtn">Add Product</button>
+      <button type="button" class="btn-danger cancelAddProduct">Cancel</button>
+    </div>
+  </form>
+</dialog>
