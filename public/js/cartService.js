@@ -113,22 +113,27 @@ const CartService = (() => {
   }
 
   async function clearPurchaseHistory() {
-    try {
-      const response = await fetch("/api/purchaseHistory", {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to clear purchase history");
+    const confirmation = window.confirm(
+      "Are you sure you want to remove all things in purchase history?"
+    );
+
+    if (confirmation) {
+      try {
+        const response = await fetch("/api/purchaseHistory", {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to clear purchase history");
+        }
+        // Reload the page to reflect the changes
+        window.location.reload();
+        console.log("Products removed from Purchase History");
+      } catch (error) {
+        console.error("Error clearing purchase history:", error);
+        // Handle error if necessary
       }
-      // Reload the page to reflect the changes
-      window.location.reload();
-      console.log("Products removed from Purchase History");
-    } catch (error) {
-      console.error("Error clearing purchase history:", error);
-      // Handle error if necessary
     }
   }
-
   // Render the cart items
   function renderCartItems() {
     const cartContainer = document.getElementById("cartItems");
@@ -222,28 +227,32 @@ const CartService = (() => {
   function checkout() {
     // Iterate over each product in the cart
     CartService.getCart().forEach((product) => {
-      // Add the product to the purchase history
-      CartService.addToPurchaseHistory(product)
-        .then(() => {
-          // If adding to purchase history is successful, delete the product from the cart
-          return fetch(`/api/carts/${product._id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
+      const confirmation = window.confirm("Are you sure you want to checkout?");
+
+      if (confirmation) {
+        // Add the product to the purchase history
+        CartService.addToPurchaseHistory(product)
+          .then(() => {
+            // If adding to purchase history is successful, delete the product from the cart
+            return fetch(`/api/carts/${product._id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to delete product from cart");
+            }
+            // Reload the page to reflect the changes if necessary
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error checking out:", error);
+            // Handle error if necessary
           });
-        })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to delete product from cart");
-          }
-          // Reload the page to reflect the changes if necessary
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.error("Error checking out:", error);
-          // Handle error if necessary
-        });
+      }
     });
 
     // Clear the cart after processing all items
