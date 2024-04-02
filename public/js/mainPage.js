@@ -1,7 +1,3 @@
-import CartService from "./cartService.js";
-
-const cartService = new CartService();
-
 // Fetch products from API
 async function fetchProducts() {
   try {
@@ -102,8 +98,23 @@ function renderProducts(products) {
 
 // Add product to cart page
 function addProductToCart(product) {
-  cartService.addToCart(product);
   console.log("Adding product to cart:", product);
+
+  // Make a POST request to the /api/carts route with the product data
+  fetch("/api/carts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Product added to cart:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 // Fetch and render when page is loaded

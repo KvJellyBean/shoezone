@@ -4,16 +4,6 @@ let purchaseHistory = [];
 const CartService = (() => {
   let totalItems = 0;
   let totalPrice = 0;
-  function addToCart(product) {
-    console.log("Adding product to cart:", product);
-
-    // Push the product to the cart
-    cart.push(product);
-    console.log("Cart now contains:", cart);
-
-    // Update the total items and price
-    CartService.updateTotals();
-  }
 
   function removeFromCart(index) {
     if (index > -1) {
@@ -262,7 +252,6 @@ const CartService = (() => {
     CartService.updateTotals();
   }
   return {
-    addToCart,
     removeFromCart,
     updateTotals,
     getCart,
