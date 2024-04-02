@@ -61,3 +61,83 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   );
 });
+
+const registerForm = document.querySelector('.form-regis form');
+registerForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const username = document.getElementById('username').value;
+  const email = document.getElementById('regisEmail').value;
+  const password = document.getElementById('password').value;
+
+  console.log('Username:', username);
+  console.log('Email:', email);
+  console.log('Password:', password);
+
+  fetch('/api/accounts/registers', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: username,
+      email: email,
+      password: password
+    }),
+  })
+    .then(response => response.json())
+    .then(responseData => {
+      if (responseData.error) {
+        document.getElementById('registrationStatus').innerHTML = `<p>${responseData.error}</p>`;
+      } else {
+        setTimeout(() => {
+          window.location.href = '/shop';
+        }, 1000);    
+        document.getElementById('registrationStatus').innerHTML = '<p>Registration successful!</p>';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+
+const loginForm = document.querySelector('.form-login form');
+loginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  console.log('Email:', email);
+  console.log('Password:', password);
+
+  fetch('/api/accounts/logins', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.accessToken) {
+        // Login successful
+        // Save access token to local storage
+        localStorage.setItem('accessToken', data.accessToken);
+        // Redirect to shop page after 1 second
+        setTimeout(() => {
+          window.location.href = '/shop';
+        }, 1000);
+      } else {
+        // Login failed
+        document.getElementById('loginStatus').innerHTML = '<p>Incorrect email or password</p>';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('loginStatus').innerHTML = '<p>Login failed: Server error</p>';
+    });
+});
+
+

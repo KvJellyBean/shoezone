@@ -45,7 +45,15 @@ main {
     width: 300px !important;
   }
 }
-
+.popUpError{
+  position: absolute;
+  top: -1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 1rem;
+  
+}
 /* sesi kanan */
 .right {
   width: 50%;
@@ -123,7 +131,9 @@ main {
   justify-content: center;
   z-index: 9999999;
 }
-
+.asd {
+  background-color: red !important;
+}
 /* login register */
 .popup-login {
   margin-top: 1rem;
