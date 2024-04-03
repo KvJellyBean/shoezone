@@ -76,7 +76,7 @@ function renderProducts(products) {
         <!-- Product Add to cart -->
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
           <div class="text-center">
-            <a href="/cart" class="btn btn-outline-dark mt-auto px-4 py-2 addButtonHotProduct" role="button">
+            <a href="/cart" class="btn btn-success mt-auto px-4 py-2 addButtonHotProduct" role="button">
               <i class="fa-solid fa-cart-shopping"></i> Add to Cart
             </a>
           </div>
