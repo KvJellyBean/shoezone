@@ -22,7 +22,7 @@
       & img {
         transform: scale(0.8);
         transition: all 0.3s ease;
-        height: 10rem;
+        height: 15rem;
         object-fit: cover;
       }
     }
