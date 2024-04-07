@@ -1,0 +1,13 @@
+main {
+  padding-top: 6rem !important;
+  min-height: 100vh;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+}
