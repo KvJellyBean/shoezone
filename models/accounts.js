@@ -1,29 +1,42 @@
-const { Schema, model, default: mongoose } = require("mongoose");
+const { Schema, model } = require("mongoose");
+const { isEmail } = require("validator");
+const bcrypt = require("bcrypt");
 
-const accountSchema = new Schema(
-  {
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      // required: true,
-      ref: "user",
-    },
-    username: {
-      type: String,
-      required: [true, "Please add the username"],
-    },
-    email: {
-      type: String,
-      required: [true, "Please add the user email address"],
-      unique: [true, "Email address already exist"],
-    },
-    password: {
-      type: String,
-      required: [true, "Please add the user password"],
-    },
+const accountSchema = new Schema({
+  username: {
+    type: String,
+    required: [true, "Please enter a username"],
+    unique: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  email: {
+    type: String,
+    required: [true, "Please enter an email address"],
+    unique: true,
+    validate: [isEmail, "Please enter a valid email"],
+  },
+  password: {
+    type: String,
+    required: [true, "Please enter a password"],
+    minlength: [6, "Minimum password length is 6 characters"],
+  },
+});
 
-module.exports = model("accounts", accountSchema);
+accountSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+// static method to login user
+accountSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error("Incorrect password");
+  }
+  throw Error("Incorrect email");
+};
+
+module.exports = model("account", accountSchema);

@@ -1,115 +1,111 @@
 const { Router } = require("express");
 const router = Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
+const Account = require("../../models/accounts");
 const cookieParser = require("cookie-parser");
-const Accounts = require("../../models/accounts");
+const jwt = require("jsonwebtoken");
 
-router.get("/registers", async (req, res) => {
-  try {
-    const items = await Accounts.find();
-    res.status(200).json(items);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// cookie
+router.use(cookieParser());
 
-router.get("/logins", async (req, res) => {
-  try {
-    const items = await Accounts.find();
-    res.status(200).json(items);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// expire time for cookies/jwt
+const maxAge = 60 * 60 * 24;
 
-router.post("/registers", async (req, res) => {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password) {
-    return res.status(400).json({ error: "All fields are mandatory!" });
-  }
-  const emailAvailable = await Accounts.findOne({ email });
-  if (emailAvailable) {
-    return res.status(400).json({ error: "Email already registered!" });
+// creat token (JWT)
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: maxAge,
+  });
+};
+
+// Error handler
+const handleErrors = (err) => {
+  let errors = { username: "", email: "", password: "" };
+
+  // Login handler
+  // Incorrect Email
+  if (err.message === "Incorrect email") {
+    errors.email = "The email is not registered";
   }
 
-  const userAvailable = await Accounts.findOne({ username });
-  if (userAvailable) {
-    return res.status(400).json({ error: "Username already registered!" });
+  // Incorrect Password
+  if (err.message === "Incorrect password") {
+    errors.password = "The password is incorrect";
   }
 
-  try {
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Hashed Password: ", hashedPassword);
+  // Sign up handler
+  // Duplicate data error
+  if (err.code === 11000) {
+    if (err.message.includes("username")) {
+      errors.username = "Username already exists";
+    }
+    if (err.message.includes("email")) {
+      errors.email = "Email address already exists";
+    }
+    return errors;
+  }
 
-    // Create user
-    const user = await Accounts.create({
-      username,
-      email,
-      password: hashedPassword,
+  // Validation errors
+  if (err.message.includes("account validation failed")) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
     });
+  }
+  return errors;
+};
 
-    console.log(`User created ${user}`);
+// Get account page
+router.get("/account", (req, res) => {
+  res.render("account", { title: "My Account", layout: "account" });
+});
 
-    // Send success response
-    res.status(201).json({ _id: user.id, email: user.email });
+// Get login
+router.get("/login", (req, res) => {
+  res.render("login", { title: "Login", layout: "login" });
+});
+
+// Get sign up
+router.get("/signup", (req, res) => {
+  res.render("signup", { title: "Sign Up", layout: "signup" });
+});
+
+// Get logout
+router.get("/logout", (req, res) => {
+  res.cookie("shoezone_cookie", "", { maxAge: 1 });
+  res.redirect("/");
+});
+
+// Post signup
+router.post("/signup", async (req, res) => {
+  try {
+    const newAccount = new Account(req.body);
+    const savedAccount = await newAccount.save();
+
+    if (!savedAccount) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+
+    const token = createToken(savedAccount._id);
+    res.cookie("shoezone_cookie", token, { maxAge: maxAge * 1 });
+
+    res.status(200).json(savedAccount);
   } catch (error) {
-    // Send error response
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    const errors = handleErrors(error);
+    res.status(400).json({ errors });
   }
 });
 
-//login
-router.post("/logins", async (req, res) => {
+// Post login
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: "All fields are mandatory!" });
-  }
-
-  const user = await Accounts.findOne({ email });
-
-  if (user && (await bcrypt.compare(password, user.password))) {
-    const accessToken = jwt.sign(
-      {
-        user: {
-          username: user.username,
-          email: user.email,
-          id: user.id,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECERT,
-      { expiresIn: "10s" }
-    );
-    res.status(200).json({ accessToken });
-  } else {
-    return res.status(401).json({ error: "Email or Password is not valid" });
+  try {
+    const user = await Account.login(email, password);
+    const token = createToken(user._id);
+    res.cookie("shoezone_cookie", token, { maxAge: maxAge * 1 });
+    res.status(200).json(user);
+  } catch (error) {
+    const errors = handleErrors(error);
+    res.status(400).json({ errors });
   }
 });
-
-//validateToken
-const validateToken = asyncHandler(async (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECERT, (err, decoded) => {
-      if (err) {
-        res.status(401).json({ error: "User is not authorized" });
-      }
-      console.log(decoded);
-      next(); // Lanjutkan ke middleware atau handler berikutnya setelah verifikasi token
-    });
-  } else {
-    res.status(401).json({ error: "Unauthorized: No token provided" });
-  }
-});
-
-const current = asyncHandler(async (req, res) => {
-  res.json({ message: "Current user information" });
-});
-
-router.get("/currents", validateToken, current);
 
 module.exports = router;
