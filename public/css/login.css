@@ -1,0 +1,22 @@
+main {
+  padding-top: 6rem !important;
+  height: 93vh;
+}
+
+img.shoezoneLogo {
+  transform: rotate(3deg);
+  filter: brightness(1.15) hue-rotate(15deg);
+}
+.fw-bold.position-relative {
+  left: -0.7rem;
+  top: 0.25rem;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+}
