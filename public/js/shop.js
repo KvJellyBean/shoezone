@@ -4,6 +4,7 @@ let searchResults = [];
 
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
+const userRole = shopContainer.dataset.userRole;
 
 // DOM Element
 const searchBar = document.querySelector(".form-control");
@@ -210,7 +211,8 @@ function renderProducts(products) {
     // Get the star
     const starRatingHTML = generateStarRating(product.rating);
 
-    shopContainer.innerHTML += `
+    if (userRole === "admin") {
+      shopContainer.innerHTML += `
       <!-- Product card -->
       <div class="col">
         <div class="card">
@@ -270,6 +272,59 @@ function renderProducts(products) {
         </div>
       </div>
         `;
+    } else {
+      shopContainer.innerHTML += `
+      <!-- Product card -->
+      <div class="col">
+        <div class="card">
+
+          <!-- Product image -->
+          <div class="img-container">
+            <img
+              class="card-img-top p-5 p-md-3"
+              src="${product.image}"
+              alt="Shoes ${product.name}"
+            />
+          </div>
+      
+          <!-- Product details  p-4 -->
+          <div class="card-body text-center pt-4 d-flex flex-column gap-1">
+            <!-- Product name -->
+            <h4 href="#" class="text-primary text-decoration-none">
+              ${product.name}
+            </h4>
+      
+            <!-- Product rating -->
+            <div class="d-flex flex-column justify-content-center small  my-2">
+              <div class="stars">
+                ${starRatingHTML}
+              </div>
+
+              <!-- Product price -->
+              <div class="product-price">
+                <span class="price fw-bold ms-2">$ ${product.price.toFixed(
+                  2
+                )}</span>
+              </div>
+            </div>
+      
+          </div>
+      
+          <!-- Product Add to cart -->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
+            <div class="text-center">
+              <a
+                href="/cart"
+                class="btn btn-success mt-auto px-4 py-2 addButtonShop"
+                role="button"
+                ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+        `;
+    }
   });
 
   // Add to cart button functionality
@@ -563,34 +618,36 @@ sortSelect.addEventListener("change", (event) => {
   }
 });
 
-// Show dialog to add new product
-addProductBtn.addEventListener("click", () => {
-  addProductForm.removeEventListener("submit", addAndShowProduct);
-  showAddProductDialog();
-  addProductForm.addEventListener("submit", addAndShowProduct);
-});
+if (userRole === "admin") {
+  // Show dialog to add new product
+  addProductBtn.addEventListener("click", () => {
+    addProductForm.removeEventListener("submit", addAndShowProduct);
+    showAddProductDialog();
+    addProductForm.addEventListener("submit", addAndShowProduct);
+  });
 
-// Event handler for edit and remove product
-let productId;
-shopContainer.addEventListener("click", (e) => {
-  editProductForm.removeEventListener("submit", handleEdit);
+  // Event handler for edit and remove product
+  let productId;
+  shopContainer.addEventListener("click", (e) => {
+    editProductForm.removeEventListener("submit", handleEdit);
 
-  if (e.target.matches(".editButton")) {
-    productId = e.target.dataset.productId;
-    showEditProductDialog(productId);
-    editProductForm.addEventListener("submit", handleEdit);
-  } else if (e.target.matches(".removeButton")) {
-    productId = e.target.dataset.productId;
-    deleteAndShowProduct(e, productId);
-  }
-});
+    if (e.target.matches(".editButton")) {
+      productId = e.target.dataset.productId;
+      showEditProductDialog(productId);
+      editProductForm.addEventListener("submit", handleEdit);
+    } else if (e.target.matches(".removeButton")) {
+      productId = e.target.dataset.productId;
+      deleteAndShowProduct(e, productId);
+    }
+  });
 
-// Close dialog of add new product
-cancelAddProduct.addEventListener("click", () => {
-  closeAddProductDialog();
-});
+  // Close dialog of add new product
+  cancelAddProduct.addEventListener("click", () => {
+    closeAddProductDialog();
+  });
 
-// Close dialog of edit product
-cancelEditProduct.addEventListener("click", () => {
-  closeEditProductDialog();
-});
+  // Close dialog of edit product
+  cancelEditProduct.addEventListener("click", () => {
+    closeEditProductDialog();
+  });
+}
