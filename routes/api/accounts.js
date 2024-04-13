@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 router.use(cookieParser());
 
 // expire time for cookies/jwt
-const maxAge = 60 * 60 * 24;
+const maxAge = 60 * 60 * 24 * 24;
 
 // creat token (JWT)
 const createToken = (id) => {

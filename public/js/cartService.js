@@ -13,43 +13,49 @@ const CartService = (() => {
       );
 
       if (confirmation) {
-        cart.splice(index, 1);
-        CartService.updateTotals();
+        // Trigger confirmation only for cart removal
+        const removeFromCartConfirmation = window.confirm(
+          "This will remove the item from the cart. Are you sure you want to proceed?"
+        );
 
-        fetch(`/api/carts/${product._id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
+        if (removeFromCartConfirmation) {
+          cart.splice(index, 1);
+          CartService.updateTotals();
+
+          fetch(`/api/carts/${product._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
-          .then((data) => {
-            // Reload the page to reflect the changes
-            window.location.reload();
-            console.log("Product removed from cart:", data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            // Handle the error or display an error message to the user
-          });
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Update the cart after successful deletion
+              fetchCarts();
+              console.log("Product removed from cart:", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle the error or display an error message to the user
+            });
+        }
       }
     }
     CartService.renderCartItems();
   }
 
   function updateTotals() {
+    totalItems = 0;
+    totalPrice = 0;
     cart.forEach((product) => {
-      totalItems += 1;
-      totalPrice += Number(product.price);
+      totalItems += product.quantity;
+      totalPrice += product.price * product.quantity;
     });
-
-    totalItems = totalItems;
-    totalPrice = totalPrice;
 
     document.getElementById("totalItems").textContent = totalItems;
     document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
@@ -72,7 +78,11 @@ const CartService = (() => {
     // localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 
+  //  Add item to cart and save it to the database
   async function addToPurchaseHistory(product) {
+    // Add the total price to the product
+    product.totalPrice = product.price * product.quantity;
+
     // Add the product to the front of the purchase history
     purchaseHistory.unshift(product);
 
@@ -102,6 +112,49 @@ const CartService = (() => {
     }
   }
 
+  function removeFromPurchaseHistory(index) {
+    if (index > -1) {
+      let product = purchaseHistory[index];
+      const confirmation = window.confirm(
+        "Are you sure you want to remove this item from the purchase history?"
+      );
+
+      if (confirmation) {
+        // Trigger confirmation only for purchase history removal
+        const removeFromPurchaseConfirmation = window.confirm(
+          "This will remove the item from the purchase history. Are you sure you want to proceed?"
+        );
+
+        if (removeFromPurchaseConfirmation) {
+          purchaseHistory.splice(index, 1);
+
+          fetch(`/api/purchaseHistory/${product._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Update the purchase history after successful deletion
+              fetchPurchaseHistory();
+              console.log("Product removed from purchase history:", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle the error or display an error message to the user
+            });
+        }
+      }
+    }
+    CartService.renderPurchaseHistory();
+  }
+
   async function clearPurchaseHistory() {
     const confirmation = window.confirm(
       "Are you sure you want to remove all things in purchase history?"
@@ -124,6 +177,7 @@ const CartService = (() => {
       }
     }
   }
+
   // Render the cart items
   function renderCartItems() {
     const cartContainer = document.getElementById("cartItems");
@@ -146,34 +200,119 @@ const CartService = (() => {
       goToShopBtn.style.display = "none";
 
       // Render the cart items
-      cart.forEach((product) => {
+      cart.forEach((product, index) => {
         const item = `
-              <div class="row align-items-center justify-content-center">
-                  <div class="col-md-6">
-                      <div class="content">
-                          <h3 class="product-name">${product.name}</h3>
-                          <br />
-                          <span class="product-price">$ ${product.price}</span>
-                          <p class="product-description">${product.description}</p>
-                          <button class="removeButton btn remove-btn btn-outline">Remove</button>
-                      </div>
-                  </div>
-  
-                  <div class="col-md-6">
-                      <div class="picsum-img-wrapper">
-                          <img src="${product.image}" alt="${product.name}" />
-                      </div>
-                  </div>
-              </div>
-          `;
+            <div class="product">
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}" />
+                </div>
+                <div class="product-details">
+                    <div class="product-title">${product.name}</div>
+                </div>
+                <div class="product-price">
+                    <span class="price-label">Price</span>
+                    <span class="price-value">${product.price}</span>
+                </div>
+                <div class="product-quantity">
+                    <button class="decrease-quantity" data-index="${index}">-</button>
+                    <input type="number" value="${
+                      product.quantity
+                    }" min="1" id="quantity-${index}">
+                    <button class="increase-quantity" data-index="${index}">+</button>
+                </div>
+                <div class="product-removal">
+                    <button class="remove-product-cart" data-index="${index}">Remove</button>
+                </div>
+                <div class="product-line-price">
+                    <span class="total-price-label">Total Price</span>
+                    <span class="total-price-value">${
+                      product.price * product.quantity
+                    }</span>
+                </div>
+            </div>
+        `;
 
         cartContainer.innerHTML += item;
       });
 
-      // Attach event listeners to the remove buttons
-      document.querySelectorAll(".removeButton").forEach((button, index) => {
-        button.addEventListener("click", () => removeFromCart(index));
+      // Attach event listeners to the remove buttons and quantity inputs
+      document.querySelectorAll(".remove-product-cart").forEach((button) => {
+        button.addEventListener("click", () =>
+          removeFromCart(button.dataset.index)
+        );
       });
+      document.querySelectorAll(".increase-quantity").forEach((button) => {
+        button.addEventListener("click", () =>
+          increaseQuantity(button.dataset.index)
+        );
+      });
+      document.querySelectorAll(".decrease-quantity").forEach((button) => {
+        button.addEventListener("click", () =>
+          decreaseQuantity(button.dataset.index)
+        );
+      });
+      document.querySelectorAll(".product-quantity input").forEach((input) => {
+        input.addEventListener("change", () =>
+          updateQuantity(input.id.split("-")[1])
+        );
+      });
+    }
+  }
+
+  // Function to increase quantity
+  async function increaseQuantity(index) {
+    cart[index].quantity++;
+    await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
+    renderCartItems();
+    updateTotals();
+  }
+  // Function to decrease quantity
+  async function decreaseQuantity(index) {
+    if (cart[index].quantity > 1) {
+      cart[index].quantity--;
+      await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
+      renderCartItems();
+      updateTotals();
+    }
+  }
+
+  // Function to update quantity
+  async function updateQuantity(index) {
+    const input = document.getElementById(`quantity-${index}`);
+    const newQuantity = parseInt(input.value);
+    if (newQuantity > 0 && newQuantity !== cart[index].quantity) {
+      cart[index].quantity = newQuantity;
+      await updateQuantityAndTotalPriceOnServer(index, newQuantity);
+      renderCartItems();
+      updateTotals();
+    }
+  }
+
+  // Function to update quantity on server
+  async function updateQuantityAndTotalPriceOnServer(index, quantity) {
+    const product = cart[index];
+    const totalPrice = product.price * quantity;
+    try {
+      const response = await fetch(`/api/carts/${product._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity, totalPrice }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update quantity and total price on server");
+      }
+      console.log(
+        "Quantity and total price updated on server:",
+        await response.json()
+      );
+    } catch (error) {
+      console.error(
+        "Error updating quantity and total price on server:",
+        error
+      );
+      // Handle error if necessary
     }
   }
 
@@ -198,59 +337,75 @@ const CartService = (() => {
       // Render the purchase history items
       purchaseHistory.forEach((product) => {
         const item = `
-                <div class="purchase-item">
-                    <img src="${product.image}" alt="${product.name}" class="purchase-image" />
-                    <div class="purchase-details">
-                        <span class="purchase-name">${product.name}</span><br />
-                        <span class="purchase-price">$${product.price}</span>
-                    </div>
+            <div class="product">
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}" />
+                </div>
+                <div class="product-details">
+                    <div class="product-title">${product.name}</div>
+                </div>
+                <div class="product-quantity">
+                    <span class="quantity-label">Quantity</span>
+                    <span class="quantity-value">${product.quantity}</span> 
+                </div>
+                <div class="product-removal">
+                    <button class="remove-product-history">Remove</button>
+                </div>
+                <div class="product-line-price">
+                    <span class="total-price-title">Total Price</span>
+                    <span class="total-price-value">${product.totalPrice}</span> 
                 </div>
             </div>
         `;
 
         purchaseHistoryContainer.innerHTML += item;
       });
+      // Attach event listeners to the remove buttons
+      document
+        .querySelectorAll(".remove-product-history")
+        .forEach((button, index) => {
+          button.addEventListener("click", () =>
+            removeFromPurchaseHistory(index)
+          );
+        });
     }
   }
 
   // Function to handle checkout
-  function checkout() {
-    // Iterate over each product in the cart
-    CartService.getCart().forEach((product) => {
-      const confirmation = window.confirm("Are you sure you want to checkout?");
+  async function checkout() {
+    const confirmation = window.confirm("Are you sure you want to checkout?");
 
-      if (confirmation) {
-        // Add the product to the purchase history
-        CartService.addToPurchaseHistory(product)
-          .then(() => {
-            // If adding to purchase history is successful, delete the product from the cart
-            return fetch(`/api/carts/${product._id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Failed to delete product from cart");
-            }
-            // Reload the page to reflect the changes if necessary
-            window.location.reload();
-          })
-          .catch((error) => {
-            console.error("Error checking out:", error);
-            // Handle error if necessary
+    if (confirmation) {
+      // Iterate over each product in the cart
+      for (let product of CartService.getCart()) {
+        try {
+          // Add the product to the purchase history
+          await CartService.addToPurchaseHistory(product);
+
+          // If adding to purchase history is successful, delete the product from the cart
+          const response = await fetch(`/api/carts/${product._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
           });
-      }
-    });
 
-    // Clear the cart after processing all items
-    CartService.clearCart();
-    CartService.renderCartItems();
-    CartService.renderPurchaseHistory();
-    CartService.updateTotals();
+          if (!response.ok) {
+            throw new Error("Failed to delete product from cart");
+          }
+        } catch (error) {
+          console.error("Error checking out:", error);
+        }
+      }
+
+      // Clear the cart after processing all items
+      CartService.clearCart();
+      CartService.renderCartItems();
+      CartService.renderPurchaseHistory();
+      CartService.updateTotals();
+    }
   }
+
   return {
     removeFromCart,
     updateTotals,

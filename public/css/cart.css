@@ -14,8 +14,8 @@ hr {
   background: red;
 }
 
-
 #cartContainer {
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -55,6 +55,7 @@ hr {
 }
 
 .empty-purchase-history {
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -65,10 +66,10 @@ hr {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: center;
 }
 
 .cartIsEmptyText {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -76,21 +77,21 @@ hr {
 }
 
 #emptyCart {
-  min-height: 100dvh;
+  min-height: 100vh;
 }
 
 .product-name {
   padding-top: 1rem;
-  padding-left: 15rem;
   font-weight: bold;
 }
 
-.product-price {
-  padding-left: 15rem;
+.product-title {
+  font-weight: bold;
 }
 
 .product-description {
-  padding-left: 15rem;
+  height: 100px; /* adjust as needed */
+  overflow: auto; /* add a scrollbar if the content is too long */
 }
 
 .totalItems2 {
@@ -130,7 +131,8 @@ hr {
 }
 
 .purchase-history-container {
-  overflow-x: scroll;
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
 }
 
@@ -160,11 +162,21 @@ hr {
 }
 
 .purchase-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+
   & img {
-    width: auto;
-    height: 10rem;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
   }
 }
+
 
 .swiper-container {
   width: 100%;
@@ -184,10 +196,91 @@ hr {
 
   & img {
     padding-top: 4rem;
-    width: 35%;
+    width: 100%;
     height: auto;
   }
 }
+
+/* New CSS for cart items */
+.product {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+}
+
+.product-image {
+  width: 100%;
+}
+
+.product-image img {
+  width: 100%;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-title,
+.total-price-title,
+.quantity-label {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.product-quantity {
+  display: flex;
+  align-items: center;
+}
+
+.product-quantity input {
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  margin: 0 1rem;
+}
+
+.product-quantity button {
+  background: none;
+  border: none;
+  font-size: 1.6em;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  justify-content: center;
+}
+
+.product-quantity button:hover {
+  color: #007BFF;
+}
+
+.product-removal {
+  display: flex;
+  justify-content: center;
+}
+
+.remove-product-cart, .remove-product-history {
+  color: #f44336;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.price-value {
+  text-align: center;
+}
+
+
 
 /* animation */
 .empty-icon-container {
@@ -309,6 +402,11 @@ hr {
   #cartContainer .cartText {
     font-size: 2rem;
   } 
+
+  .product {
+    grid-template-columns: 1fr;
+    /* ... other styles for .product on small screens ... */
+  }
 }
 
 @media (min-width: 601px) and (max-width: 1024px) {
@@ -329,6 +427,11 @@ hr {
     padding-top: 3rem;
     width: 50%;
   }
+
+  .product {
+    grid-template-columns: 1fr 2fr 1fr;
+    /* ... other styles for .product on medium screens ... */
+  }
 }
 
 @media (min-width: 1025px) {
@@ -337,18 +440,34 @@ hr {
     padding-bottom: 3rem;
   }
 
-  .product-name, .product-price, .product-description {
-    padding-left: 15rem;
-  }
-
   .removeButton.btn-outline {
     margin-left: 15rem;
   }
 
   .picsum-img-wrapper img {
     padding-top: 4rem;
-    width: 35%;
+    width: 300px;
+    height: 300px; 
+    object-fit: cover; 
   }
+
+  .product {
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+  }
+
+  .product-price, .product-line-price {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .product-quantity {
+    display: block;
+    justify-content: center;
+    align-items: center;  
+  }
+
+  
 }
 /*   
 * {
