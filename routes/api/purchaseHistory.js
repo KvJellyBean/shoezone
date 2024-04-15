@@ -5,7 +5,10 @@ const PurchaseHistory = require("../../models/purchaseHistory");
 // Method Get
 router.get("/", async (req, res) => {
   try {
-    const items = await PurchaseHistory.find();
+    // Fetch the items, sort them by checkoutTime in descending order and limit to 10 items
+    const items = await PurchaseHistory.find()
+      .sort({ checkoutTime: -1 })
+      .limit(10);
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -20,6 +23,15 @@ router.post("/", async (req, res) => {
       checkoutTime: new Date(), // Save the current date and time
       ipAddress: req.ip, // Save the user's IP address
     });
+    // Check if the purchase history has more than 10 items
+    const count = await PurchaseHistory.countDocuments();
+    if (count >= 10) {
+      // If it has more than 10 items, find the oldest one and delete it
+      const oldestItem = await PurchaseHistory.find()
+        .sort({ checkoutTime: 1 })
+        .limit(1);
+      await PurchaseHistory.findByIdAndDelete(oldestItem[0]._id);
+    }
     const savedProduct = await newProduct.save();
     if (!savedProduct) {
       res.status(500).json({ message: "Internal Server Error" });
