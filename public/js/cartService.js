@@ -13,44 +13,58 @@ const CartService = (() => {
       );
 
       if (confirmation) {
-        cart.splice(index, 1);
-        CartService.updateTotals();
+        // Trigger confirmation only for cart removal
+        const removeFromCartConfirmation = window.confirm(
+          "This will remove the item from the cart. Are you sure you want to proceed?"
+        );
 
-        fetch(`/api/carts/${product._id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
+        if (removeFromCartConfirmation) {
+          cart.splice(index, 1);
+          CartService.updateTotals();
+
+          fetch(`/api/carts/${product._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
-          .then((data) => {
-            // Reload the page to reflect the changes
-            window.location.reload();
-            console.log("Product removed from cart:", data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            // Handle the error or display an error message to the user
-          });
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Update the cart after successful deletion
+              fetchCarts();
+              console.log("Product removed from cart:", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle the error or display an error message to the user
+            });
+        }
       }
     }
     CartService.renderCartItems();
   }
 
   function updateTotals() {
-    cart.forEach((product) => {
-      totalItems += 1;
-      totalPrice += Number(product.price);
+    let totalItems = 0;
+    let totalPrice = 0;
+
+    // Loop through each product in the cart
+    cart.forEach((product, index) => {
+      const checkbox = document.getElementById(`checkout-${index}`);
+
+      // If the checkbox is checked, include the product in the total calculation
+      if (checkbox.checked) {
+        totalItems += product.quantity; // Add the quantity of the product
+        totalPrice += product.price * product.quantity; // Add the total price of the product considering its quantity
+      }
     });
 
-    totalItems = totalItems;
-    totalPrice = totalPrice;
-
+    // Update the total items and total price displayed on the page
     document.getElementById("totalItems").textContent = totalItems;
     document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
     return { totalItems, totalPrice };
@@ -72,7 +86,12 @@ const CartService = (() => {
     // localStorage.setItem("cart", JSON.stringify(this.cart));
   }
 
+  // Add item to cart and save it to the database
   async function addToPurchaseHistory(product) {
+    // Add the total price to the product
+    product.totalPrice = product.price * product.quantity;
+    product.date = new Date(); // Add this line
+
     // Add the product to the front of the purchase history
     purchaseHistory.unshift(product);
 
@@ -81,25 +100,61 @@ const CartService = (() => {
       purchaseHistory.pop();
     }
 
-    try {
-      // Add the product to the purchase history
-      const response = await fetch("/api/purchaseHistory", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(product),
-      });
+    // Save the product to the database
+    const response = await fetch(`/api/purchaseHistory`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to add product to purchase history");
-      }
-
-      const data = await response.json();
-      console.log("Product added to history:", data);
-    } catch (error) {
-      console.error("Error adding product to history:", error);
+    if (!response.ok) {
+      throw new Error("Failed to add product to purchase history");
     }
+  }
+
+  function removeFromPurchaseHistory(index) {
+    if (index > -1) {
+      let product = purchaseHistory[index];
+      const confirmation = window.confirm(
+        "Are you sure you want to remove this item from the purchase history?"
+      );
+
+      if (confirmation) {
+        // Trigger confirmation only for purchase history removal
+        const removeFromPurchaseConfirmation = window.confirm(
+          "This will remove the item from the purchase history. Are you sure you want to proceed?"
+        );
+
+        if (removeFromPurchaseConfirmation) {
+          purchaseHistory.splice(index, 1);
+
+          fetch(`/api/purchaseHistory/${product._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Update the purchase history after successful deletion
+              fetchPurchaseHistory();
+              console.log("Product removed from purchase history:", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle the error or display an error message to the user
+            });
+        }
+      }
+    }
+    CartService.renderPurchaseHistory();
   }
 
   async function clearPurchaseHistory() {
@@ -124,6 +179,7 @@ const CartService = (() => {
       }
     }
   }
+
   // Render the cart items
   function renderCartItems() {
     const cartContainer = document.getElementById("cartItems");
@@ -146,34 +202,150 @@ const CartService = (() => {
       goToShopBtn.style.display = "none";
 
       // Render the cart items
-      cart.forEach((product) => {
+      cart.forEach((product, index) => {
         const item = `
-              <div class="row align-items-center justify-content-center">
-                  <div class="col-md-6">
-                      <div class="content">
-                          <h3 class="product-name">${product.name}</h3>
-                          <br />
-                          <span class="product-price">$ ${product.price}</span>
-                          <p class="product-description">${product.description}</p>
-                          <button class="removeButton btn remove-btn btn-outline">Remove</button>
-                      </div>
-                  </div>
-  
-                  <div class="col-md-6">
-                      <div class="picsum-img-wrapper">
-                          <img src="${product.image}" alt="${product.name}" />
-                      </div>
-                  </div>
-              </div>
-          `;
+          <div class="product">
+            <div class="product-checkout checkbox-wrapper-26">
+              <input type="checkbox" id="checkout-${index}" class="checkout-product" data-index="${index}">
+                <label for="checkout-${index}">
+                  <div class="tick_mark"></div>
+                </label>
+            </div>
+      
+            <div class="product-image-cart">
+              <img src="${product.image}" alt="${product.name}" />
+            </div>
+      
+            <div class="product-details">
+              <div class="product-title">${product.name}</div>
+            </div>
+      
+            <div class="product-price">
+              <span class="price-title">Price</span>
+              <span class="price-value">$${product.price}</span>
+            </div>
+      
+            <div class="product-quantity">
+              <button class="decrease-quantity" data-index="${index}">-</button>
+              <input type="number" value="${
+                product.quantity
+              }" min="1" id="quantity-${index}">
+              <button class="increase-quantity" data-index="${index}">+</button>
+            </div>
+      
+            <div class="product-removal">
+              <button class="remove-product-cart" data-index="${index}">Remove</button>
+            </div>
+      
+            <div class="product-line-price">
+              <span class="total-price-title">Total Price</span>
+              <span class="total-price-value">$${
+                product.price * product.quantity
+              }</span>
+            </div>
+          </div>
+        `;
 
         cartContainer.innerHTML += item;
       });
 
-      // Attach event listeners to the remove buttons
-      document.querySelectorAll(".removeButton").forEach((button, index) => {
-        button.addEventListener("click", () => removeFromCart(index));
+      // Attach event listeners to the remove buttons and quantity inputs
+      document.querySelectorAll(".remove-product-cart").forEach((button) => {
+        button.addEventListener("click", () =>
+          removeFromCart(button.dataset.index)
+        );
       });
+      document.querySelectorAll(".increase-quantity").forEach((button) => {
+        button.addEventListener("click", () =>
+          increaseQuantity(button.dataset.index)
+        );
+      });
+      document.querySelectorAll(".decrease-quantity").forEach((button) => {
+        button.addEventListener("click", () =>
+          decreaseQuantity(button.dataset.index)
+        );
+      });
+      document.querySelectorAll(".product-quantity input").forEach((input) => {
+        input.addEventListener("change", () =>
+          updateQuantity(input.id.split("-")[1])
+        );
+      });
+      document.querySelectorAll(".checkout-product").forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          updateTotals();
+        });
+      });
+    }
+  }
+
+  // Function to increase quantity
+  async function increaseQuantity(index) {
+    const isChecked = document.getElementById(`checkout-${index}`).checked;
+    if (cart[index].quantity < 10) {
+      // Add this line
+      cart[index].quantity++;
+      await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
+      renderCartItems();
+      document.getElementById(`checkout-${index}`).checked = isChecked;
+      updateTotals();
+    }
+  }
+
+  // Function to decrease quantity
+  async function decreaseQuantity(index) {
+    const isChecked = document.getElementById(`checkout-${index}`).checked;
+    if (cart[index].quantity > 1) {
+      cart[index].quantity--;
+      await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
+      renderCartItems();
+      document.getElementById(`checkout-${index}`).checked = isChecked;
+      updateTotals();
+    }
+  }
+
+  // Function to update quantity
+  async function updateQuantity(index) {
+    const input = document.getElementById(`quantity-${index}`);
+    const newQuantity = parseInt(input.value);
+    const isChecked = document.getElementById(`checkout-${index}`).checked;
+    if (
+      newQuantity > 0 &&
+      newQuantity <= 10 &&
+      newQuantity !== cart[index].quantity
+    ) {
+      cart[index].quantity = newQuantity;
+      await updateQuantityAndTotalPriceOnServer(index, newQuantity);
+      renderCartItems();
+      document.getElementById(`checkout-${index}`).checked = isChecked;
+      updateTotals();
+    }
+  }
+
+  // Function to update quantity on server
+  async function updateQuantityAndTotalPriceOnServer(index, quantity) {
+    const product = cart[index];
+    const totalPrice = product.price * quantity;
+    try {
+      const response = await fetch(`/api/carts/${product._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity, totalPrice }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update quantity and total price on server");
+      }
+      console.log(
+        "Quantity and total price updated on server:",
+        await response.json()
+      );
+    } catch (error) {
+      console.error(
+        "Error updating quantity and total price on server:",
+        error
+      );
+      // Handle error if necessary
     }
   }
 
@@ -196,61 +368,136 @@ const CartService = (() => {
       emptyText.style.display = "none";
 
       // Render the purchase history items
-      purchaseHistory.forEach((product) => {
+      purchaseHistory.forEach((product, index) => {
+        // Format the checkoutTime to a readable string
+        const checkoutTime = formatCheckoutTime(new Date(product.checkoutTime));
+
         const item = `
-                <div class="purchase-item">
-                    <img src="${product.image}" alt="${product.name}" class="purchase-image" />
-                    <div class="purchase-details">
-                        <span class="purchase-name">${product.name}</span><br />
-                        <span class="purchase-price">$${product.price}</span>
-                    </div>
-                </div>
-            </div>
-        `;
+        <div class="product-checkout-time">
+          <span class="checkout-time-value">${checkoutTime}</span> 
+        </div>
+
+        <div class="product-history">
+          <div class="product-image-purchase-history">
+            <img src="${product.image}" alt="${product.name}" />
+          </div>
+    
+          <div class="product-details">
+            <div class="product-title">${product.name}</div>
+          </div>
+    
+          <div class="product-price">
+            <span class="price-title">Price</span>
+            <span class="price-value">$${product.price}</span>
+          </div>
+    
+          <div class="product-quantity-history">
+            <span class="quantity-title">Quantity</span>
+            <span class="quantity-value">${product.quantity}</span> 
+          </div>
+    
+          <div class="product-removal">
+            <button class="remove-product-history">Remove</button>
+          </div>
+    
+          <div class="product-line-price">
+            <span class="total-price-title">Total Price</span>
+            <span class="total-price-value">$${product.totalPrice}</span> 
+          </div>
+
+
+        </div>
+      `;
 
         purchaseHistoryContainer.innerHTML += item;
       });
+
+      // Function to format checkout time
+      function formatCheckoutTime(checkoutTime) {
+        const options = {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        };
+        return checkoutTime.toLocaleDateString("en-US", options);
+      }
+
+      // Attach event listeners to the remove buttons
+      document
+        .querySelectorAll(".remove-product-history")
+        .forEach((button, index) => {
+          button.addEventListener("click", () =>
+            removeFromPurchaseHistory(index)
+          );
+        });
     }
   }
 
   // Function to handle checkout
-  function checkout() {
-    // Iterate over each product in the cart
-    CartService.getCart().forEach((product) => {
-      const confirmation = window.confirm("Are you sure you want to checkout?");
+  async function checkout() {
+    // Get all the checkboxes
+    const checkboxes = document.querySelectorAll(".checkout-product");
+    // Filter out the checked checkboxes
+    const checked = [...checkboxes].filter((checkbox) => checkbox.checked);
 
-      if (confirmation) {
-        // Add the product to the purchase history
-        CartService.addToPurchaseHistory(product)
-          .then(() => {
-            // If adding to purchase history is successful, delete the product from the cart
-            return fetch(`/api/carts/${product._id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Failed to delete product from cart");
-            }
-            // Reload the page to reflect the changes if necessary
-            window.location.reload();
-          })
-          .catch((error) => {
-            console.error("Error checking out:", error);
-            // Handle error if necessary
+    if (checked.length === 0) {
+      // If no checkboxes are checked, show a pop-up message
+      window.alert("Please check at least one item before checking out.");
+      return;
+    }
+
+    const confirmation = window.confirm("Are you sure you want to checkout?");
+
+    if (confirmation) {
+      // const checkoutTime = new Date();
+      // because of window reload not used ^
+
+      // Iterate over each checked product in the cart
+      for (let checkbox of checked) {
+        const index = checkbox.dataset.index;
+        const product = cart[index];
+        try {
+          // Add the current checkout time to the product
+          // product.checkoutTime = checkoutTime;
+          // because of window reload not used ^
+
+          // Add the product to the purchase history
+          await CartService.addToPurchaseHistory(product);
+
+          // If adding to purchase history is successful, delete the product from the cart
+          const response = await fetch(`/api/carts/${product._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
           });
-      }
-    });
 
-    // Clear the cart after processing all items
-    CartService.clearCart();
-    CartService.renderCartItems();
-    CartService.renderPurchaseHistory();
-    CartService.updateTotals();
+          if (!response.ok) {
+            throw new Error("Failed to delete product from cart");
+          }
+        } catch (error) {
+          console.error("Error checking out:", error);
+        }
+      }
+
+      // Clear the cart after processing all items
+      CartService.clearCart();
+      CartService.renderCartItems();
+      CartService.renderPurchaseHistory();
+      CartService.updateTotals();
+
+      // Handling for cart
+      // Please don't ask why I did this
+      // Wait for a moment before reloading the page
+      setTimeout(() => {
+        location.reload();
+      }, 1000); // wait for 1 second
+    }
   }
+
   return {
     removeFromCart,
     updateTotals,

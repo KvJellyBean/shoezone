@@ -5,7 +5,10 @@ const PurchaseHistory = require("../../models/purchaseHistory");
 // Method Get
 router.get("/", async (req, res) => {
   try {
-    const items = await PurchaseHistory.find();
+    // Fetch the items, sort them by checkoutTime in descending order and limit to 10 items
+    const items = await PurchaseHistory.find()
+      .sort({ checkoutTime: -1 })
+      .limit(10);
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,13 +18,25 @@ router.get("/", async (req, res) => {
 // Method Post
 router.post("/", async (req, res) => {
   try {
-    const newProducts = new PurchaseHistory(req.body);
-    const savedProducts = await newProducts.save();
-    if (!savedProducts) {
+    const newProduct = new PurchaseHistory({
+      ...req.body,
+      checkoutTime: new Date(), // Save the current date and time
+      ipAddress: req.ip, // Save the user's IP address
+    });
+    // Check if the purchase history has more than 10 items
+    const count = await PurchaseHistory.countDocuments();
+    if (count >= 10) {
+      // If it has more than 10 items, find the oldest one and delete it
+      const oldestItem = await PurchaseHistory.find()
+        .sort({ checkoutTime: 1 })
+        .limit(1);
+      await PurchaseHistory.findByIdAndDelete(oldestItem[0]._id);
+    }
+    const savedProduct = await newProduct.save();
+    if (!savedProduct) {
       res.status(500).json({ message: "Internal Server Error" });
     }
-
-    res.status(200).json(savedProducts);
+    res.status(200).json(savedProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -45,13 +60,29 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Method Delete
-router.delete("/", async (req, res) => {
+// Method Delete One
+router.delete("/:id", async (req, res) => {
   try {
-    await PurchaseHistory.deleteMany({});
-    res.status(200).json("Purchase history cleared successfully");
+    const product = await PurchaseHistory.findById(req.params.id);
+    if (product) {
+      await PurchaseHistory.findByIdAndDelete(req.params.id);
+      res.status(200).json("Product deleted successfully");
+    } else {
+      res.status(404).json({ message: "Product not found" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
+// Method Delete All
+router.delete("/", async (req, res) => {
+  try {
+    await PurchaseHistory.deleteMany({});
+    res.status(200).json("All products deleted successfully");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

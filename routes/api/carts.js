@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const mongoose = require("mongoose");
 const router = Router();
 const Carts = require("../../models/carts");
 
@@ -15,7 +16,10 @@ router.get("/", async (req, res) => {
 // Method Post
 router.post("/", async (req, res) => {
   try {
-    const newProducts = new Carts(req.body);
+    const newProducts = new Carts({
+      ...req.body,
+      _id: new mongoose.Types.ObjectId(), // Generate a new ObjectId
+    });
     const savedProducts = await newProducts.save();
     if (!savedProducts) {
       res.status(500).json({ message: "Internal Server Error" });

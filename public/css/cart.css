@@ -4,6 +4,8 @@ main {
   overflow: hidden;
 }
 
+
+
 hr {
   width: 10%;
   height: 5px;
@@ -14,8 +16,8 @@ hr {
   background: red;
 }
 
-
 #cartContainer {
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -55,6 +57,7 @@ hr {
 }
 
 .empty-purchase-history {
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -65,10 +68,10 @@ hr {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: center;
 }
 
 .cartIsEmptyText {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -76,21 +79,21 @@ hr {
 }
 
 #emptyCart {
-  min-height: 100dvh;
+  min-height: 100vh;
 }
 
 .product-name {
   padding-top: 1rem;
-  padding-left: 15rem;
   font-weight: bold;
 }
 
-.product-price {
-  padding-left: 15rem;
+.product-title {
+  font-weight: bold;
 }
 
 .product-description {
-  padding-left: 15rem;
+  height: 100px; /* adjust as needed */
+  overflow: auto; /* add a scrollbar if the content is too long */
 }
 
 .totalItems2 {
@@ -130,19 +133,25 @@ hr {
 }
 
 .purchase-history-container {
-  overflow-x: scroll;
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
 }
 
 .historyText {
-  padding-top: 10rem;
+  padding-top: 10rem; 
   padding-bottom: 1rem;
   border-bottom: 1px solid #000;
   width: 90%;
   margin: 0 auto;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  height: 100%;  */
 }
 
 .clear-history-btn {
+  display: flex;
   margin-top: 2rem;
   background-color: #f8f9fa;
   color: #343a40;
@@ -157,13 +166,6 @@ hr {
 .clear-history-btn:hover {
   background-color: #343a40;
   color: #f8f9fa;
-}
-
-.purchase-item {
-  & img {
-    width: auto;
-    height: 10rem;
-  }
 }
 
 .swiper-container {
@@ -184,12 +186,226 @@ hr {
 
   & img {
     padding-top: 4rem;
-    width: 35%;
+    width: 100%;
     height: auto;
   }
 }
 
-/* animation */
+
+/* New CSS for cart items */
+.product {
+  display: grid;
+  grid-template-columns: auto 1fr 2fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  /* padding: 1rem; */
+  border: 1px solid #eee;
+}
+
+.product-history {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+  /* grid-template-rows: auto 1fr; */
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  /* padding: 1rem; */
+  border: 1px solid #eee;
+}
+
+
+/* Checkbox 
+Courtesy of Himalaya Singh 
+https://getcssscan.com/css-checkboxes-examples */
+.checkbox-wrapper-26 * {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.checkbox-wrapper-26 input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-wrapper-26 label {
+  --size: 50px;
+  --shadow: calc(var(--size) * .07) calc(var(--size) * .1);
+
+  position: relative;
+  display: block;
+  width: var(--size);
+  height: var(--size);
+  margin: 0 auto;
+  background-color: #f72414;
+  border-radius: 50%;
+  box-shadow: 0 var(--shadow) #ffbeb8;
+  cursor: pointer;
+  transition: 0.2s ease transform, 0.2s ease background-color,
+    0.2s ease box-shadow;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.checkbox-wrapper-26 label:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  width: calc(var(--size) * .7);
+  height: calc(var(--size) * .7);
+  margin: 0 auto;
+  background-color: #fff;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  box-shadow: inset 0 var(--shadow) #ffbeb8;
+  transition: 0.2s ease width, 0.2s ease height;
+}
+
+.checkbox-wrapper-26 label:hover:before {
+  width: calc(var(--size) * .55);
+  height: calc(var(--size) * .55);
+  box-shadow: inset 0 var(--shadow) #ff9d96;
+}
+
+.checkbox-wrapper-26 label:active {
+  transform: scale(0.9);
+}
+
+.checkbox-wrapper-26 .tick_mark {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: calc(var(--size) * -.05);
+  width: calc(var(--size) * .6);
+  height: calc(var(--size) * .6);
+  margin: 0 auto;
+  margin-left: calc(var(--size) * .14);
+  transform: rotateZ(-40deg);
+}
+
+.checkbox-wrapper-26 .tick_mark:before,
+.checkbox-wrapper-26 .tick_mark:after {
+  content: "";
+  position: absolute;
+  background-color: #fff;
+  border-radius: 2px;
+  opacity: 0;
+  transition: 0.2s ease transform, 0.2s ease opacity;
+}
+
+.checkbox-wrapper-26 .tick_mark:before {
+  left: 0;
+  bottom: 0;
+  width: calc(var(--size) * .1);
+  height: calc(var(--size) * .3);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.23);
+  transform: translateY(calc(var(--size) * -.68));
+}
+
+.checkbox-wrapper-26 .tick_mark:after {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(var(--size) * .1);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.23);
+  transform: translateX(calc(var(--size) * .78));
+}
+
+.checkbox-wrapper-26 input[type="checkbox"]:checked + label {
+  background-color: #07d410;
+  box-shadow: 0 var(--shadow) #92ff97;
+}
+
+.checkbox-wrapper-26 input[type="checkbox"]:checked + label:before {
+  width: 0;
+  height: 0;
+}
+
+.checkbox-wrapper-26 input[type="checkbox"]:checked + label .tick_mark:before,
+.checkbox-wrapper-26 input[type="checkbox"]:checked + label .tick_mark:after {
+  transform: translate(0);
+  opacity: 1;
+}
+
+.product-image-cart {
+  width: 100%;
+}
+
+.product-image-purchase-history {
+  width: 100%;
+  /* grid-row: 1/3;
+  grid-column: 1/2; */
+}
+
+.product-image-cart img, .product-image-purchase-history img {
+  width: 100%;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-title,
+.total-price-title,
+.quantity-title,
+.checkout-time-title {
+  gap: 1rem;
+  align-items: center;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.product-quantity input {
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  margin: 0 1rem;
+}
+
+.product-quantity button {
+  background: none;
+  border: none;
+  font-size: 1.6em;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  justify-content: center;
+}
+
+.product-quantity button:hover {
+  color: #007BFF;
+}
+
+.product-removal {
+  display: flex;
+  justify-content: center;
+}
+
+.remove-product-cart, .remove-product-history {
+  color: #f44336;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.price-value {
+  text-align: center;
+}
+
+.product-checkout-time{
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+/* Tumbleweed animation
+Courtesy of Aidan Breen
+https://codepen.io/aido179-1471800764/pen/jZJjpo */
 .empty-icon-container {
   margin: 1em auto;
   text-align: center;
@@ -309,6 +525,11 @@ hr {
   #cartContainer .cartText {
     font-size: 2rem;
   } 
+
+  .product {
+    grid-template-columns: 1fr;
+    /* ... other styles for .product on small screens ... */
+  }
 }
 
 @media (min-width: 601px) and (max-width: 1024px) {
@@ -329,6 +550,11 @@ hr {
     padding-top: 3rem;
     width: 50%;
   }
+
+  .product {
+    grid-template-columns: 1fr 2fr 1fr;
+    /* ... other styles for .product on medium screens ... */
+  }
 }
 
 @media (min-width: 1025px) {
@@ -337,20 +563,40 @@ hr {
     padding-bottom: 3rem;
   }
 
-  .product-name, .product-price, .product-description {
-    padding-left: 15rem;
-  }
-
   .removeButton.btn-outline {
     margin-left: 15rem;
   }
 
   .picsum-img-wrapper img {
     padding-top: 4rem;
-    width: 35%;
+    width: 300px;
+    height: 300px; 
+    object-fit: cover; 
   }
+
+  .product {
+    grid-template-columns: auto 1fr 2fr 1fr 1fr 1fr 1fr;
+  }
+
+  .product-history {
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+
+  }
+  .product-price, .product-line-price, .product-quantity-history, product-checkout-time {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .product-quantity {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+  }
+
+  
 }
-/*   
-* {
+  
+/* * {
   border: 1px solid #ff0000;;
 } */
