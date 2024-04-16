@@ -528,7 +528,6 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
 
   .product {
     grid-template-columns: 1fr;
-    /* ... other styles for .product on small screens ... */
   }
 }
 
@@ -552,9 +551,7 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
   }
 
   .product {
-    grid-template-columns: 1fr 2fr 1fr;
-    /* ... other styles for .product on medium screens ... */
-  }
+    grid-template-columns: 1fr 2fr 1fr;  }
 }
 
 @media (min-width: 1025px) {

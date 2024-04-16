@@ -90,7 +90,7 @@ const CartService = (() => {
   async function addToPurchaseHistory(product) {
     // Add the total price to the product
     product.totalPrice = product.price * product.quantity;
-    product.date = new Date(); // Add this line
+    product.date = new Date();
 
     // Add the product to the front of the purchase history
     purchaseHistory.unshift(product);
@@ -282,7 +282,6 @@ const CartService = (() => {
   async function increaseQuantity(index) {
     const isChecked = document.getElementById(`checkout-${index}`).checked;
     if (cart[index].quantity < 10) {
-      // Add this line
       cart[index].quantity++;
       await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
       renderCartItems();
