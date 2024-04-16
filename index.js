@@ -34,6 +34,7 @@ app.use(cookieParser());
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/carts", require("./routes/api/carts"));
 app.use("/api/purchaseHistory", require("./routes/api/purchaseHistory"));
+app.use("/api/account", require("./routes/api/accounts"));
 app.get("*", checkUser);
 
 // homepage
@@ -49,6 +50,10 @@ app.get("/shop", requireAuth, (req, res) => {
 // cart
 app.get("/cart", requireAuth, (req, res) => {
   res.render("cart", { title: "Cart", layout: "cart" });
+});
+
+app.get("/account", (req, res) => {
+  res.render("account", { title: "Account", layout: "account" });
 });
 
 // account (login and sign up)

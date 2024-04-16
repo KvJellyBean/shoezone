@@ -1,5 +1,7 @@
-const { Router } = require("express");
-const router = Router();
+// accounts.js
+
+const express = require("express");
+const router = express.Router();
 const Account = require("../../models/accounts");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
@@ -85,7 +87,7 @@ router.post("/signup", async (req, res) => {
     }
 
     const token = createToken(savedAccount._id);
-    res.cookie("shoezone_cookie", token, { maxAge: maxAge * 1 });
+    res.cookie("shoezone_cookie", token, { maxAge: maxAge * 100 });
 
     res.status(200).json(savedAccount);
   } catch (error) {
@@ -100,11 +102,37 @@ router.post("/login", async (req, res) => {
   try {
     const user = await Account.login(email, password);
     const token = createToken(user._id);
-    res.cookie("shoezone_cookie", token, { maxAge: maxAge * 1 });
+    res.cookie("shoezone_cookie", token, { maxAge: maxAge * 100 });
     res.status(200).json(user);
   } catch (error) {
     const errors = handleErrors(error);
     res.status(400).json({ errors });
+  }
+});
+
+router.get("/api/account", async(req, res) => {
+  try {
+    const accounts = await Account.find();
+    res.status(200).json(accounts);
+  } catch (error) {
+    res.status(500).json({message: error.message})
+  }
+})
+
+//update
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedAccount = await Account.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    if (!updatedAccount) {
+      res.status(404).json({ message: "Not Found" });
+    }
+
+    res.status(200).json(updatedAccount);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
