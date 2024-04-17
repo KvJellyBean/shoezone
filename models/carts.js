@@ -7,8 +7,6 @@ const cartSchema = new Schema({
   image: String,
   quantity: { type: Number, default: 1 },
   totalPrice: Number,
-  // checkoutTime: Date,
-  // ipAddress: String,
 });
 
 module.exports = model("Cart", cartSchema);
