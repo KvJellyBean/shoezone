@@ -1,6 +1,7 @@
 // Global Variabel
 let products = [];
 let searchResults = [];
+let productId;
 
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
@@ -31,8 +32,8 @@ async function fetchProducts() {
 }
 
 // Add product to cart
-function addProductToCart(index, event) {
-  const product = products[index];
+function addProductToCart(event, productId) {
+  const product = products.find((prod) => prod._id === productId);
   // Make a POST request to the /api/carts route with the product data
   fetch("/api/carts", {
     method: "POST",
@@ -253,9 +254,9 @@ function renderProducts(products) {
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
             <div class="text-center">
               <a
-                href="/cart"
+                href="#"
                 class="btn btn-success mt-auto px-4 py-2 addButtonShop"
-                role="button"
+                role="button" data-product-id="${product._id}"
                 ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
               >
             </div>
@@ -314,9 +315,9 @@ function renderProducts(products) {
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
             <div class="text-center">
               <a
-                href="/cart"
+                href="#"
                 class="btn btn-success mt-auto px-4 py-2 addButtonShop"
-                role="button"
+                role="button" data-product-id="${product._id}"
                 ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
               >
             </div>
@@ -329,9 +330,10 @@ function renderProducts(products) {
 
   // Add to cart button functionality
   const addToCartButtons = document.querySelectorAll(".addButtonShop");
-  addToCartButtons.forEach((button, index) => {
+  addToCartButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      addProductToCart(index, e);
+      console.log(button.dataset.productId);
+      addProductToCart(e, button.dataset.productId);
     });
   });
 }
@@ -627,7 +629,6 @@ if (userRole === "admin") {
   });
 
   // Event handler for edit and remove product
-  let productId;
   shopContainer.addEventListener("click", (e) => {
     editProductForm.removeEventListener("submit", handleEdit);
 
