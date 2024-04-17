@@ -19,6 +19,21 @@ const accountSchema = new Schema({
     required: [true, "Please enter a password"],
     minlength: [6, "Minimum password length is 6 characters"],
   },
+   name:{
+    type: String,
+    required: [true],
+    default: "anonymus"
+  },
+  phone:{
+    type: Number,
+    required: [true],
+    default: "+62"
+  },
+  address:{
+    type: String,
+    required: [true],
+    default: "address"
+  },
 });
 
 accountSchema.pre("save", async function (next) {
