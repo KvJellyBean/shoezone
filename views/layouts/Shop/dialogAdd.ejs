@@ -1,5 +1,5 @@
 <dialog id="addProductDialog">
-  <form method="post" action="/api/products">
+  <form method="post" action="/api/products" enctype="multipart/form-data">
     <legend>Add Product</legend>
     <div class="form-wrapper">
       <div class="input-group">
@@ -16,7 +16,7 @@
       </div>
 
       <div class="input-group">
-        <label for="priceInput">Price: </label>
+        <label for="priceInput">Product Price: </label>
         <input
           name="price"
           type="number"
@@ -31,7 +31,7 @@
       </div>
 
       <div class="input-group">
-        <label for="descriptionInput">Description: </label>
+        <label for="descriptionInput">Product Description: </label>
         <textarea
           name="description"
           id="descriptionInput"
@@ -42,19 +42,12 @@
       </div>
 
       <div class="input-group">
-        <label for="imageInput">Enter Shoes' Image Link: </label>
-        <input
-          name="image"
-          type="text"
-          id="imageInput"
-          value=""
-          required
-          placeholder="Enter link (e.g. https://nike.com/shoes/nike-white-shoes)"
-        />
+        <label for="imageInput">Product Image: </label>
+        <input name="image" type="file" id="imageInput" value="" required />
       </div>
 
       <div class="input-group">
-        <label for="ratingInput">Rating: </label>
+        <label for="ratingInput">Product Rating: </label>
         <input
           name="rating"
           type="number"
