@@ -56,7 +56,6 @@ function fetchCartItems() {
   fetch("/api/carts")
     .then((response) => response.json())
     .then((data) => {
-      console.log("Cart items:", data);
       // Render the cart items on the page
       renderCartItems(data);
     })
@@ -254,7 +253,6 @@ function renderProducts(products) {
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
             <div class="text-center">
               <a
-                href="#"
                 class="btn btn-success mt-auto px-4 py-2 addButtonShop"
                 role="button" data-product-id="${product._id}"
                 ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
@@ -315,7 +313,6 @@ function renderProducts(products) {
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
             <div class="text-center">
               <a
-                href="#"
                 class="btn btn-success mt-auto px-4 py-2 addButtonShop"
                 role="button" data-product-id="${product._id}"
                 ><i class="fa-solid fa-cart-shopping"></i> Add Cart</a
@@ -332,7 +329,7 @@ function renderProducts(products) {
   const addToCartButtons = document.querySelectorAll(".addButtonShop");
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      console.log(button.dataset.productId);
+      e.preventDefault();
       addProductToCart(e, button.dataset.productId);
     });
   });
@@ -359,7 +356,6 @@ async function showEditProductDialog(productId) {
     form.querySelector("#nameEditInput").value = product.name;
     form.querySelector("#priceEditInput").value = product.price;
     form.querySelector("#descriptionEditInput").value = product.description;
-    form.querySelector("#imageEditInput").value = product.image;
     form.querySelector("#ratingEditInput").value = product.rating;
 
     dialog.showModal();
@@ -384,7 +380,7 @@ async function addProduct(event) {
   const nameInput = document.querySelector("#nameInput").value;
   const priceInput = document.querySelector("#priceInput").value;
   const descriptionInput = document.querySelector("#descriptionInput").value;
-  const imageInput = document.querySelector("#imageInput").value;
+  const imageInput = document.querySelector("#imageInput").files[0];
   const ratingInput = document.querySelector("#ratingInput").value;
 
   try {
@@ -397,18 +393,16 @@ async function addProduct(event) {
       return;
     }
 
+    const formData = new FormData();
+    formData.append("name", nameInput);
+    formData.append("price", priceInput);
+    formData.append("description", descriptionInput);
+    formData.append("image", imageInput);
+    formData.append("rating", ratingInput);
+
     const response = await fetch("/api/products", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: nameInput,
-        price: priceInput,
-        description: descriptionInput,
-        image: imageInput,
-        rating: ratingInput,
-      }),
+      body: formData,
     });
 
     if (!response.ok) {
@@ -448,7 +442,7 @@ async function editProduct(event, productId) {
   const descriptionInput = document.querySelector(
     "#descriptionEditInput"
   ).value;
-  const imageInput = document.querySelector("#imageEditInput").value;
+  const imageInput = document.querySelector("#imageEditInput").files[0];
   const ratingInput = document.querySelector("#ratingEditInput").value;
 
   try {
@@ -463,18 +457,16 @@ async function editProduct(event, productId) {
       return;
     }
 
+    const formData = new FormData();
+    formData.append("name", nameInput);
+    formData.append("price", priceInput);
+    formData.append("description", descriptionInput);
+    formData.append("rating", ratingInput);
+    formData.append("image", imageInput);
+
     const response = await fetch(`/api/products/${productId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: nameInput,
-        price: priceInput,
-        description: descriptionInput,
-        image: imageInput,
-        rating: ratingInput,
-      }),
+      body: formData,
     });
 
     if (!response.ok) {
