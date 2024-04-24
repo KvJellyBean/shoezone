@@ -34,6 +34,11 @@ const accountSchema = new Schema({
     required: [true],
     default: "address"
   },
+  // profile:{
+  //   type: String,
+  //   required: [true],
+  //   default: "./assets/photoprofile/profile.jpg"
+  // },
 });
 
 accountSchema.pre("save", async function (next) {

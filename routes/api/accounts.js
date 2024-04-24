@@ -124,7 +124,8 @@ router.put("/:id", async (req, res) => {
   try {
     const updatedAccount = await Account.findByIdAndUpdate(
       req.params.id,
-      req.body
+      req.body,
+      { new: true }
     );
     if (!updatedAccount) {
       res.status(404).json({ message: "Not Found" });
