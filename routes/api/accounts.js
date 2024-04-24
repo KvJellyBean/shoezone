@@ -110,21 +110,22 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/api/account", async(req, res) => {
+router.get("/api/account", async (req, res) => {
   try {
     const accounts = await Account.find();
     res.status(200).json(accounts);
   } catch (error) {
-    res.status(500).json({message: error.message})
+    res.status(500).json({ message: error.message });
   }
-})
+});
 
 //update
 router.put("/:id", async (req, res) => {
   try {
     const updatedAccount = await Account.findByIdAndUpdate(
       req.params.id,
-      req.body
+      req.body,
+      { new: true }
     );
     if (!updatedAccount) {
       res.status(404).json({ message: "Not Found" });
