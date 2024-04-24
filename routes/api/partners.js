@@ -71,7 +71,8 @@ router.put("/:id", async (req, res) => {
 
       const updatedPartner = await Partners.findByIdAndUpdate(
         req.params.id,
-        updatedPartnerData
+        updatedPartnerData,
+        { new: true }
       );
       if (!updatedPartner) {
         res.status(404).json({ message: "Not Found" });
