@@ -2,10 +2,11 @@
 let products = [];
 let searchResults = [];
 let productId;
+let userId = document.querySelector("#logoutBtn.userData").dataset.userId;
+let userRole = document.querySelector("#logoutBtn.userData").dataset.userRole;
 
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
-const userRole = shopContainer.dataset.userRole;
 
 // DOM Element
 const searchBar = document.querySelector(".form-control");
@@ -32,32 +33,57 @@ async function fetchProducts() {
 }
 
 // Add product to cart
-function addProductToCart(event, productId) {
+function addProductToCart(event, productId, userId) {
   const product = products.find((prod) => prod._id === productId);
-  // Make a POST request to the /api/carts route with the product data
-  fetch("/api/carts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(product),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Product added to cart:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
 
-// Fetch cart items from API
-function fetchCartItems() {
-  fetch("/api/carts")
+  // Menyertakan userId ke dalam data produk
+  const cartData = {
+    userId: userId,
+    products: product,
+  };
+
+  // Check di database apakah user dan produk sudah ada di keranjang
+  fetch(`/api/carts/${userId}`)
     .then((response) => response.json())
     .then((data) => {
-      // Render the cart items on the page
-      renderCartItems(data);
+      const cart = data.find((cart) => cart.userId === userId);
+
+      if (cart) {
+        let updatedCart;
+
+        if (cart.products.find((prod) => prod._id === productId)) {
+          updatedCart = {
+            // Update quantity inside products list
+            products: cart.products.map((prod) =>
+              prod._id === productId
+                ? { ...prod, quantity: prod.quantity + 1 }
+                : prod
+            ),
+          };
+        } else {
+          updatedCart = {
+            products: [...cart.products, product],
+          };
+        }
+
+        // Melakukan permintaan PUT ke rute /api/carts/:id dengan data produk yang diperbarui
+        fetch(`/api/carts/${cart._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedCart),
+        });
+      } else {
+        // Jika produk belum ada di keranjang, maka tambahkan produk baru
+        fetch("/api/carts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(cartData),
+        });
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -330,7 +356,7 @@ function renderProducts(products) {
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
       e.preventDefault();
-      addProductToCart(e, button.dataset.productId);
+      addProductToCart(e, button.dataset.productId, userId);
     });
   });
 }
@@ -399,6 +425,7 @@ async function addProduct(event) {
     formData.append("description", descriptionInput);
     formData.append("image", imageInput);
     formData.append("rating", ratingInput);
+    formData.append("quantity", 1);
 
     const response = await fetch("/api/products", {
       method: "POST",
@@ -463,6 +490,7 @@ async function editProduct(event, productId) {
     formData.append("description", descriptionInput);
     formData.append("rating", ratingInput);
     formData.append("image", imageInput);
+    formData.append("quantity", 1);
 
     const response = await fetch(`/api/products/${productId}`, {
       method: "PUT",
