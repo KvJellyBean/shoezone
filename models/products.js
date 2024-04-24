@@ -18,6 +18,11 @@ const productSchema = new Schema({
     max: 5,
     default: 0,
   },
+  quantity: {
+    type: Number,
+    min: 1,
+    default: 1,
+  },
 });
 
 module.exports = model("product", productSchema);
