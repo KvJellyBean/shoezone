@@ -1,51 +1,51 @@
 let cart = [];
 let purchaseHistory = [];
+let userId = document.querySelector("#logoutBtn.userData").dataset.userId;
 
 const CartService = (() => {
-  let totalItems = 0;
-  let totalPrice = 0;
+  function getCart() {
+    return cart;
+  }
 
-  function removeFromCart(index) {
+  function getPurchaseHistory() {
+    return purchaseHistory;
+  }
+
+  function clearCart() {
+    cart = [];
+    CartService.updateTotals();
+  }
+
+  function removeFromCart(index, isCheckout = false) {
     if (index > -1) {
       let product = cart[index];
-      const confirmation = window.confirm(
-        "Are you sure you want to remove this item from the cart?"
-      );
 
-      if (confirmation) {
-        // Trigger confirmation only for cart removal
-        const removeFromCartConfirmation = window.confirm(
-          "This will remove the item from the cart. Are you sure you want to proceed?"
-        );
-
-        if (removeFromCartConfirmation) {
-          cart.splice(index, 1);
-          CartService.updateTotals();
-
-          fetch(`/api/carts/${product._id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              // Update the cart after successful deletion
-              fetchCarts();
-              console.log("Product removed from cart:", data);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              // Handle the error or display an error message to the user
-            });
-        }
+      if (isCheckout) {
+        alert(`You have successfully checked out ${product.name}!`);
+      } else {
+        alert(`You have successfully removed ${product.name} from the cart!`);
       }
+
+      fetch(`/api/carts/${userId}/${product._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          fetchCarts();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     }
+
     CartService.renderCartItems();
   }
 
@@ -70,27 +70,11 @@ const CartService = (() => {
     return { totalItems, totalPrice };
   }
 
-  function getCart() {
-    console.log(cart);
-    return cart;
-  }
-
-  function getPurchaseHistory() {
-    return purchaseHistory;
-  }
-
-  function clearCart() {
-    cart = [];
-    CartService.updateTotals();
-    // Save the updated cart to local storage
-    // localStorage.setItem("cart", JSON.stringify(this.cart));
-  }
-
   // Add item to cart and save it to the database
   async function addToPurchaseHistory(product) {
     // Add the total price to the product
     product.totalPrice = product.price * product.quantity;
-    product.date = new Date();
+    product.checkoutTime = new Date();
 
     // Add the product to the front of the purchase history
     purchaseHistory.unshift(product);
@@ -101,8 +85,8 @@ const CartService = (() => {
     }
 
     // Save the product to the database
-    const response = await fetch(`/api/purchaseHistory`, {
-      method: "POST",
+    const response = await fetch(`/api/purchaseHistory/${userId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -130,7 +114,7 @@ const CartService = (() => {
         if (removeFromPurchaseConfirmation) {
           purchaseHistory.splice(index, 1);
 
-          fetch(`/api/purchaseHistory/${product._id}`, {
+          fetch(`/api/purchaseHistory/${userId}/${product._id}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -145,11 +129,9 @@ const CartService = (() => {
             .then((data) => {
               // Update the purchase history after successful deletion
               fetchPurchaseHistory();
-              console.log("Product removed from purchase history:", data);
             })
             .catch((error) => {
               console.error("Error:", error);
-              // Handle the error or display an error message to the user
             });
         }
       }
@@ -164,7 +146,7 @@ const CartService = (() => {
 
     if (confirmation) {
       try {
-        const response = await fetch("/api/purchaseHistory", {
+        const response = await fetch(`/api/purchaseHistory/${userId}`, {
           method: "DELETE",
         });
         if (!response.ok) {
@@ -172,10 +154,8 @@ const CartService = (() => {
         }
         // Reload the page to reflect the changes
         window.location.reload();
-        console.log("Products removed from Purchase History");
       } catch (error) {
         console.error("Error clearing purchase history:", error);
-        // Handle error if necessary
       }
     }
   }
@@ -251,9 +231,14 @@ const CartService = (() => {
 
       // Attach event listeners to the remove buttons and quantity inputs
       document.querySelectorAll(".remove-product-cart").forEach((button) => {
-        button.addEventListener("click", () =>
-          removeFromCart(button.dataset.index)
-        );
+        button.addEventListener("click", () => {
+          let resp = window.confirm(
+            `Are you sure you want to remove this item?`
+          );
+          if (resp) {
+            removeFromCart(button.dataset.index);
+          }
+        });
       });
       document.querySelectorAll(".increase-quantity").forEach((button) => {
         button.addEventListener("click", () =>
@@ -283,7 +268,7 @@ const CartService = (() => {
     const isChecked = document.getElementById(`checkout-${index}`).checked;
     if (cart[index].quantity < 10) {
       cart[index].quantity++;
-      await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
+      await updateQuantityOnServer(index, cart[index].quantity);
       renderCartItems();
       document.getElementById(`checkout-${index}`).checked = isChecked;
       updateTotals();
@@ -295,7 +280,7 @@ const CartService = (() => {
     const isChecked = document.getElementById(`checkout-${index}`).checked;
     if (cart[index].quantity > 1) {
       cart[index].quantity--;
-      await updateQuantityAndTotalPriceOnServer(index, cart[index].quantity);
+      await updateQuantityOnServer(index, cart[index].quantity);
       renderCartItems();
       document.getElementById(`checkout-${index}`).checked = isChecked;
       updateTotals();
@@ -313,7 +298,7 @@ const CartService = (() => {
       newQuantity !== cart[index].quantity
     ) {
       cart[index].quantity = newQuantity;
-      await updateQuantityAndTotalPriceOnServer(index, newQuantity);
+      await updateQuantityOnServer(index, newQuantity);
       renderCartItems();
       document.getElementById(`checkout-${index}`).checked = isChecked;
       updateTotals();
@@ -321,30 +306,22 @@ const CartService = (() => {
   }
 
   // Function to update quantity on server
-  async function updateQuantityAndTotalPriceOnServer(index, quantity) {
+  async function updateQuantityOnServer(index, quantity) {
     const product = cart[index];
-    const totalPrice = product.price * quantity;
+
     try {
-      const response = await fetch(`/api/carts/${product._id}`, {
+      const response = await fetch(`/api/carts/${userId}/${product._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ quantity, totalPrice }),
+        body: JSON.stringify({ quantity: quantity }),
       });
       if (!response.ok) {
-        throw new Error("Failed to update quantity and total price on server");
+        throw new Error("Failed to update quantity");
       }
-      console.log(
-        "Quantity and total price updated on server:",
-        await response.json()
-      );
     } catch (error) {
-      console.error(
-        "Error updating quantity and total price on server:",
-        error
-      );
-      // Handle error if necessary
+      console.error(error);
     }
   }
 
@@ -451,61 +428,35 @@ const CartService = (() => {
     const confirmation = window.confirm("Are you sure you want to checkout?");
 
     if (confirmation) {
-      // const checkoutTime = new Date();
-      // because of window reload not used ^
-
       // Iterate over each checked product in the cart
       for (let checkbox of checked) {
         const index = checkbox.dataset.index;
         const product = cart[index];
         try {
-          // Add the current checkout time to the product
-          // product.checkoutTime = checkoutTime;
-          // because of window reload not used ^
-
           // Add the product to the purchase history
-          await CartService.addToPurchaseHistory(product);
+          CartService.addToPurchaseHistory(product);
 
-          // If adding to purchase history is successful, delete the product from the cart
-          const response = await fetch(`/api/carts/${product._id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to delete product from cart");
-          }
+          // Remove the product from the cart
+          removeFromCart(index, true);
         } catch (error) {
           console.error("Error checking out:", error);
         }
       }
 
-      // Clear the cart after processing all items
-      CartService.clearCart();
       CartService.renderCartItems();
       CartService.renderPurchaseHistory();
       CartService.updateTotals();
-
-      // Handling for cart
-      // Please don't ask why I did this
-      // Wait for a moment before reloading the page
-      setTimeout(() => {
-        location.reload();
-      }, 1000); // wait for 1 second
     }
   }
 
   return {
-    removeFromCart,
-    updateTotals,
     getCart,
     getPurchaseHistory,
     clearCart,
+    removeFromCart,
+    updateTotals,
     addToPurchaseHistory,
     clearPurchaseHistory,
-    //
     renderCartItems,
     renderPurchaseHistory,
     checkout,
@@ -515,14 +466,13 @@ const CartService = (() => {
 // Fetch products from API
 async function fetchCarts() {
   try {
-    const response = await fetch("/api/carts");
+    const response = await fetch(`/api/carts/${userId}`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    cart = await response.json();
-    console.log(cart);
+    let data = await response.json();
+    cart = await data[0].products;
     CartService.renderCartItems();
-    CartService.updateTotals();
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }
@@ -530,12 +480,12 @@ async function fetchCarts() {
 
 async function fetchPurchaseHistory() {
   try {
-    const response = await fetch("/api/purchaseHistory");
+    const response = await fetch(`/api/purchaseHistory/${userId}`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    purchaseHistory = await response.json();
-    console.log(purchaseHistory);
+    let data = await response.json();
+    purchaseHistory = await data[0].products;
     CartService.renderPurchaseHistory();
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
@@ -559,5 +509,6 @@ document
   .addEventListener("click", CartService.clearPurchaseHistory);
 
 CartService.updateTotals();
+
 export default CartService;
 export { cart, purchaseHistory };
