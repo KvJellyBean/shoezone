@@ -14,6 +14,9 @@ const brandButtons = document.querySelectorAll(".btn.btn-primary.text-dark");
 const sortSelect = document.getElementById("sortFeature");
 const addProductBtn = document.querySelector(".addProduct");
 const addProductForm = document.querySelector("#addProductDialog form");
+const submitBtnProduct = document.querySelector(".submitBtn");
+const submiBtnProduct = document.querySelector(".submitBtn");
+const editBtnProduct = document.querySelector(".editBtn");
 const cancelAddProduct = document.querySelector(".cancelAddProduct");
 const cancelEditProduct = document.querySelector(".cancelEditProduct");
 const editProductForm = document.querySelector("#editProductDialog form");
@@ -507,8 +510,10 @@ async function editProduct(event, productId) {
 
 async function addAndShowProduct(event) {
   event.preventDefault();
+  submitBtnProduct.disabled = true;
   await addProduct(event);
   await fetchProducts();
+  submitBtnProduct.disabled = false;
   renderProducts(products);
   closeAddProductDialog();
 }
@@ -531,8 +536,10 @@ async function deleteAndShowProduct(event, productId) {
 
 async function editAndShowProduct(event, productId) {
   event.preventDefault();
+  editBtnProduct.disabled = true;
   await editProduct(event, productId);
   await fetchProducts();
+  editBtnProduct.disabled = false;
   renderProducts(products);
   closeEditProductDialog();
 }
