@@ -4,16 +4,19 @@ main {
   overflow: hidden;
 }
 
-
-
 hr {
   width: 10%;
-  height: 5px;
+  height: 5px !important;
   border: none;
   margin: auto;
   margin-top: -2rem;
   margin-bottom: 2.5rem;
-  background: red;
+  background: #198754;
+}
+
+.cartText {
+  font-size: calc(1.3rem + 0.6vw);
+  margin-bottom: 2rem;
 }
 
 #cartContainer {
@@ -23,7 +26,8 @@ hr {
   flex-direction: column;
 }
 
-.shop-button, .shop-button2 {
+.shop-button,
+.shop-button2 {
   color: black;
   text-transform: uppercase;
   transition: all 0.3s ease;
@@ -36,12 +40,18 @@ hr {
   position: relative;
 }
 
-.shop-button:hover, .shop-button2:hover {
+.goToShop {
+  margin-bottom: 1.25rem;
+}
+
+.shop-button:hover,
+.shop-button2:hover {
   color: green;
   font-weight: 600;
 }
 
-.shop-button::after, .shop-button2::after {
+.shop-button::after,
+.shop-button2::after {
   content: "";
   width: 0;
   height: 0.1rem;
@@ -52,7 +62,8 @@ hr {
   transition: all 0.3s ease;
 }
 
-.shop-button:hover::after, .shop-button2:hover::after {
+.shop-button:hover::after,
+.shop-button2:hover::after {
   width: 100%;
 }
 
@@ -111,12 +122,14 @@ hr {
 }
 
 .checkout-btn.btn-outline {
+  margin-top: 1rem;
   color: #4caf50;
   border-color: #4caf50;
 }
 
 .checkout-btn.btn-outline:hover {
   background-color: #4caf50;
+  font-weight: bold;
   color: #fff;
 }
 
@@ -124,7 +137,8 @@ hr {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
+  padding-top: 10rem;
+  padding-bottom: 5rem;
 }
 
 .purchase-history-wrapper {
@@ -139,33 +153,27 @@ hr {
 }
 
 .historyText {
-  padding-top: 10rem; 
   padding-bottom: 1rem;
-  border-bottom: 1px solid #000;
   width: 90%;
   margin: 0 auto;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; 
-  height: 100%;  */
 }
 
 .clear-history-btn {
   display: flex;
   margin-top: 2rem;
   background-color: #f8f9fa;
-  color: #343a40;
-  border-color: #343a40;
+  color: #f44336;
+  border-color: #f44336;
   padding: 10px 20px;
-  margin-left: 10px;
   font-size: 16px;
   border-radius: 5px;
   transition: all 0.3s ease;
 }
 
 .clear-history-btn:hover {
-  background-color: #343a40;
+  background-color: #f44336;
   color: #f8f9fa;
+  font-weight: bold;
 }
 
 .swiper-container {
@@ -191,7 +199,6 @@ hr {
   }
 }
 
-
 /* New CSS for cart items */
 .product {
   display: grid;
@@ -214,7 +221,6 @@ hr {
   border: 1px solid #eee;
 }
 
-
 /* Checkbox 
 Courtesy of Himalaya Singh 
 https://getcssscan.com/css-checkboxes-examples */
@@ -229,7 +235,7 @@ https://getcssscan.com/css-checkboxes-examples */
 
 .checkbox-wrapper-26 label {
   --size: 50px;
-  --shadow: calc(var(--size) * .07) calc(var(--size) * .1);
+  --shadow: calc(var(--size) * 0.07) calc(var(--size) * 0.1);
 
   position: relative;
   display: block;
@@ -252,8 +258,8 @@ https://getcssscan.com/css-checkboxes-examples */
   top: 50%;
   right: 0;
   left: 0;
-  width: calc(var(--size) * .7);
-  height: calc(var(--size) * .7);
+  width: calc(var(--size) * 0.7);
+  height: calc(var(--size) * 0.7);
   margin: 0 auto;
   background-color: #fff;
   transform: translateY(-50%);
@@ -263,8 +269,8 @@ https://getcssscan.com/css-checkboxes-examples */
 }
 
 .checkbox-wrapper-26 label:hover:before {
-  width: calc(var(--size) * .55);
-  height: calc(var(--size) * .55);
+  width: calc(var(--size) * 0.55);
+  height: calc(var(--size) * 0.55);
   box-shadow: inset 0 var(--shadow) #ff9d96;
 }
 
@@ -276,11 +282,11 @@ https://getcssscan.com/css-checkboxes-examples */
   position: absolute;
   top: -1px;
   right: 0;
-  left: calc(var(--size) * -.05);
-  width: calc(var(--size) * .6);
-  height: calc(var(--size) * .6);
+  left: calc(var(--size) * -0.05);
+  width: calc(var(--size) * 0.6);
+  height: calc(var(--size) * 0.6);
   margin: 0 auto;
-  margin-left: calc(var(--size) * .14);
+  margin-left: calc(var(--size) * 0.14);
   transform: rotateZ(-40deg);
 }
 
@@ -297,19 +303,19 @@ https://getcssscan.com/css-checkboxes-examples */
 .checkbox-wrapper-26 .tick_mark:before {
   left: 0;
   bottom: 0;
-  width: calc(var(--size) * .1);
-  height: calc(var(--size) * .3);
+  width: calc(var(--size) * 0.1);
+  height: calc(var(--size) * 0.3);
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.23);
-  transform: translateY(calc(var(--size) * -.68));
+  transform: translateY(calc(var(--size) * -0.68));
 }
 
 .checkbox-wrapper-26 .tick_mark:after {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: calc(var(--size) * .1);
+  height: calc(var(--size) * 0.1);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.23);
-  transform: translateX(calc(var(--size) * .78));
+  transform: translateX(calc(var(--size) * 0.78));
 }
 
 .checkbox-wrapper-26 input[type="checkbox"]:checked + label {
@@ -338,7 +344,8 @@ https://getcssscan.com/css-checkboxes-examples */
   grid-column: 1/2; */
 }
 
-.product-image-cart img, .product-image-purchase-history img {
+.product-image-cart img,
+.product-image-purchase-history img {
   width: 100%;
 }
 
@@ -378,7 +385,7 @@ https://getcssscan.com/css-checkboxes-examples */
 }
 
 .product-quantity button:hover {
-  color: #007BFF;
+  color: #007bff;
 }
 
 .product-removal {
@@ -386,7 +393,8 @@ https://getcssscan.com/css-checkboxes-examples */
   justify-content: center;
 }
 
-.remove-product-cart, .remove-product-history {
+.remove-product-cart,
+.remove-product-history {
   color: #f44336;
   border: none;
   background: none;
@@ -397,9 +405,10 @@ https://getcssscan.com/css-checkboxes-examples */
   text-align: center;
 }
 
-.product-checkout-time{
+.product-checkout-time {
   display: flex;
   flex-direction: column;
+  align-items: start;
   margin-top: 1rem;
 }
 
@@ -505,7 +514,9 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
     padding-bottom: 1.5rem;
   }
 
-  .product-name, .product-price, .product-description {
+  .product-name,
+  .product-price,
+  .product-description {
     padding-left: 1rem;
   }
 
@@ -519,12 +530,12 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
   }
 
   #emptyCart h2 {
-    font-size: 2rem
+    font-size: 2rem;
   }
 
   #cartContainer .cartText {
     font-size: 2rem;
-  } 
+  }
 
   .product {
     grid-template-columns: 1fr;
@@ -537,7 +548,9 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
     padding-bottom: 2rem;
   }
 
-  .product-name, .product-price, .product-description {
+  .product-name,
+  .product-price,
+  .product-description {
     padding-left: 2rem;
   }
 
@@ -551,7 +564,8 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
   }
 
   .product {
-    grid-template-columns: 1fr 2fr 1fr;  }
+    grid-template-columns: 1fr 2fr 1fr;
+  }
 }
 
 @media (min-width: 1025px) {
@@ -567,8 +581,8 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
   .picsum-img-wrapper img {
     padding-top: 4rem;
     width: 300px;
-    height: 300px; 
-    object-fit: cover; 
+    height: 300px;
+    object-fit: cover;
   }
 
   .product {
@@ -577,9 +591,11 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
 
   .product-history {
     grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
-
   }
-  .product-price, .product-line-price, .product-quantity-history, product-checkout-time {
+  .product-price,
+  .product-line-price,
+  .product-quantity-history,
+  product-checkout-time {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -588,12 +604,10 @@ https://codepen.io/aido179-1471800764/pen/jZJjpo */
   .product-quantity {
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
   }
-
-  
 }
-  
+
 /* * {
   border: 1px solid #ff0000;;
 } */
