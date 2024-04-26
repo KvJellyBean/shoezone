@@ -1,107 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Metadata -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title -->
-    <title>Account</title>
-    <!-- External CSS -->
+  <head>
+    <title>
+      <%= userRole == "admin" ? "Admin Dashboard" : "User Profile" %>
+    </title>
     <%- include('layouts/head.ejs'); -%>
+
+    <!-- External CSS -->
     <link rel="stylesheet" type="text/css" href="/css/account.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <%- include('layouts/header.ejs'); -%>
+
+    <!-- Main -->
     <main>
-        <!-- Header -->
-        <%- include('layouts/header.ejs'); -%>
-        <!-- Main Account Section -->
-        <div class="mainAcc" id="account-cards" data-user-role="<%= userRole %>" data-user="<%= user._id %>"> 
-            <form class="container light-style flex-grow-1 container-p-y">            
-                <div class="card overflow-hidden">
-                    <div class="row no-gutters row-bordered row-border-light" >
-                        <!-- Account Settings Header -->
-                        <h4 class="font-weight-bold py-3 mb-60">Account settings </h4>
-                        <!-- Sidebar -->
-                        <div class="col-md-2 pt-0"> 
-                            <div class="list-group list-group-flush account-settings-links">
-                                <!-- Sidebar Links -->
-                                <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">General</a>
-                                <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Info</a>
-                            </div>
-                        </div>
-                        <!-- Main Content -->
-                        <div class="col-md-9">
-                            <div class="tab-content">
-                                <!-- GENERAL Tab -->
-                                <div class="tab-pane fade active show" id="account-general">
-                                    <div class="card-body">
-                                        <!-- Username -->
-                                        <div class="form-group">
-                                            <label class="form-label">Username</label>
-                                            <div class="input-group">
-                                                <input id="usernameInput" type="text" class="form-control" value=<%=user.username %>>
-                                            </div>
-                                        </div>
-                                        <!-- Name -->
-                                        <div class="form-group">
-                                            <label class="form-label">Name</label>
-                                            <div class="input-group">
-                                                <input id="nameInput"  type="text" class="form-control" placeholder="Enter your name.." value=<%= user.name %> >
-                                            </div>
-                                        </div>
-                                        <!-- Email -->
-                                        <div class="form-group">
-                                            <label class="form-label">E-mail</label>
-                                            <div class="input-group">
-                                                <input id="emailInput" type="text" class="form-control" value="<%= user.email %>" >
-                                            </div>
-                                        </div>
-                                        <!-- Phone -->
-                                        <div class="form-group">
-                                            <label class="form-label">Phone</label>
-                                            <div class="input-group">
-                                                <input id="phoneInput" type="text" class="form-control" placeholder="Enter your phone number..." value=<%= user.phone %>>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Info Tab -->
-                                <div class="tab-pane fade" id="account-info">
-                                    <div class="card-body pb-2">
-                                        <!-- Address -->
-                                        <div class="form-group">
-                                            <label class="form-label">Address</label>
-                                            <input id="addressInput" class="form-control" placeholder="masukan alamat anda" rows="5" value=<%= user.address %>>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                        <!-- Button Group -->
-                        <div class="text-right mt-3 center-buttons d-flex justify-content-center">
-                            <div class="btn-group">
-                                <!-- Save Changes Button -->
-                                <button id="submit" type="submit" class="btn btn-success submitBtn">Save changes</button>&nbsp;
-                                <!-- Cancel Button -->
-                                <button type="button" class="btn btn-danger cancelAddProduct">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+      <!-- Dashboard Section -->
+      <div class="mainAcc" id="account-cards" data-user-role="<%= userRole %>">
+        <% if(userRole == "admin") { %> <%-
+        include('layouts/Account/dashboardAdmin.ejs'); -%>
+
+        <!-- Add Product Dialog Form -->
+        <%- include('layouts/Shop/dialogAdd.ejs'); -%>
+
+        <!-- Edit Product Dialog Form -->
+        <%- include('layouts/Shop/dialogEdit.ejs'); -%>
+
+        <!-- ADd Partner Dialog Form -->
+        <%- include('layouts/Account/dialogAddPartner.ejs'); -%>
+
+        <!-- Edit Partner Dialog Form -->
+        <%- include('layouts/Account/dialogEditPartner.ejs'); -%> <%} else { %>
+        <%- include('layouts/Account/dashboardUser.ejs'); -%> <% } %>
+      </div>
     </main>
+
     <!-- Footer -->
-    <footer>
-        <%- include('layouts/footer.ejs'); -%>
-    </footer>
+    <%- include('layouts/footer.ejs'); -%>
+
     <!-- Script -->
-    <script src="/js/account.js"></script>
+    <script src="/js/account.js" type="module"></script>
+
     <!-- Font Awesome -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"></script>
-</body>
+  </body>
 </html>
