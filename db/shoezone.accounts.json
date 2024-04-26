@@ -3,5 +3,8 @@
   "username": "admin",
   "email": "admin@gmail.com",
   "password": "$2b$10$xoBm3wZ1v3OV3khI5y7WrOmtDJ6xEUJCyDGjK44PEGLGv/NkELjUu",
+  "address": "Jl. Letjen S. Parman No.1, RT.6/RW.16, Tomang, Kec. Grogol petamburan, Kota Jakarta Barat",
+  "image": "./assets/profiles/profile.png",
+  "phone": "+6281234567890",
   "__v": { "$numberInt": "0" }
 }

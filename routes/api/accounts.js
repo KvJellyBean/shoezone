@@ -5,6 +5,19 @@ const router = express.Router();
 const Account = require("../../models/accounts");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const fs = require("fs");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/assets/profiles");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "_" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage }).single("image");
 
 // cookie
 router.use(cookieParser());
@@ -57,7 +70,7 @@ const handleErrors = (err) => {
 
 // Get account page
 router.get("/account", (req, res) => {
-  res.render("account", { title: "My Account", layout: "account" });
+  res.render("account", { layout: "account" });
 });
 
 // Get login
@@ -110,27 +123,76 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/api/account", async(req, res) => {
+router.get("/api/account", async (req, res) => {
   try {
     const accounts = await Account.find();
     res.status(200).json(accounts);
   } catch (error) {
-    res.status(500).json({message: error.message})
+    res.status(500).json({ message: error.message });
   }
-})
+});
 
-//update
-router.put("/:id", async (req, res) => {
+//get account by id
+router.get("/api/account/:id", async (req, res) => {
   try {
-    const updatedAccount = await Account.findByIdAndUpdate(
-      req.params.id,
-      req.body
-    );
-    if (!updatedAccount) {
-      res.status(404).json({ message: "Not Found" });
+    const account = await Account.findById(req.params.id);
+    if (!account) {
+      return res.status(404).json({ message: "Account Not Found" });
     }
+    res.status(200).json(account);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-    res.status(200).json(updatedAccount);
+// Update account by id
+router.put("/api/account/:userId", async (req, res) => {
+  try {
+    upload(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        // Multer error while uploading file
+        return res.status(500).json({ message: err.message });
+      } else if (err) {
+        return res.status(500).json({ message: err.message });
+      }
+
+      // Fetch account from database by id
+      let account = await Account.findById(req.params.userId);
+      if (!account) {
+        return res.status(404).json({ message: "Account Not Found" });
+      }
+
+      // Update account data based on request body
+      account.username = req.body.username;
+      account.phone = req.body.phone;
+      account.address = req.body.address;
+
+      // Check if a new image is uploaded
+      if (req.file) {
+        // Mendapatkan nama file lama
+        const oldImageName = account.image.split("/").pop();
+
+        // Jika nama file lama bukan "profile.png", maka hapus file lama
+        if (oldImageName !== "profile.png") {
+          fs.unlink(`public/assets/profiles/${oldImageName}`, (err) => {
+            if (err) {
+              console.error("Error deleting old image file:", err);
+              return res
+                .status(500)
+                .json({ message: "Error deleting old image file" });
+            }
+          });
+        }
+
+        // Mengganti image dengan file baru
+        account.image = "./assets/profiles/" + req.file.filename;
+      }
+
+      // Save the updated account to the database
+      const updatedAccount = await account.save();
+
+      res.status(200).json(updatedAccount);
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

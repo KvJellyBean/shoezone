@@ -29,6 +29,28 @@ form.addEventListener("submit", async (e) => {
       passwordError.textContent += data.errors.password;
     }
     if (data._id && data.email) {
+      const userCart = await fetch(`/api/carts/${data._id}`);
+      const dataCart = await userCart.json();
+      if (!dataCart.length) {
+        fetch("/api/carts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: data._id, products: [] }),
+        });
+      }
+
+      const userPurchaseHistory = await fetch(
+        `/api/purchaseHistory/${data._id}`
+      );
+      const dataPurchaseHistory = await userPurchaseHistory.json();
+      if (!dataPurchaseHistory.length) {
+        fetch("/api/purchaseHistory", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: data._id, products: [] }),
+        });
+      }
+
       location.assign("/");
     }
   } catch (error) {

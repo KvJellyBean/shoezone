@@ -31,6 +31,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
+app.use("/api/partners", require("./routes/api/partners"));
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/carts", require("./routes/api/carts"));
 app.use("/api/purchaseHistory", require("./routes/api/purchaseHistory"));

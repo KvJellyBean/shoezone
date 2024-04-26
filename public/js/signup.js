@@ -41,6 +41,18 @@ form.addEventListener("submit", async (e) => {
       passwordError.textContent += data.errors.password;
     }
     if (data._id && data.email) {
+      fetch("/api/carts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: data._id, products: [] }),
+      });
+
+      fetch("/api/purchaseHistory", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: data._id, products: [] }),
+      });
+
       location.assign("/");
     }
   } catch (error) {

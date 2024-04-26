@@ -15,14 +15,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Method get by userId
+router.get("/:userId", async (req, res) => {
+  try {
+    const items = await PurchaseHistory.find({ userId: req.params.userId });
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Method Post
 router.post("/", async (req, res) => {
   try {
-    const newProduct = new PurchaseHistory({
-      ...req.body,
-      checkoutTime: new Date(), // Save the current date and time
-      ipAddress: req.ip, // Save the user's IP address
-    });
+    const newProduct = new PurchaseHistory(req.body);
+
     // Check if the purchase history has more than 10 items
     const count = await PurchaseHistory.countDocuments();
     if (count >= 10) {
@@ -42,44 +49,52 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Method Put
-router.put("/:id", async (req, res) => {
+// Method put untuk menambahkan product ke purchase history berdasarkan userId
+router.put("/:userId", async (req, res) => {
   try {
-    const updatedProducts = await PurchaseHistory.findByIdAndUpdate(
-      req.params.id,
-      req.body,
+    const updatedPurchaseHistory = await PurchaseHistory.findOneAndUpdate(
+      { userId: req.params.userId },
+      { $push: { products: req.body } },
       { new: true }
     );
-    if (!updatedProducts) {
+    if (!updatedPurchaseHistory) {
       res.status(404).json({ message: "Not Found" });
     }
 
-    res.status(200).json(updatedProducts);
+    res.status(200).json(updatedPurchaseHistory);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Method Delete One
-router.delete("/:id", async (req, res) => {
+// Method Delete
+router.delete("/:userId/:productId", async (req, res) => {
   try {
-    const product = await PurchaseHistory.findById(req.params.id);
-    if (product) {
-      await PurchaseHistory.findByIdAndDelete(req.params.id);
-      res.status(200).json("Product deleted successfully");
-    } else {
-      res.status(404).json({ message: "Product not found" });
+    const updatedProdutHistory = await PurchaseHistory.findOneAndUpdate(
+      { userId: req.params.userId },
+      { $pull: { products: { _id: req.params.productId } } },
+      { new: true }
+    );
+    if (!updatedProdutHistory) {
+      res.status(404).json({ message: "Not Found" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Method Delete All
-router.delete("/", async (req, res) => {
+router.delete("/:userId", async (req, res) => {
   try {
-    await PurchaseHistory.deleteMany({});
-    res.status(200).json("All products deleted successfully");
+    const updatedPurchaseHistory = await PurchaseHistory.findOneAndUpdate(
+      { userId: req.params.userId },
+      { products: [] },
+      { new: true }
+    );
+    if (!updatedPurchaseHistory) {
+      res.status(404).json({ message: "Not Found" });
+    }
+
+    res.status(200).json(updatedPurchaseHistory);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

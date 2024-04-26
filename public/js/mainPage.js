@@ -17,6 +17,20 @@ async function fetchProducts() {
   }
 }
 
+// Fetch partners from API
+async function fetchPartners() {
+  try {
+    const response = await fetch("/api/partners");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const partners = await response.json();
+    renderPartners(partners);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
 // Generate Star Rating based on product rating
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
@@ -96,6 +110,22 @@ function renderProducts(products) {
   });
 }
 
+// Render partners to page
+function renderPartners(partners) {
+  console.log("Rendering partners:", partners);
+  const partnerContainer = document.querySelector(".client-in ul");
+  partners.forEach((partner) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+    <a href="${partner.website}" target="_blank">
+      <img src="${partner.logo}" alt="${partner.name} Shadow" />
+      <img src="${partner.logo}" alt="${partner.name}" />
+    </a>
+    `;
+    partnerContainer.appendChild(li);
+  });
+}
+
 // Add product to cart page
 function addProductToCart(product) {
   console.log("Adding product to cart:", product);
@@ -117,5 +147,8 @@ function addProductToCart(product) {
     });
 }
 
-// Fetch and render when page is loaded
-document.addEventListener("DOMContentLoaded", fetchProducts);
+// Fetch and render product and partner when page is loaded
+document.addEventListener("DOMContentLoaded", async function () {
+  await fetchProducts();
+  await fetchPartners();
+});

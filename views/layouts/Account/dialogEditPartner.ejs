@@ -1,0 +1,42 @@
+<dialog id="editPartnerDialog">
+  <form method="post" action="/api/partners/:id" enctype="multipart/form-data">
+    <legend>Edit Partner</legend>
+    <div class="form-wrapper">
+      <div class="input-group">
+        <label for="partnerNameEditInput">Partner Name: </label>
+        <input
+          name="name"
+          type="text"
+          id="partnerNameEditInput"
+          value=""
+          autocomplete="true"
+          required
+          placeholder="Enter partner name..."
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="logoEditInput">Partner Logo: </label>
+        <input name="logo" type="file" id="logoEditInput" value="" />
+      </div>
+
+      <div class="input-group">
+        <label for="websiteEditInput">Partner Website: </label>
+        <input
+          name="website"
+          type="text"
+          id="websiteEditInput"
+          value=""
+          autocomplete="true"
+          required
+          placeholder="Enter partner website..."
+        />
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn-success editBtnPartner">Edit</button>
+      <button type="button" class="btn-danger cancelEditPartner">Cancel</button>
+    </div>
+  </form>
+</dialog>
