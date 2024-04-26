@@ -59,10 +59,12 @@ function renderProducts(products) {
   const hotProductContainer = document.querySelector(".hot-product div.row");
   hotProductContainer.innerHTML = "";
 
-  products.forEach((product) => {
+  products.forEach((product, index) => {
     hotProductContainer.innerHTML += `
     <!-- Product card -->
-    <div class="col">
+    <div class="col" data-aos="${
+      index === 0 ? "fade-left" : index === 1 ? "fade-down" : "fade-right"
+    }">
       <div class="card h-100"> <!-- Tambahkan kelas h-100 untuk menetapkan tinggi 100% -->
         <!-- Product image -->
         <div class="img-container container">
@@ -116,6 +118,7 @@ function renderPartners(partners) {
   const partnerContainer = document.querySelector(".client-in ul");
   partners.forEach((partner) => {
     const li = document.createElement("li");
+    li.dataset.aos = "zoom-out";
     li.innerHTML = `
     <a href="${partner.website}" target="_blank">
       <img src="${partner.logo}" alt="${partner.name} Shadow" />

@@ -184,7 +184,7 @@ const CartService = (() => {
       // Render the cart items
       cart.forEach((product, index) => {
         const item = `
-          <div class="product">
+          <div class="product" data-aos="fade-up">
             <div class="product-checkout checkbox-wrapper-26">
               <input type="checkbox" id="checkout-${index}" class="checkout-product" data-index="${index}">
                 <label for="checkout-${index}">
@@ -349,39 +349,39 @@ const CartService = (() => {
         const checkoutTime = formatCheckoutTime(new Date(product.checkoutTime));
 
         const item = `
-        <div class="product-checkout-time">
-          <span class="checkout-time-value">${checkoutTime}</span> 
-        </div>
-
-        <div class="product-history">
-          <div class="product-image-purchase-history">
-            <img src="${product.image}" alt="${product.name}" />
-          </div>
-    
-          <div class="product-details">
-            <div class="product-title">${product.name}</div>
-          </div>
-    
-          <div class="product-price">
-            <span class="price-title">Price</span>
-            <span class="price-value">$${product.price}</span>
-          </div>
-    
-          <div class="product-quantity-history">
-            <span class="quantity-title">Quantity</span>
-            <span class="quantity-value">${product.quantity}</span> 
-          </div>
-    
-          <div class="product-removal">
-            <button class="remove-product-history">Remove</button>
-          </div>
-    
-          <div class="product-line-price">
-            <span class="total-price-title">Total Price</span>
-            <span class="total-price-value">$${product.totalPrice}</span> 
+        <div class="puchaseHistoryWrap">
+          <div class="product-checkout-time">
+            <span class="checkout-time-value">${checkoutTime}</span> 
           </div>
 
-
+          <div class="product-history">
+            <div class="product-image-purchase-history">
+              <img src="${product.image}" alt="${product.name}" />
+            </div>
+      
+            <div class="product-details">
+              <div class="product-title">${product.name}</div>
+            </div>
+      
+            <div class="product-price">
+              <span class="price-title">Price</span>
+              <span class="price-value">$${product.price}</span>
+            </div>
+      
+            <div class="product-quantity-history">
+              <span class="quantity-title">Quantity</span>
+              <span class="quantity-value">${product.quantity}</span> 
+            </div>
+      
+            <div class="product-removal">
+              <button class="remove-product-history">Remove</button>
+            </div>
+      
+            <div class="product-line-price">
+              <span class="total-price-title">Total Price</span>
+              <span class="total-price-value">$${product.totalPrice}</span> 
+            </div>
+          </div>
         </div>
       `;
 
