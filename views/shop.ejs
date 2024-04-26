@@ -16,7 +16,10 @@
     <!-- Main -->
     <main>
       <div class="shop container-fluid py-5 px-5">
-        <h3 class="text-center text-uppercase fw-bold mb-5">
+        <h3
+          class="text-center text-uppercase fw-bold mb-5"
+          data-aos="fade-down"
+        >
           <span class="text-success">All</span> Products
         </h3>
         <hr />
@@ -42,19 +45,35 @@
                 class="col d-flex justify-content-center gap-2"
                 id="filterSortFeature"
               >
-                <button type="button" class="btn btn-primary text-dark">
+                <button
+                  type="button"
+                  class="btn btn-primary text-dark"
+                  data-aos="fade-right"
+                >
                   Nike
                 </button>
-                <button type="button" class="btn btn-primary text-dark">
+                <button
+                  type="button"
+                  class="btn btn-primary text-dark"
+                  data-aos="fade-right"
+                >
                   Adidas
                 </button>
-                <button type="button" class="btn btn-primary text-dark">
+                <button
+                  type="button"
+                  class="btn btn-primary text-dark"
+                  data-aos="fade-right"
+                >
                   Reebok
                 </button>
-                <button type="button" class="btn btn-primary text-dark">
+                <button
+                  type="button"
+                  class="btn btn-primary text-dark"
+                  data-aos="fade-right"
+                >
                   Vans
                 </button>
-                <select name="sorting" id="sortFeature">
+                <select name="sorting" id="sortFeature" data-aos="fade-left">
                   <option value="" disabled selected>Sort by</option>
                   <option value="alphabet">A-Z</option>
                   <option value="lowPrice">Low Price</option>
@@ -97,5 +116,9 @@
       src="https://kit.fontawesome.com/542fabac84.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>

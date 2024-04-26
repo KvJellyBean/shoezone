@@ -243,7 +243,7 @@ function renderProducts(products) {
     if (userRole === "admin") {
       shopContainer.innerHTML += `
       <!-- Product card -->
-      <div class="col">
+      <div class="col" data-aos="fade-up">
         <div class="card">
 
           <!-- Product image -->
@@ -303,7 +303,7 @@ function renderProducts(products) {
     } else {
       shopContainer.innerHTML += `
       <!-- Product card -->
-      <div class="col">
+      <div class="col" data-aos="fade-up">
         <div class="card">
 
           <!-- Product image -->
