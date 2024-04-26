@@ -25,6 +25,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Method Get by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const partner = await Partners.findById(req.params.id);
+    if (!partner) {
+      return res.status(404).json({ message: "Partner Not Found" });
+    }
+
+    res.status(200).json(partner);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Method Post with image using multer
 router.post("/", async (req, res) => {
   try {
@@ -63,20 +77,35 @@ router.put("/:id", async (req, res) => {
         return res.status(500).json({ message: err.message });
       }
 
-      const updatedPartnerData = {
-        name: req.body.name,
-        logo: "./assets/partners/" + req.file.filename,
-        website: req.body.website,
-      };
-
-      const updatedPartner = await Partners.findByIdAndUpdate(
-        req.params.id,
-        updatedPartnerData,
-        { new: true }
-      );
-      if (!updatedPartner) {
-        res.status(404).json({ message: "Not Found" });
+      // Fetch partner from database by id
+      let partner = await Partners.findById(req.params.id);
+      if (!partner) {
+        return res.status(404).json({ message: "Partner Not Found" });
       }
+
+      // Update partner data based on request body
+      partner.name = req.body.name;
+      partner.website = req.body.website;
+
+      // Check if a new image is uploaded
+      if (req.file) {
+        // Delete the old image file
+        const oldLogoName = partner.logo.split("/").pop();
+        fs.unlink(`public/assets/partners/${oldLogoName}`, (err) => {
+          if (err) {
+            console.error("Error deleting old image file:", err);
+            return res
+              .status(500)
+              .json({ message: "Error deleting old logo file" });
+          }
+        });
+
+        // Update partner image with the new image file
+        partner.logo = "./assets/partners/" + req.file.filename;
+      }
+
+      // Save the updated partner to the database
+      const updatedPartner = await partner.save();
 
       res.status(200).json(updatedPartner);
     });
