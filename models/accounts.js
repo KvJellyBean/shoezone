@@ -3,11 +3,6 @@ const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 
 const accountSchema = new Schema({
-  username: {
-    type: String,
-    required: [true, "Please enter a username"],
-    unique: true,
-  },
   email: {
     type: String,
     required: [true, "Please enter an email address"],
@@ -19,25 +14,31 @@ const accountSchema = new Schema({
     required: [true, "Please enter a password"],
     minlength: [6, "Minimum password length is 6 characters"],
   },
-   name:{
+  username: {
+    type: String,
+    required: [true, "Please enter a username"],
+    unique: true,
+  },
+  phone: {
     type: String,
     required: [true],
-    default: "anonymus"
+    default: "+62",
   },
-  phone:{
-    type: Number,
-    required: [true],
-    default: "+62"
-  },
-  address:{
+  address: {
     type: String,
     required: [true],
-    default: "address"
+    default: "Your address, Number, City, Country",
+  },
+  image: {
+    type: String,
+    default: "./assets/profiles/profile.png",
   },
 });
 
 accountSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 10);
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
   next();
 });
 
