@@ -1,0 +1,44 @@
+<dialog id="addPartnerDialog">
+  <form method="post" action="/api/partners" enctype="multipart/form-data">
+    <legend>Add Partner</legend>
+    <div class="form-wrapper">
+      <div class="input-group">
+        <label for="partnerNameInput">Partner Name: </label>
+        <input
+          name="name"
+          type="text"
+          id="partnerNameInput"
+          value=""
+          autocomplete="true"
+          required
+          placeholder="Enter partner name..."
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="logoInput">Partner Logo: </label>
+        <input name="logo" type="file" id="logoInput" value="" required />
+      </div>
+
+      <div class="input-group">
+        <label for="websiteInput">Partner Website: </label>
+        <input
+          name="website"
+          type="text"
+          id="websiteInput"
+          value=""
+          autocomplete="true"
+          required
+          placeholder="Enter partner website..."
+        />
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn-success submitBtnPartner">
+        Add Partner
+      </button>
+      <button type="button" class="btn-danger cancelAddPartner">Cancel</button>
+    </div>
+  </form>
+</dialog>
