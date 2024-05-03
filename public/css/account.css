@@ -1,3 +1,4 @@
+/* Styles for the main content area. */
 main {
   padding-top: 6rem !important;
   min-height: 93vh;
@@ -14,9 +15,12 @@ main:has(.profileContainer) {
   }
 }
 
+/* Styles for navigation links. */
 a.nav-link {
   padding: 0 !important;
 }
+
+/* Styles for dashboards. */
 .dashboardTableProduct,
 .dashboardTablePartner {
   overflow-x: auto;
@@ -105,6 +109,7 @@ td img {
   }
 }
 
+/* Styles for dialog element. */
 dialog {
   position: fixed;
   top: 50%;
@@ -236,6 +241,9 @@ dialog {
   }
 }
 
+/**
+ * Media queries for responsive design.
+ */
 @media screen and (max-width: 1024px) {
   .profile {
     padding: 0rem;

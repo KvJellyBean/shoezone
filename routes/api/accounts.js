@@ -1,5 +1,4 @@
-// accounts.js
-
+// Import necessary modules.
 const express = require("express");
 const router = express.Router();
 const Account = require("../../models/accounts");
@@ -8,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const fs = require("fs");
 
+// Set up multer disk storage for file uploads.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/assets/profiles");
@@ -19,20 +19,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single("image");
 
-// cookie
+// Middleware for parsing cookies.
 router.use(cookieParser());
 
-// expire time for cookies/jwt
+// Token expiration time for cookies/jwt.
 const maxAge = 60 * 60 * 24 * 24;
 
-// creat token (JWT)
+// Function to create JWT token.
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: maxAge,
   });
 };
 
-// Error handler
+// Function to handle errors.
 const handleErrors = (err) => {
   let errors = { username: "", email: "", password: "" };
 
@@ -68,28 +68,28 @@ const handleErrors = (err) => {
   return errors;
 };
 
-// Get account page
+// Route to render account page.
 router.get("/account", (req, res) => {
   res.render("account", { layout: "account" });
 });
 
-// Get login
+// Route to render login page.
 router.get("/login", (req, res) => {
   res.render("login", { title: "Login", layout: "login" });
 });
 
-// Get sign up
+// Route to render sign up page.
 router.get("/signup", (req, res) => {
   res.render("signup", { title: "Sign Up", layout: "signup" });
 });
 
-// Get logout
+// Route to handle logout.
 router.get("/logout", (req, res) => {
   res.cookie("shoezone_cookie", "", { maxAge: 1 });
   res.redirect("/");
 });
 
-// Post signup
+// Route to handle sign up form submission.
 router.post("/signup", async (req, res) => {
   try {
     const newAccount = new Account(req.body);
@@ -109,7 +109,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Post login
+// Route to handle login form submission.
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -123,6 +123,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Route to get all accounts (API endpoint).
 router.get("/api/account", async (req, res) => {
   try {
     const accounts = await Account.find();
@@ -132,7 +133,7 @@ router.get("/api/account", async (req, res) => {
   }
 });
 
-//get account by id
+// Route to get account by ID (API endpoint).
 router.get("/api/account/:id", async (req, res) => {
   try {
     const account = await Account.findById(req.params.id);
@@ -145,7 +146,7 @@ router.get("/api/account/:id", async (req, res) => {
   }
 });
 
-// Update account by id
+// Route to update account by ID (API endpoint).
 router.put("/api/account/:userId", async (req, res) => {
   try {
     upload(req, res, async function (err) {

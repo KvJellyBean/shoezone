@@ -1,13 +1,17 @@
+<!-- Profile Container Section -->
 <div class="profileContainer p-4" data-aos="fade-down">
   <div class="container card p-0">
     <div class="card-header">
       <h3>Profile</h3>
     </div>
 
+    <!-- Profile Card Body -->
     <div
       class="card-body d-flex align-items-center justify-content-center py-5"
     >
+      <!-- Profile Image and Info -->
       <div class="d-flex flex-column align-items-center text-center">
+        <!-- Profile Image -->
         <img
           src="<%= user.image %>"
           alt="<%= user.username %> photo"
@@ -15,6 +19,8 @@
           width="140"
           height="140"
         />
+
+        <!-- Profile Details -->
         <div class="mt-3">
           <h4><%= user.username %></h4>
           <p class="text-secondary mb-1"><%= user.phone %></p>
@@ -22,6 +28,7 @@
         </div>
       </div>
 
+      <!-- Profile Form -->
       <div class="profile">
         <form
           class="profile-info"
@@ -30,6 +37,7 @@
           action="/api/account"
           enctype="multipart/form-data"
         >
+          <!-- Email -->
           <div class="profile-info-item">
             <label for="email">Email</label>
             <input
@@ -40,6 +48,7 @@
               disabled
             />
           </div>
+          <!-- Username -->
           <div class="profile-info-item">
             <label for="username">Username</label>
             <input
@@ -49,6 +58,7 @@
               value="<%= user.username %>"
             />
           </div>
+          <!-- Phone -->
           <div class="profile-info-item">
             <label for="phone">Phone</label>
             <input
@@ -58,6 +68,7 @@
               value="<%= user.phone %>"
             />
           </div>
+          <!-- Address -->
           <div class="profile-info-item">
             <label for="address">Address</label>
             <input
@@ -67,11 +78,13 @@
               value="<%= user.address %>"
             />
           </div>
+          <!-- Profile Image -->
           <div class="profile-info-item">
             <label for="image">Profile Image</label>
             <input type="file" id="image" name="image" />
           </div>
 
+          <!-- Submit button -->
           <button
             type="submit"
             id="edit-profile"

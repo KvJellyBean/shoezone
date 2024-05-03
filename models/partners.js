@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+// Mongoose schema for partner.
 const partnerSchema = new Schema({
   name: {
     type: String,

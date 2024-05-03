@@ -8,7 +8,7 @@ let userRole = document.querySelector("#logoutBtn.userData").dataset.userRole;
 // Main container of products
 const shopContainer = document.querySelector("#shop-cards");
 
-// DOM Element
+// DOM Elements.
 const searchBar = document.querySelector(".form-control");
 const brandButtons = document.querySelectorAll(".btn.btn-primary.text-dark");
 const sortSelect = document.getElementById("sortFeature");
@@ -21,7 +21,9 @@ const cancelAddProduct = document.querySelector(".cancelAddProduct");
 const cancelEditProduct = document.querySelector(".cancelEditProduct");
 const editProductForm = document.querySelector("#editProductDialog form");
 
-// Fetch products from API
+/**
+ * Fetches products from the API.
+ */
 async function fetchProducts() {
   try {
     const response = await fetch("/api/products");
@@ -35,7 +37,12 @@ async function fetchProducts() {
   }
 }
 
-// Add product to cart
+/**
+ * Adds a product to the cart.
+ * @param {Event} event - The click event.
+ * @param {string} productId - The ID of the product.
+ * @param {string} userId - The ID of the user.
+ */
 function addProductToCart(event, productId, userId) {
   const product = products.find((prod) => prod._id === productId);
 
@@ -93,7 +100,10 @@ function addProductToCart(event, productId, userId) {
     });
 }
 
-// Search product functionality
+/**
+ * Searches products based on the input search term.
+ * @param {Event | string} event - The input event or search term.
+ */
 function searchProducts(event = null) {
   brandButtons.forEach((btn) => {
     btn.classList.remove("activeFilter");
@@ -151,7 +161,10 @@ function searchProducts(event = null) {
   }
 }
 
-// Displays a not found message when no products match the search term.
+/**
+ * Displays a message when no products match the search term.
+ * @param {string} searchWord - The search term.
+ */
 function displayNotFound(searchWord) {
   shopContainer.innerHTML = `
     <div class="notFoundContainer">
@@ -161,7 +174,11 @@ function displayNotFound(searchWord) {
   `;
 }
 
-// Generate Star Rating based on product rating
+/**
+ * Generates star rating HTML based on the product rating.
+ * @param {number} rating - The rating of the product.
+ * @returns {string} - The HTML representation of star rating.
+ */
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
@@ -184,7 +201,10 @@ function generateStarRating(rating) {
   return starsHTML;
 }
 
-// Function to filter and sorting
+/**
+ * Filters and sorts products by brand and other criteria.
+ * @param {string} brand - The brand name to filter by.
+ */
 function filterAndSortByBrand(brand) {
   let filteredProducts;
 
@@ -232,7 +252,10 @@ function filterAndSortByBrand(brand) {
   }
 }
 
-// Render product list to page
+/**
+ * Renders the product list to the page.
+ * @param {Array} products - The array of products to render.
+ */
 function renderProducts(products) {
   shopContainer.innerHTML = "";
 
@@ -364,7 +387,9 @@ function renderProducts(products) {
   });
 }
 
-// Show Add Product dialog
+/**
+ * Shows the dialog for adding a new product.
+ */
 function showAddProductDialog() {
   const dialog = document.querySelector("dialog#addProductDialog");
   const form = dialog.querySelector("form");
@@ -372,7 +397,10 @@ function showAddProductDialog() {
   dialog.showModal();
 }
 
-// Show Edit Product dialog
+/**
+ * Shows the dialog for editing a product.
+ * @param {string} productId - The ID of the product to edit.
+ */
 async function showEditProductDialog(productId) {
   const product = await getProductDetails(productId);
 
@@ -391,19 +419,26 @@ async function showEditProductDialog(productId) {
   }
 }
 
-// Close Add Product dialog
+/**
+ * Closes the dialog for adding a new product.
+ */
 function closeAddProductDialog() {
   const dialog = document.querySelector("dialog#addProductDialog");
   dialog.close();
 }
 
-// Close Edit Product dialog
+/**
+ * Closes the dialog for editing a product.
+ */
 function closeEditProductDialog() {
   const dialog = document.querySelector("dialog#editProductDialog");
   dialog.close();
 }
 
-// Function to add new product
+/**
+ * Adds a new product.
+ * @param {Event} event - The submit event.
+ */
 async function addProduct(event) {
   event.preventDefault();
   const nameInput = document.querySelector("#nameInput").value;
@@ -443,7 +478,11 @@ async function addProduct(event) {
   }
 }
 
-// Function to delete product
+/**
+ * Deletes a product.
+ * @param {Event} event - The click event.
+ * @param {string} productId - The ID of the product to delete.
+ */
 async function deleteProduct(event, productId) {
   event.preventDefault();
 
@@ -463,7 +502,11 @@ async function deleteProduct(event, productId) {
   }
 }
 
-// Function to edit product
+/**
+ * Edits a product.
+ * @param {Event} event - The submit event.
+ * @param {string} productId - The ID of the product to edit.
+ */
 async function editProduct(event, productId) {
   event.preventDefault();
 
@@ -508,6 +551,10 @@ async function editProduct(event, productId) {
   }
 }
 
+/**
+ * Adds a new product and updates the displayed product list.
+ * @param {Event} event - The submit event.
+ */
 async function addAndShowProduct(event) {
   event.preventDefault();
   submitBtnProduct.disabled = true;
@@ -518,6 +565,11 @@ async function addAndShowProduct(event) {
   closeAddProductDialog();
 }
 
+/**
+ * Deletes a product and updates the displayed product list.
+ * @param {Event} event - The click event.
+ * @param {string} productId - The ID of the product to delete.
+ */
 async function deleteAndShowProduct(event, productId) {
   event.preventDefault();
 
@@ -534,6 +586,11 @@ async function deleteAndShowProduct(event, productId) {
   }
 }
 
+/**
+ * Edits a product and updates the displayed product list.
+ * @param {Event} event - The submit event.
+ * @param {string} productId - The ID of the product to edit.
+ */
 async function editAndShowProduct(event, productId) {
   event.preventDefault();
   editBtnProduct.disabled = true;
@@ -544,7 +601,11 @@ async function editAndShowProduct(event, productId) {
   closeEditProductDialog();
 }
 
-// Function to get product details by ID
+/**
+ * Gets the details of a product by its ID.
+ * @param {string} productId - The ID of the product.
+ * @returns {Object | null} - The details of the product, or null if not found.
+ */
 async function getProductDetails(productId) {
   try {
     const response = await fetch(`/api/products/${productId}`);
@@ -558,21 +619,24 @@ async function getProductDetails(productId) {
   }
 }
 
-// Handler function for edit product
+/**
+ * Event listener to handle edit product submission.
+ * @param {Event} e - The submit event.
+ */
 function handleEdit(e) {
   editAndShowProduct(e, productId);
 }
 
 // EVENT LISTENER
 
-// Render products when the page loaded
+// Render products when the page loaded.
 document.addEventListener("DOMContentLoaded", fetchProducts);
 
-// Implements search bar functionality
+// Implements search bar functionality.
 searchBar.addEventListener("keyup", searchProducts);
 searchBar.addEventListener("submit", (e) => searchProducts(e));
 
-// Event listener for filter button
+// Event listener for filter button.
 brandButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     const brand = event.target.textContent.trim();
@@ -600,7 +664,7 @@ brandButtons.forEach((button) => {
   });
 });
 
-// Event listener for filtering or sorting only
+// Event listener for filtering or sorting only.
 sortSelect.addEventListener("change", (event) => {
   const sortBy = event.target.value;
   // Check is there any active filter based on brand
@@ -648,14 +712,14 @@ sortSelect.addEventListener("change", (event) => {
 });
 
 if (userRole === "admin") {
-  // Show dialog to add new product
+  // Show dialog to add new product.
   addProductBtn.addEventListener("click", () => {
     addProductForm.removeEventListener("submit", addAndShowProduct);
     showAddProductDialog();
     addProductForm.addEventListener("submit", addAndShowProduct);
   });
 
-  // Event handler for edit and remove product
+  // Event handler for edit and remove product.
   shopContainer.addEventListener("click", (e) => {
     editProductForm.removeEventListener("submit", handleEdit);
 
@@ -669,12 +733,12 @@ if (userRole === "admin") {
     }
   });
 
-  // Close dialog of add new product
+  // Close dialog of add new product.
   cancelAddProduct.addEventListener("click", () => {
     closeAddProductDialog();
   });
 
-  // Close dialog of edit product
+  // Close dialog of edit product.
   cancelEditProduct.addEventListener("click", () => {
     closeEditProductDialog();
   });

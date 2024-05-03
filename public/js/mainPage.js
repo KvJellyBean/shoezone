@@ -1,4 +1,6 @@
-// Fetch products from API
+/**
+ * Fetches products from the API and renders them on the page.
+ */
 async function fetchProducts() {
   try {
     const response = await fetch("/api/products");
@@ -17,7 +19,9 @@ async function fetchProducts() {
   }
 }
 
-// Fetch partners from API
+/**
+ * Fetches partners from the API and renders them on the page.
+ */
 async function fetchPartners() {
   try {
     const response = await fetch("/api/partners");
@@ -31,7 +35,11 @@ async function fetchPartners() {
   }
 }
 
-// Generate Star Rating based on product rating
+/**
+ * Generates star rating HTML based on the product rating.
+ * @param {number} rating - The rating of the product.
+ * @returns {string} - The HTML representation of star rating.
+ */
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
@@ -54,7 +62,10 @@ function generateStarRating(rating) {
   return starsHTML;
 }
 
-// Render product list to page
+/**
+ * Renders the product list on the page.
+ * @param {Array} products - The array of products to render.
+ */
 function renderProducts(products) {
   const hotProductContainer = document.querySelector(".hot-product div.row");
   hotProductContainer.innerHTML = "";
@@ -112,7 +123,10 @@ function renderProducts(products) {
   });
 }
 
-// Render partners to page
+/**
+ * Renders partner logos on the page.
+ * @param {Array} partners - The array of partners to render.
+ */
 function renderPartners(partners) {
   console.log("Rendering partners:", partners);
   const partnerContainer = document.querySelector(".client-in ul");
@@ -129,7 +143,10 @@ function renderPartners(partners) {
   });
 }
 
-// Add product to cart page
+/**
+ * Adds a product to the cart.
+ * @param {Object} product - The product object to add to the cart.
+ */
 function addProductToCart(product) {
   console.log("Adding product to cart:", product);
 
@@ -150,7 +167,7 @@ function addProductToCart(product) {
     });
 }
 
-// Fetch and render product and partner when page is loaded
+// Fetch and render products and partners when the page is loaded.
 document.addEventListener("DOMContentLoaded", async function () {
   await fetchProducts();
   await fetchPartners();

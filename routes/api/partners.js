@@ -1,9 +1,11 @@
+// Import necessary modules.
 const { Router } = require("express");
 const router = Router();
 const Partners = require("../../models/partners");
 const multer = require("multer");
 const fs = require("fs");
 
+// Set up multer storage configuration for file uploads.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/assets/partners");
@@ -13,9 +15,10 @@ const storage = multer.diskStorage({
   },
 });
 
+// Initialize multer upload middleware.
 const upload = multer({ storage: storage }).single("logo");
 
-// Method Get
+// Route to get all partners.
 router.get("/", async (req, res) => {
   try {
     const partners = await Partners.find();
@@ -25,7 +28,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Method Get by ID
+// Route to get partner by ID.
 router.get("/:id", async (req, res) => {
   try {
     const partner = await Partners.findById(req.params.id);
@@ -39,7 +42,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Method Post with image using multer
+// Route to add a new partner with image using multer.
 router.post("/", async (req, res) => {
   try {
     upload(req, res, async function (err) {
@@ -66,7 +69,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Method Put with image using multer
+// Route to update partner with image using multer.
 router.put("/:id", async (req, res) => {
   try {
     upload(req, res, async function (err) {
@@ -114,7 +117,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Method Delete
+// Route to delete partner by ID.
 router.delete("/:id", async (req, res) => {
   try {
     const partner = await Partners.findById(req.params.id);
@@ -122,15 +125,17 @@ router.delete("/:id", async (req, res) => {
       return res.status(404).json({ message: "Partner Not Found" });
     }
 
+    // Get the filename of the logo image
     const logoImage = partner.logo.split("/").pop();
 
+    // Delete the logo image file from server
     fs.unlink(`public/assets/partners/${logoImage}`, async (err) => {
       if (err) {
         console.error("Error deleting image file:", err);
         return res.status(500).json({ message: "Error deleting image file" });
       }
 
-      // Hapus produk dari database setelah file gambar dihapus
+      // Delete the partner from the database
       const deletedPartner = await Partners.findByIdAndDelete(req.params.id);
       if (!deletedPartner) {
         return res.status(404).json({ message: "Partner Not Found" });

@@ -1,3 +1,6 @@
+/**
+ * Variables for managing data related to products, partners, and accounts.
+ */
 let products = [];
 let partners = [];
 let accounts = [];
@@ -7,7 +10,7 @@ let partnerId;
 let userId = document.querySelector("#logoutBtn.userData").dataset.userId;
 let userRole = document.querySelector("#account-cards").dataset.userRole;
 
-// DOM Elements for Admin UI
+// DOM Elements for Admin UI.
 const productSection = document.querySelector(".dashboardTableProduct");
 const productSectionBtn = document.querySelector("#productSection");
 const partnerSection = document.querySelector(".dashboardTablePartner");
@@ -34,11 +37,14 @@ const cancelEditPartner = document.querySelector(".cancelEditPartner");
 const searchBarProduct = document.querySelector(".productSearchBar");
 const searchBarPartner = document.querySelector(".partnerSearchBar");
 
-// DOM Elements for User UI
+// DOM Elements for User UI.
 const formProfile = document.querySelector("#formProfile");
 const submitEditProfile = document.querySelector(".submitEditProfile");
 
-// Fetch Account from API
+/**
+ * Fetches account data from the API
+ * @returns {Promise<Array>} Array of account objects
+ */
 async function fetchAccount() {
   try {
     const response = await fetch("/api/account");
@@ -52,7 +58,9 @@ async function fetchAccount() {
   }
 }
 
-// Fetch Product from API
+/**
+ * Fetches product data from the API and renders it in the product table
+ */
 async function fetchProducts() {
   try {
     const response = await fetch("/api/products");
@@ -66,7 +74,9 @@ async function fetchProducts() {
   }
 }
 
-// Fetch Partner from API
+/**
+ * Fetches partner data from the API and renders it in the partner table
+ */
 async function fetchPartners() {
   try {
     const response = await fetch("/api/partners");
@@ -80,7 +90,9 @@ async function fetchPartners() {
   }
 }
 
-// Fungsi untuk mengubah active class dan dom content (partner section dan product section)
+/**
+ * Handles click events on the dashboard sections to switch between product and partner sections
+ */
 function handleDashboardSectionClick() {
   const section = document.querySelector(".dashboardSection");
   section.addEventListener("click", (e) => {
@@ -115,6 +127,10 @@ function handleDashboardSectionClick() {
   });
 }
 
+/**
+ * Renders the product data in the product table
+ * @param {Array} products Array of product objects
+ */
 function renderProductTable(products) {
   productsContainer.innerHTML = "";
 
@@ -141,7 +157,11 @@ function renderProductTable(products) {
     productsContainer.appendChild(productRow);
   });
 }
-// Problem in render partner table (didnt automate rerender)
+
+/**
+ * Renders the partner data in the partner table
+ * @param {Array} partners Array of partner objects
+ */
 function renderPartnerTable(partners) {
   partnersContainer.innerHTML = "";
 
@@ -168,8 +188,11 @@ function renderPartnerTable(partners) {
   });
 }
 
-// Product
-
+// Product Functions
+/**
+ * Async function to add a new product.
+ * @param {Event} event - The event triggering the function.
+ */
 async function addProduct(event) {
   event.preventDefault();
   const nameInput = document.querySelector("#nameInput").value;
@@ -188,6 +211,7 @@ async function addProduct(event) {
       return;
     }
 
+    // Create formData
     const formData = new FormData();
     formData.append("name", nameInput);
     formData.append("price", priceInput);
@@ -196,6 +220,7 @@ async function addProduct(event) {
     formData.append("rating", ratingInput);
     formData.append("quantity", 1);
 
+    // Send POST request to add product
     const response = await fetch("/api/products", {
       method: "POST",
       body: formData,
@@ -209,11 +234,16 @@ async function addProduct(event) {
   }
 }
 
-// Function to delete product
+/**
+ * Async function to delete a product.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} productId - The ID of the product to delete.
+ */
 async function deleteProduct(event, productId) {
   event.preventDefault();
 
   try {
+    // Send DELETE request to remove product
     const response = await fetch(`/api/products/${productId}`, {
       method: "DELETE",
       headers: {
@@ -229,10 +259,14 @@ async function deleteProduct(event, productId) {
   }
 }
 
-// Function to edit product
+/**
+ * Async function to edit a product.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} productId - The ID of the product to edit.
+ */
 async function editProduct(event, productId) {
   event.preventDefault();
-
+  // Retrieve input values
   const nameInput = document.querySelector("#nameEditInput").value;
   const priceInput = document.querySelector("#priceEditInput").value;
   const descriptionInput = document.querySelector(
@@ -253,6 +287,7 @@ async function editProduct(event, productId) {
       return;
     }
 
+    // Create form data
     const formData = new FormData();
     formData.append("name", nameInput);
     formData.append("price", priceInput);
@@ -261,6 +296,7 @@ async function editProduct(event, productId) {
     formData.append("image", imageInput);
     formData.append("quantity", 1);
 
+    // Send PUT request to edit product
     const response = await fetch(`/api/products/${productId}`, {
       method: "PUT",
       body: formData,
@@ -274,6 +310,11 @@ async function editProduct(event, productId) {
   }
 }
 
+/**
+ * Async function to fetch product details.
+ * @param {string} productId - The ID of the product to fetch details for.
+ * @returns {Object|null} - The product details or null if an error occurred.
+ */
 async function getProductDetails(productId) {
   try {
     const response = await fetch(`/api/products/${productId}`);
@@ -287,6 +328,9 @@ async function getProductDetails(productId) {
   }
 }
 
+/**
+ * Shows the add product dialog by resetting the form and displaying the dialog.
+ */
 function showAddProductDialog() {
   const dialog = document.querySelector("dialog#addProductDialog");
   const form = dialog.querySelector("form");
@@ -294,11 +338,18 @@ function showAddProductDialog() {
   dialog.showModal();
 }
 
+/**
+ * Closes the add product dialog.
+ */
 function closeAddProductDialog() {
   const dialog = document.querySelector("dialog#addProductDialog");
   dialog.close();
 }
 
+/**
+ * Shows the edit product dialog for a specific product by populating form fields with product details and displaying the dialog.
+ * @param {string} productId - The ID of the product to edit.
+ */
 async function showEditProductDialog(productId) {
   const product = await getProductDetails(productId);
 
@@ -317,11 +368,18 @@ async function showEditProductDialog(productId) {
   }
 }
 
+/**
+ * Closes the edit product dialog.
+ */
 function closeEditProductDialog() {
   const dialog = document.querySelector("dialog#editProductDialog");
   dialog.close();
 }
 
+/**
+ * Adds a new product, fetches updated product list, and closes the add product dialog.
+ * @param {Event} event - The event triggering the function.
+ */
 async function addAndShowProduct(event) {
   event.preventDefault();
   submitBtnProduct.disabled = true;
@@ -331,6 +389,11 @@ async function addAndShowProduct(event) {
   closeAddProductDialog();
 }
 
+/**
+ * Edits an existing product, fetches updated product list, and closes the edit product dialog.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} productId - The ID of the product to edit.
+ */
 async function editAndShowProduct(event, productId) {
   event.preventDefault();
   editBtnProduct.disabled = true;
@@ -340,6 +403,11 @@ async function editAndShowProduct(event, productId) {
   closeEditProductDialog();
 }
 
+/**
+ * Deletes a product, fetches updated product list.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} productId - The ID of the product to delete.
+ */
 async function deleteAndShowProduct(event, productId) {
   event.preventDefault();
 
@@ -355,12 +423,19 @@ async function deleteAndShowProduct(event, productId) {
   }
 }
 
+/**
+ * Handles the edit action for a product.
+ * @param {Event} e - The event triggering the function.
+ */
 function handleEdit(e) {
   editAndShowProduct(e, productId);
 }
 
-// Partner
-
+// Partner Functions
+/**
+ * Adds a new partner by capturing input values from the form, checking for existing partners with the same name, and sending a POST request to the server.
+ * @param {Event} event - The event triggering the function.
+ */
 async function addPartner(event) {
   event.preventDefault();
   const nameInput = document.querySelector("#partnerNameInput").value;
@@ -392,6 +467,11 @@ async function addPartner(event) {
   }
 }
 
+/**
+ * Deletes a partner by sending a DELETE request to the server.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} partnerId - The ID of the partner to delete.
+ */
 async function deletePartner(event, partnerId) {
   event.preventDefault();
 
@@ -407,6 +487,11 @@ async function deletePartner(event, partnerId) {
   }
 }
 
+/**
+ * Edits an existing partner by capturing input values from the form, checking for existing partners with the same name, and sending a PUT request to the server.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} partnerId - The ID of the partner to edit.
+ */
 async function editPartner(event, partnerId) {
   event.preventDefault();
 
@@ -441,6 +526,11 @@ async function editPartner(event, partnerId) {
   }
 }
 
+/**
+ * Retrieves details of a specific partner by sending a GET request to the server.
+ * @param {string} partnerId - The ID of the partner to fetch details for.
+ * @returns {Object|null} - The details of the partner, or null if an error occurs.
+ */
 async function getPartnerDetails(partnerId) {
   try {
     const response = await fetch(`/api/partners/${partnerId}`);
@@ -454,6 +544,9 @@ async function getPartnerDetails(partnerId) {
   }
 }
 
+/**
+ * Displays the add partner dialog by resetting the form and showing the dialog.
+ */
 function showAddPartnerDialog() {
   const dialog = document.querySelector("dialog#addPartnerDialog");
   const form = dialog.querySelector("form");
@@ -461,11 +554,18 @@ function showAddPartnerDialog() {
   dialog.showModal();
 }
 
+/**
+ * Closes the add partner dialog.
+ */
 function closeAddPartnerDialog() {
   const dialog = document.querySelector("dialog#addPartnerDialog");
   dialog.close();
 }
 
+/**
+ * Shows the edit partner dialog for a specific partner by populating form fields with partner details and displaying the dialog.
+ * @param {string} partnerId - The ID of the partner to edit.
+ */
 async function showEditPartnerDialog(partnerId) {
   const partner = await getPartnerDetails(partnerId);
 
@@ -482,11 +582,18 @@ async function showEditPartnerDialog(partnerId) {
   }
 }
 
+/**
+ * Closes the edit partner dialog.
+ */
 function closeEditPartnerDialog() {
   const dialog = document.querySelector("dialog#editPartnerDialog");
   dialog.close();
 }
 
+/**
+ * Adds a new partner, fetches updated partner list, and closes the add partner dialog.
+ * @param {Event} event - The event triggering the function.
+ */
 async function addAndShowPartner(event) {
   event.preventDefault();
   submitBtnPartner.disabled = true;
@@ -497,6 +604,11 @@ async function addAndShowPartner(event) {
   window.location.reload();
 }
 
+/**
+ * Edits an existing partner, fetches updated partner list, and closes the edit partner dialog.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} partnerId - The ID of the partner to edit.
+ */
 async function editAndShowPartner(event, partnerId) {
   event.preventDefault();
   editBtnPartner.disabled = true;
@@ -506,6 +618,11 @@ async function editAndShowPartner(event, partnerId) {
   closeEditPartnerDialog();
 }
 
+/**
+ * Deletes a partner, fetches updated partner list.
+ * @param {Event} event - The event triggering the function.
+ * @param {string} partnerId - The ID of the partner to delete.
+ */
 async function deleteAndShowPartner(event, partnerId) {
   event.preventDefault();
 
@@ -521,11 +638,20 @@ async function deleteAndShowPartner(event, partnerId) {
   }
 }
 
+/**
+ * Handles the edit action for a partner.
+ * @param {Event} e - The event triggering the function.
+ */
 function handleEditPartner(e) {
   editAndShowPartner(e, partnerId);
   window.location.reload();
 }
 
+/**
+ * Searches for products based on the input value from the search bar, filters the products by name, and renders the filtered product table.
+ * @param {Event} e - The event triggering the function.
+ * @param {HTMLElement} searchBar - The search bar input element.
+ */
 function searchProducts(e, searchBar) {
   e.preventDefault();
   const searchValue = searchBar.value.toLowerCase();
@@ -536,6 +662,11 @@ function searchProducts(e, searchBar) {
   renderProductTable(filteredProducts);
 }
 
+/**
+ * Searches for partners based on the input value from the search bar, filters the partners by name, and renders the filtered partner table.
+ * @param {Event} e - The event triggering the function.
+ * @param {HTMLElement} searchBar - The search bar input element.
+ */
 function searchPartners(e, searchBar) {
   e.preventDefault();
   const searchValue = searchBar.value.toLowerCase();
@@ -546,12 +677,21 @@ function searchPartners(e, searchBar) {
   renderPartnerTable(filteredPartners);
 }
 
-// User Methods
+// User Functions
+/**
+ * Checks if there is an existing account with the provided field and value.
+ * @param {string} field - The field to check (e.g., "username", "phone").
+ * @param {string} value - The value to check against.
+ * @returns {boolean} - True if there is an existing account with the specified field and value, otherwise false.
+ */
 function checkExistingAccount(field, value) {
   return accounts.some((account) => account[field] === value);
 }
 
-// Change account data
+/**
+ * Changes account data by sending a PUT request to update the user's information.
+ * @param {Event} event - The event triggering the function.
+ */
 async function changeAccountData(event) {
   event.preventDefault();
   submitEditProfile.disabled = true;
@@ -598,6 +738,9 @@ async function changeAccountData(event) {
   submitEditProfile.disabled = false;
 }
 
+/**
+ * Handles DOM content loading by executing different actions based on the user's role.
+ */
 document.addEventListener("DOMContentLoaded", async function () {
   if (userRole === "admin") {
     await fetchProducts();

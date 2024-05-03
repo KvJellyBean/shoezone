@@ -1,7 +1,12 @@
+<!-- Add Partner Dialog -->
 <dialog id="addPartnerDialog">
+  <!-- Form for Adding Partner -->
   <form method="post" action="/api/partners" enctype="multipart/form-data">
     <legend>Add Partner</legend>
+
+    <!-- Form Wrapper -->
     <div class="form-wrapper">
+      <!-- Partner Name Input -->
       <div class="input-group">
         <label for="partnerNameInput">Partner Name: </label>
         <input
@@ -15,11 +20,13 @@
         />
       </div>
 
+      <!-- Partner Logo Input -->
       <div class="input-group">
         <label for="logoInput">Partner Logo: </label>
         <input name="logo" type="file" id="logoInput" value="" required />
       </div>
 
+      <!-- Partner Website Input -->
       <div class="input-group">
         <label for="websiteInput">Partner Website: </label>
         <input
@@ -34,10 +41,13 @@
       </div>
     </div>
 
+    <!-- Button Group -->
     <div class="button-group">
+      <!-- Submit button -->
       <button type="submit" class="btn-success submitBtnPartner">
         Add Partner
       </button>
+      <!-- Cancel button -->
       <button type="button" class="btn-danger cancelAddPartner">Cancel</button>
     </div>
   </form>

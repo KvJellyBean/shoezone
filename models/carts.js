@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+// Mongoose schema for cart.
 const cartSchema = new Schema(
   {
     userId: {

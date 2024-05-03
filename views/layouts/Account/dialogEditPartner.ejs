@@ -1,7 +1,12 @@
+<!-- Edit Partner Dialog -->
 <dialog id="editPartnerDialog">
+  <!-- Form for Editing Partner -->
   <form method="post" action="/api/partners/:id" enctype="multipart/form-data">
     <legend>Edit Partner</legend>
+
+    <!-- Form Wrapper -->
     <div class="form-wrapper">
+      <!-- Partner Name Input -->
       <div class="input-group">
         <label for="partnerNameEditInput">Partner Name: </label>
         <input
@@ -15,11 +20,13 @@
         />
       </div>
 
+      <!-- Partner Logo Input -->
       <div class="input-group">
         <label for="logoEditInput">Partner Logo: </label>
         <input name="logo" type="file" id="logoEditInput" value="" />
       </div>
 
+      <!-- Partner Website Input -->
       <div class="input-group">
         <label for="websiteEditInput">Partner Website: </label>
         <input
@@ -34,8 +41,11 @@
       </div>
     </div>
 
+    <!-- Button Group -->
     <div class="button-group">
+      <!-- Edit button -->
       <button type="submit" class="btn-success editBtnPartner">Edit</button>
+      <!-- Cancel button -->
       <button type="button" class="btn-danger cancelEditPartner">Cancel</button>
     </div>
   </form>

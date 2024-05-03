@@ -1,8 +1,10 @@
+/* Styles for main. */
 main {
   padding-top: 6rem !important;
   min-height: 100vh;
 }
 
+/* Styles for eye's icon to toggle password. */
 .toggle-password {
   position: absolute;
   top: 50%;

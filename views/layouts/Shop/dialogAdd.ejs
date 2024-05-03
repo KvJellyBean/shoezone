@@ -1,7 +1,9 @@
 <dialog id="addProductDialog">
+  <!-- Form for adding a new product -->
   <form method="post" action="/api/products" enctype="multipart/form-data">
     <legend>Add Product</legend>
     <div class="form-wrapper">
+      <!-- Input field for product name -->
       <div class="input-group">
         <label for="nameInput">Product Name: </label>
         <input
@@ -15,6 +17,7 @@
         />
       </div>
 
+      <!-- Input field for product price -->
       <div class="input-group">
         <label for="priceInput">Product Price: </label>
         <input
@@ -29,6 +32,7 @@
         />
       </div>
 
+      <!-- Input field for product description -->
       <div class="input-group">
         <label for="descriptionInput">Product Description: </label>
         <textarea
@@ -40,11 +44,13 @@
         ></textarea>
       </div>
 
+      <!-- Input field for product image -->
       <div class="input-group">
         <label for="imageInput">Product Image: </label>
         <input name="image" type="file" id="imageInput" value="" required />
       </div>
 
+      <!-- Input field for product rating -->
       <div class="input-group">
         <label for="ratingInput">Product Rating: </label>
         <input
@@ -61,6 +67,7 @@
       </div>
     </div>
 
+    <!-- Button group for submitting or canceling the form -->
     <div class="button-group">
       <button type="submit" class="btn-success submitBtn">Add Product</button>
       <button type="button" class="btn-danger cancelAddProduct">Cancel</button>

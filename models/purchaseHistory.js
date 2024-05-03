@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-// purchase history schema
+// Mongoose schema for purchase history.
 const purchaseHistorySchema = new Schema(
   {
     userId: {

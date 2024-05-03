@@ -1,21 +1,45 @@
+/**
+ * Variables for managing data related to carts and purchase histories
+ */
 let cart = [];
 let purchaseHistory = [];
 let userId = document.querySelector("#logoutBtn.userData").dataset.userId;
 
+/**
+ * CartService module manages the user's cart and purchase history.
+ * It provides functions for adding, removing, and updating items in the cart and purchase history.
+ * This module is implemented using the module pattern with an Immediately Invoked Function Expression (IIFE).
+ */
 const CartService = (() => {
+  /**
+   * Retrieves the user's cart.
+   * @returns {Array} The user's cart items.
+   */
   function getCart() {
     return cart;
   }
 
+  /**
+   * Retrieves the user's purchase history.
+   * @returns {Array} The user's purchase history.
+   */
   function getPurchaseHistory() {
     return purchaseHistory;
   }
 
+  /**
+   * Clears the user's cart.
+   */
   function clearCart() {
     cart = [];
     CartService.updateTotals();
   }
 
+  /**
+   * Removes a specific item from the user's cart.
+   * @param {number} index - The index of the item to be removed from the cart.
+   * @param {boolean} isCheckout - Flag indicating whether the item is being removed during checkout.
+   */
   function removeFromCart(index, isCheckout = false) {
     if (index > -1) {
       let product = cart[index];
@@ -49,6 +73,10 @@ const CartService = (() => {
     CartService.renderCartItems();
   }
 
+  /**
+   * Updates the total number of items and total price in the cart.
+   * @returns {Object} An object containing the total number of items and total price.
+   */
   function updateTotals() {
     let totalItems = 0;
     let totalPrice = 0;
@@ -70,7 +98,10 @@ const CartService = (() => {
     return { totalItems, totalPrice };
   }
 
-  // Add item to cart and save it to the database
+  /**
+   * Adds an item to the user's purchase history.
+   * @param {Object} product - The product to be added to the purchase history.
+   */
   async function addToPurchaseHistory(product) {
     // Add the total price to the product
     product.totalPrice = product.price * product.quantity;
@@ -98,6 +129,10 @@ const CartService = (() => {
     }
   }
 
+  /**
+   * Removes a specific item from the user's purchase history.
+   * @param {number} index - The index of the item to be removed from the purchase history.
+   */
   function removeFromPurchaseHistory(index) {
     if (index > -1) {
       let product = purchaseHistory[index];
@@ -139,6 +174,9 @@ const CartService = (() => {
     CartService.renderPurchaseHistory();
   }
 
+  /**
+   * Clears the user's purchase history.
+   */
   async function clearPurchaseHistory() {
     const confirmation = window.confirm(
       "Are you sure you want to remove all things in purchase history?"
@@ -160,7 +198,9 @@ const CartService = (() => {
     }
   }
 
-  // Render the cart items
+  /**
+   * Renders the items in the user's cart.
+   */
   function renderCartItems() {
     const cartContainer = document.getElementById("cartItems");
     const cartSection = document.getElementById("cartContainer");
@@ -263,7 +303,11 @@ const CartService = (() => {
     }
   }
 
-  // Function to increase quantity
+  /**
+   * Increases the quantity of a product in the cart by 1.
+   * @async
+   * @param {number} index - The index of the product in the cart.
+   */
   async function increaseQuantity(index) {
     const isChecked = document.getElementById(`checkout-${index}`).checked;
     if (cart[index].quantity < 10) {
@@ -275,7 +319,11 @@ const CartService = (() => {
     }
   }
 
-  // Function to decrease quantity
+  /**
+   * Decreases the quantity of a product in the cart by 1.
+   * @async
+   * @param {number} index - The index of the product in the cart.
+   */
   async function decreaseQuantity(index) {
     const isChecked = document.getElementById(`checkout-${index}`).checked;
     if (cart[index].quantity > 1) {
@@ -287,7 +335,11 @@ const CartService = (() => {
     }
   }
 
-  // Function to update quantity
+  /**
+   * Updates the quantity of a product in the cart based on user input.
+   * @async
+   * @param {number} index - The index of the product in the cart.
+   */
   async function updateQuantity(index) {
     const input = document.getElementById(`quantity-${index}`);
     const newQuantity = parseInt(input.value);
@@ -305,7 +357,12 @@ const CartService = (() => {
     }
   }
 
-  // Function to update quantity on server
+  /**
+   * Updates the quantity of a product on the server.
+   * @async
+   * @param {number} index - The index of the product in the cart.
+   * @param {number} quantity - The new quantity of the product.
+   */
   async function updateQuantityOnServer(index, quantity) {
     const product = cart[index];
 
@@ -325,7 +382,9 @@ const CartService = (() => {
     }
   }
 
-  // Function to render purchase history
+  /**
+   * Renders the items in the user's purchase history.
+   */
   function renderPurchaseHistory() {
     const purchaseHistoryContainer = document.getElementById("purchaseHistory");
     const emptyText = document.getElementById("emptyTextPurchaseHistory");
@@ -412,7 +471,9 @@ const CartService = (() => {
     }
   }
 
-  // Function to handle checkout
+  /**
+   * Initiates the checkout process.
+   */
   async function checkout() {
     // Get all the checkboxes
     const checkboxes = document.querySelectorAll(".checkout-product");
@@ -463,7 +524,9 @@ const CartService = (() => {
   };
 })();
 
-// Fetch products from API
+/**
+ * Fetches the user's cart from the server.
+ */
 async function fetchCarts() {
   try {
     const response = await fetch(`/api/carts/${userId}`);
@@ -478,6 +541,9 @@ async function fetchCarts() {
   }
 }
 
+/**
+ * Fetches the user's purchase history from the server.
+ */
 async function fetchPurchaseHistory() {
   try {
     const response = await fetch(`/api/purchaseHistory/${userId}`);
@@ -504,6 +570,7 @@ document
   .getElementById("checkoutBtn")
   .addEventListener("click", CartService.checkout);
 
+// Event listener for clear history button
 document
   .getElementById("clearHistoryBtn")
   .addEventListener("click", CartService.clearPurchaseHistory);

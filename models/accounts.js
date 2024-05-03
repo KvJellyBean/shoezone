@@ -2,6 +2,7 @@ const { Schema, model } = require("mongoose");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 
+// Mongoose schema for user account.
 const accountSchema = new Schema({
   email: {
     type: String,
@@ -35,6 +36,7 @@ const accountSchema = new Schema({
   },
 });
 
+// Mongoose middleware to hash password before saving user data.
 accountSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
@@ -42,7 +44,13 @@ accountSchema.pre("save", async function (next) {
   next();
 });
 
-// static method to login user
+/**
+ * Static method to login user.
+ * @param {string} email - User's email address.
+ * @param {string} password - User's password.
+ * @returns {Object} - User object if login successful.
+ * @throws {Error} - Error if email or password is incorrect.
+ */
 accountSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {

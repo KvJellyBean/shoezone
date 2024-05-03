@@ -1,9 +1,10 @@
+// Import necessary modules.
 const { Router } = require("express");
 const mongoose = require("mongoose");
 const router = Router();
 const Carts = require("../../models/carts");
 
-// Method Get
+// Route to get all items in carts.
 router.get("/", async (req, res) => {
   try {
     const items = await Carts.find();
@@ -13,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Method get by userId
+// Route to get items in cart by userId.
 router.get("/:userId", async (req, res) => {
   try {
     const items = await Carts.find({ userId: req.params.userId });
@@ -23,7 +24,7 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-// Method Post
+// Route to add a new item to cart.
 router.post("/", async (req, res) => {
   try {
     const newCart = new Carts(req.body);
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Method Put
+// Route to update an item in cart by ID.
 router.put("/:id", async (req, res) => {
   try {
     const updatedProducts = await Carts.findByIdAndUpdate(
@@ -52,7 +53,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Method put untuk mengubah/mengupdate quantity product berdasarkan quantity di req body ke cart berdasarkan userId yang didalamnya terdapat key products yang berisi array of object tiap productnya
+// Route to update quantity of a product in cart based on userId and productId.
 router.put("/:userId/:productId", async (req, res) => {
   try {
     const updatedCart = await Carts.findOneAndUpdate(
@@ -70,7 +71,7 @@ router.put("/:userId/:productId", async (req, res) => {
   }
 });
 
-// Method Delete untuk mengosongkan array products dari user cart by userId, bukan menghapus cart nya
+// Route to delete all items in cart by userId.
 router.delete("/:userId", async (req, res) => {
   try {
     const updatedCart = await Carts.findOneAndUpdate(
@@ -88,6 +89,7 @@ router.delete("/:userId", async (req, res) => {
   }
 });
 
+// Route to delete a specific item from cart by userId and productId.
 router.delete("/:userId/:productId", async (req, res) => {
   try {
     const updatedCart = await Carts.findOneAndUpdate(

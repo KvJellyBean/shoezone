@@ -1,7 +1,9 @@
+/* Style for body. */
 body {
   min-height: 100dvh;
 }
 
+/* Style for main. */
 main {
   min-height: 92vh;
   display: flex;
@@ -325,10 +327,12 @@ main {
   }
 }
 
+/* Bootstrap col class. */
 .col {
   padding: 0 !important;
 }
 
+/* Styles for search bar. */
 .search-form {
   .form-group {
     position: relative;
@@ -348,6 +352,7 @@ main {
   }
 }
 
+/* Styling for heading. */
 h4.text-primary {
   cursor: pointer;
   height: 3.5rem;
@@ -355,6 +360,7 @@ h4.text-primary {
   color: inherit !important;
 }
 
+/* Styles for not found commponent. */
 .notFoundContainer {
   padding-top: 0.5rem;
   min-width: fit-content;
@@ -381,6 +387,7 @@ h4.text-primary {
   }
 }
 
+/* Keyframe. */
 @keyframes float {
   0%,
   100% {
@@ -392,6 +399,9 @@ h4.text-primary {
   }
 }
 
+/**
+ * Media queries for responsive design.
+ */
 @media screen and (max-width: 1440px) {
   .shop {
     .card {

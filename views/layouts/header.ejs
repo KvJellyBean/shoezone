@@ -1,8 +1,11 @@
 <header class="navbar navbar-expand-lg d-flex justify-content-center fixed-top">
   <div class="container">
+    <!-- Brand/logo -->
     <a class="navbar-brand" href="/"
       ><span class="text-success">Shoe</span>Zone</a
     >
+
+    <!-- Toggle button for mobile -->
     <button
       class="navbar-toggler"
       type="button"
@@ -15,26 +18,38 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navigation links -->
     <nav class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto my-4 my-lg-0 d-flex gap-4">
+        <!-- Home link -->
         <li class="nav-item">
           <a href="/" class="nav-link active">Home</a>
         </li>
+
+        <!-- Shop link -->
         <li class="nav-item">
           <a href="/shop" class="nav-link">Shop</a>
         </li>
+
+        <!-- Cart link -->
         <li class="nav-item">
           <a href="/cart" class="nav-link">Cart</a>
         </li>
+
+        <!-- Conditional links based on user role -->
         <% if(user) { %> <% if(userRole == "admin") { %>
+        <!-- Dashboard link for admin users -->
         <li class="nav-item">
           <a href="/account" class="nav-link">Dashboard</a>
         </li>
         <% } else { %>
+        <!-- Profile link for regular users -->
         <li class="nav-item">
           <a href="/account" class="nav-link">Profile</a>
         </li>
         <% } %>
+
+        <!-- Logout link -->
         <li class="nav-item">
           <a
             href="/logout"
@@ -46,6 +61,7 @@
           >
         </li>
         <% } else { %>
+        <!-- Login link for non-authenticated users -->
         <li class="nav-item">
           <a href="/login" class="nav-link">Login</a>
         </li>

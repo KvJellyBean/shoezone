@@ -1,8 +1,9 @@
+// Import necessary modules.
 const { Router } = require("express");
 const router = Router();
 const PurchaseHistory = require("../../models/purchaseHistory");
 
-// Method Get
+// Route to get latest 10 purchase history items.
 router.get("/", async (req, res) => {
   try {
     // Fetch the items, sort them by checkoutTime in descending order and limit to 10 items
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Method get by userId
+// Route to get purchase history by user ID.
 router.get("/:userId", async (req, res) => {
   try {
     const items = await PurchaseHistory.find({ userId: req.params.userId });
@@ -25,7 +26,7 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-// Method Post
+// Route to add a new purchase history item.
 router.post("/", async (req, res) => {
   try {
     const newProduct = new PurchaseHistory(req.body);
@@ -49,7 +50,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Method put untuk menambahkan product ke purchase history berdasarkan userId
+// Route to add product to purchase history by user ID
 router.put("/:userId", async (req, res) => {
   try {
     const updatedPurchaseHistory = await PurchaseHistory.findOneAndUpdate(
@@ -67,7 +68,7 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
-// Method Delete
+// Route to delete product from purchase history by user ID and product ID
 router.delete("/:userId/:productId", async (req, res) => {
   try {
     const updatedProdutHistory = await PurchaseHistory.findOneAndUpdate(
@@ -83,6 +84,7 @@ router.delete("/:userId/:productId", async (req, res) => {
   }
 });
 
+// Route to delete all products from purchase history by user ID
 router.delete("/:userId", async (req, res) => {
   try {
     const updatedPurchaseHistory = await PurchaseHistory.findOneAndUpdate(

@@ -1,9 +1,11 @@
+// Import necessary modules.
 const { Router } = require("express");
 const router = Router();
 const Products = require("../../models/products");
 const multer = require("multer");
 const fs = require("fs");
 
+// Set up multer storage configuration for file uploads.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/assets/shoes");
@@ -13,9 +15,10 @@ const storage = multer.diskStorage({
   },
 });
 
+// Initialize multer upload middleware.
 const upload = multer({ storage: storage }).single("image");
 
-// Method Get
+// Route to get all products.
 router.get("/", async (req, res) => {
   try {
     const items = await Products.find();
@@ -25,7 +28,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Method Get product by id
+// Route to get product by ID.
 router.get("/:id", async (req, res) => {
   try {
     const product = await Products.findById(req.params.id);
@@ -38,7 +41,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Method Post with image using multer
+// Route to add a new product with image using multer.
 router.post("/", async (req, res) => {
   try {
     upload(req, res, async function (err) {
@@ -69,7 +72,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Method Put
+// Route to update product with image using multer.
 router.put("/:id", async (req, res) => {
   try {
     upload(req, res, async function (err) {
@@ -119,25 +122,26 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Method Delete
+// Route to delete product by ID.
 router.delete("/:id", async (req, res) => {
   try {
-    // Dapatkan nama file gambar dari produk yang akan dihapus
+    // Get the product by ID
     const product = await Products.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: "Product Not Found" });
     }
 
-    const imageName = product.image.split("/").pop(); // Ambil nama file dari URL gambar
+    // Get the filename of the image associated with the product
+    const imageName = product.image.split("/").pop();
 
-    // Hapus file gambar dari folder public/assets/shoes
+    // Delete the image file from the server
     fs.unlink(`public/assets/shoes/${imageName}`, async (err) => {
       if (err) {
         console.error("Error deleting image file:", err);
         return res.status(500).json({ message: "Error deleting image file" });
       }
 
-      // Hapus produk dari database setelah file gambar dihapus
+      // Delete the product from the database after the image file is deleted
       const deletedProduct = await Products.findByIdAndDelete(req.params.id);
       if (!deletedProduct) {
         return res.status(404).json({ message: "Product Not Found" });
