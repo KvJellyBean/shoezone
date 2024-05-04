@@ -222,6 +222,7 @@ const CartService = (() => {
           throw new Error("Failed to clear purchase history");
         }
         // Reload the page to reflect the changes
+        window.location.reload();
       } catch (error) {
         console.error("Error clearing purchase history:", error);
       }
