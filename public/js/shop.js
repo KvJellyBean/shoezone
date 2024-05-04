@@ -10,6 +10,7 @@ const shopContainer = document.querySelector("#shop-cards");
 
 // DOM Elements.
 const searchBar = document.querySelector(".form-control");
+const searchInput = document.querySelector("#searchInput");
 const brandButtons = document.querySelectorAll(".btn.btn-primary.text-dark");
 const sortSelect = document.getElementById("sortFeature");
 const addProductBtn = document.querySelector(".addProduct");
@@ -46,13 +47,12 @@ async function fetchProducts() {
 function addProductToCart(event, productId, userId) {
   const product = products.find((prod) => prod._id === productId);
 
-  // Menyertakan userId ke dalam data produk
   const cartData = {
     userId: userId,
     products: product,
   };
 
-  // Check di database apakah user dan produk sudah ada di keranjang
+  // Check if the user and product are already in the cart in the database
   fetch(`/api/carts/${userId}`)
     .then((response) => response.json())
     .then((data) => {
@@ -76,7 +76,7 @@ function addProductToCart(event, productId, userId) {
           };
         }
 
-        // Melakukan permintaan PUT ke rute /api/carts/:id dengan data produk yang diperbarui
+        // Update the cart in the database
         fetch(`/api/carts/${cart._id}`, {
           method: "PUT",
           headers: {
@@ -85,7 +85,7 @@ function addProductToCart(event, productId, userId) {
           body: JSON.stringify(updatedCart),
         });
       } else {
-        // Jika produk belum ada di keranjang, maka tambahkan produk baru
+        // Create a new cart in the database
         fetch("/api/carts", {
           method: "POST",
           headers: {
@@ -634,7 +634,19 @@ document.addEventListener("DOMContentLoaded", fetchProducts);
 
 // Implements search bar functionality.
 searchBar.addEventListener("keyup", searchProducts);
-searchBar.addEventListener("submit", (e) => searchProducts(e));
+searchBar.addEventListener("submit", (e) => {
+  // avoid refresh when submit
+  e.preventDefault();
+  searchProducts(e);
+});
+
+// Implements search bar functionality for enter key.
+searchInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    searchProducts(e);
+  }
+});
 
 // Event listener for filter button.
 brandButtons.forEach((button) => {
