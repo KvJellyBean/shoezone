@@ -382,6 +382,15 @@ function renderProducts(products) {
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
       e.preventDefault();
+      Toastify({
+        text: "Product added to cart!",
+        duration: 2000,
+        destination: "/cart",
+        stopOnFocus: false,
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+      }).showToast();
       addProductToCart(e, button.dataset.productId, userId);
     });
   });

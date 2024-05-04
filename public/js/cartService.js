@@ -45,9 +45,27 @@ const CartService = (() => {
       let product = cart[index];
 
       if (isCheckout) {
-        alert(`You have successfully checked out ${product.name}!`);
+        Toastify({
+          text: `You have successfully checked out ${product.name}!`,
+          duration: 2000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+          stopOnFocus: true,
+        }).showToast();
       } else {
-        alert(`You have successfully removed ${product.name} from the cart!`);
+        Toastify({
+          text: `You have successfully removed ${product.name} from the cart!`,
+          duration: 2000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+          stopOnFocus: true,
+        }).showToast();
       }
 
       fetch(`/api/carts/${userId}/${product._id}`, {
@@ -169,6 +187,19 @@ const CartService = (() => {
               console.error("Error:", error);
             });
         }
+
+        Toastify({
+          text: `You have successfully removed ${product.name} from the purchase history!`,
+          duration: 2000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "right",
+          stopOnFocus: true,
+          style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+          },
+        }).showToast();
       }
     }
     CartService.renderPurchaseHistory();
@@ -191,7 +222,6 @@ const CartService = (() => {
           throw new Error("Failed to clear purchase history");
         }
         // Reload the page to reflect the changes
-        window.location.reload();
       } catch (error) {
         console.error("Error clearing purchase history:", error);
       }
@@ -224,7 +254,7 @@ const CartService = (() => {
       // Render the cart items
       cart.forEach((product, index) => {
         const item = `
-          <div class="product" data-aos="fade-up">
+          <div class="product">
             <div class="product-checkout checkbox-wrapper-26">
               <input type="checkbox" id="checkout-${index}" class="checkout-product" data-index="${index}">
                 <label for="checkout-${index}">
