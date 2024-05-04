@@ -1,6 +1,8 @@
 // Variables to store products and user ID
 let products;
-let userId = document.querySelector("#logoutBtn.userData").dataset.userId;
+let userId = document.querySelector("#logoutBtn.userData")
+  ? document.querySelector("#logoutBtn.userData").dataset.userId
+  : 0;
 
 /**
  * Fetches products from the API and renders them on the page.
@@ -106,13 +108,19 @@ function renderProducts(products) {
         </div>
         <!-- Product Add to cart -->
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
-          <div class="text-center">
-            <a class="btn btn-success mt-auto px-4 py-2 addButtonHotProduct" role="button" data-product-id="${
-              product._id
-            }">
+          ${
+            userId === 0
+              ? `<div class="text-center">
+            <a class="btn btn-success mt-auto px-4 py-2 disabled" role="button">
               <i class="fa-solid fa-cart-shopping"></i> Add to Cart
             </a>
-          </div>
+          </div>`
+              : `<div class="text-center">
+            <a class="btn btn-success mt-auto px-4 py-2 addButtonHotProduct" role="button" data-product-id="${product._id}">
+              <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+            </a>
+          </div>`
+          }
         </div>
       </div>
     </div>
