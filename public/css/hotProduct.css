@@ -69,4 +69,8 @@
     margin-bottom: 2.5rem;
     background: red;
   }
+
+  & .fa-cart-shopping {
+    pointer-events: none;
+  }
 }

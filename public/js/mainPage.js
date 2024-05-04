@@ -1,3 +1,7 @@
+// Variables to store products and user ID
+let products;
+let userId = document.querySelector("#logoutBtn.userData").dataset.userId;
+
 /**
  * Fetches products from the API and renders them on the page.
  */
@@ -7,7 +11,7 @@ async function fetchProducts() {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const products = await response.json();
+    products = await response.json();
     const firstThreeProducts = [
       ...products.slice(0, 1),
       ...products.slice(8, 9),
@@ -103,7 +107,9 @@ function renderProducts(products) {
         <!-- Product Add to cart -->
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-4">
           <div class="text-center">
-            <a href="/cart" class="btn btn-success mt-auto px-4 py-2 addButtonHotProduct" role="button">
+            <a class="btn btn-success mt-auto px-4 py-2 addButtonHotProduct" role="button" data-product-id="${
+              product._id
+            }">
               <i class="fa-solid fa-cart-shopping"></i> Add to Cart
             </a>
           </div>
@@ -117,8 +123,8 @@ function renderProducts(products) {
   // Add to cart button functionality
   const addToCartButtons = document.querySelectorAll(".addButtonHotProduct");
   addToCartButtons.forEach((button, index) => {
-    button.addEventListener("click", () => {
-      addProductToCart(products[index]);
+    button.addEventListener("click", (e) => {
+      addProductToCart(userId, e.target.dataset.productId);
     });
   });
 }
@@ -128,7 +134,6 @@ function renderProducts(products) {
  * @param {Array} partners - The array of partners to render.
  */
 function renderPartners(partners) {
-  console.log("Rendering partners:", partners);
   const partnerContainer = document.querySelector(".client-in ul");
   partners.forEach((partner) => {
     const li = document.createElement("li");
@@ -147,20 +152,56 @@ function renderPartners(partners) {
  * Adds a product to the cart.
  * @param {Object} product - The product object to add to the cart.
  */
-function addProductToCart(product) {
-  console.log("Adding product to cart:", product);
+function addProductToCart(userId, productId) {
+  const hotProduct = products.find((prod) => prod._id === productId);
 
-  // Make a POST request to the /api/carts route with the product data
-  fetch("/api/carts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(product),
-  })
+  const cartData = {
+    userId: userId,
+    products: hotProduct,
+  };
+
+  // Check if the user and product are already in the cart in the database
+  fetch(`/api/carts/${userId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log("Product added to cart:", data);
+      const cart = data.find((cart) => cart.userId === userId);
+
+      if (cart) {
+        let updatedCart;
+
+        if (cart.products.find((prod) => prod._id === productId)) {
+          updatedCart = {
+            // Update quantity inside products list
+            products: cart.products.map((prod) =>
+              prod._id === productId
+                ? { ...prod, quantity: prod.quantity + 1 }
+                : prod
+            ),
+          };
+        } else {
+          updatedCart = {
+            products: [...cart.products, hotProduct],
+          };
+        }
+
+        // Update the cart in the database
+        fetch(`/api/carts/${cart._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedCart),
+        });
+      } else {
+        // Create a new cart in the database
+        fetch("/api/carts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(cartData),
+        });
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
