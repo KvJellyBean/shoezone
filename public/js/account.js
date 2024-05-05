@@ -816,6 +816,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     searchBarProduct.addEventListener("submit", (e) =>
       searchProducts(e, searchBarProduct)
     );
+    // Implements search bar functionality for enter key.
+    searchBarProduct.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchProducts(e, searchBarProduct);
+      }
+    });
 
     searchBarPartner.addEventListener("keyup", (e) =>
       searchPartners(e, searchBarPartner)
@@ -823,6 +830,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     searchBarPartner.addEventListener("submit", (e) =>
       searchPartners(e, searchBarPartner)
     );
+    // Implements search bar functionality for enter key.
+    searchBarPartner.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchPartners(e, searchBarPartner);
+      }
+    });
   } else {
     await fetchAccount();
 
